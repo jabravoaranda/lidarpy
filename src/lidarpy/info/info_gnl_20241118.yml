@@ -1,0 +1,134 @@
+date: 20250721
+modules:
+  - ff
+channels:
+  543ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  537ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  531ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  524ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  518ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  512ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  506ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  500ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  494ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  487ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  481ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  475ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  469ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  462ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  456ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  450ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  444ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  438ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  432ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  425ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  419ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  413ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  407ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  400ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  394ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  388ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  382ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  376ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  370ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  363ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  357ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+  351ftp:
+    bin_zero: 409
+    dead_time_ns: 4
+
+product_channels:
+  543ftp: [543ftp]
+  537ftp: [537ftp]
+  531ftp: [531ftp]
+  524ftp: [524ftp]
+  518ftp: [518ftp]
+  512ftp: [512ftp]
+  506ftp: [506ftp]
+  500ftp: [500ftp]
+  494ftp: [494ftp]
+  487ftp: [487ftp]
+  481ftp: [481ftp]
+  475ftp: [475ftp]
+  469ftp: [469ftp]
+  462ftp: [462ftp]
+  456ftp: [456ftp]
+  450ftp: [450ftp]
+  444ftp: [444ftp]
+  438ftp: [438ftp]
+  432ftp: [432ftp]
+  425ftp: [425ftp]
+  419ftp: [419ftp]
+  413ftp: [413ftp]
+  407ftp: [407ftp]
+  400ftp: [400ftp]
+  394ftp: [394ftp]
+  388ftp: [388ftp]
+  382ftp: [382ftp]
+  376ftp: [376ftp]
+  370ftp: [370ftp]
+  363ftp: [363ftp]
+  357ftp: [357ftp]
+  351ftp: [351ftp]

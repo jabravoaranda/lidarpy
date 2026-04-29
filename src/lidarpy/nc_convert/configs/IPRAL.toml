@@ -1,0 +1,108 @@
+[lidar]
+bin_count = 4000
+bin_width = 15
+bins_per_microsecond = 20
+
+[lidar.attrs]
+location = "Palaiseau"
+system = "IPRAL"
+manufacturers = "???"
+overlap_is_corrected = "false"
+BCK_MIN_ALT = 50000
+BCK_MAX_ALT = 60000
+
+[options]
+channel_not_present_all_ok = true
+
+[[options.time_lidar_variables]]
+name = "zenith_angle"
+type = "f4"
+
+[[options.time_lidar_variables]]
+name = "azimuth_angle"
+type = "f4"
+
+[[options.time_lidar_variables]]
+name = "longitude"
+type = "f4"
+
+[[options.time_lidar_variables]]
+name = "latitude"
+type = "f4"
+
+[[options.time_lidar_variables]]
+name = "altitude"
+type = "f4"
+
+[[lidar.channels]]
+name = "signal_1064fta"
+link_to= "BT0"
+
+[[lidar.channels]]
+name = "signal_607ftp"
+link_to= "BC0"
+
+[[lidar.channels]]
+name = "signal_355fpa"
+link_to= "BT1"
+
+[[lidar.channels]]
+name = "signal_355fpp"
+link_to= "BC1"
+
+[[lidar.channels]]
+name = "signal_355fsa"
+link_to= "BT2"
+
+[[lidar.channels]]
+name = "signal_355fsp"
+link_to= "BC2"
+
+[[lidar.channels]]
+name = "signal_387fta"
+link_to= "BT3"
+
+[[lidar.channels]]
+name = "signal_387ftp"
+link_to= "BC3"
+
+[[lidar.channels]]
+name = "signal_408fta"
+link_to= "BT4"
+
+[[lidar.channels]]
+name = "signal_408ftp"
+link_to= "BC4"
+
+[[lidar.channels]]
+name = "signal_532fta"
+link_to= "BT5"
+
+[[lidar.channels]]
+name = "signal_532ftp"
+link_to= "BC5"
+
+#NF
+[[lidar.channels]]
+name = "signal_355nta"
+link_to= "BT10"
+
+[[lidar.channels]]
+name = "signal_355ntp"
+link_to= "BC10"
+
+[[lidar.channels]]
+name = "signal_387nta"
+link_to= "BT11"
+
+[[lidar.channels]]
+name = "signal_387ntp"
+link_to= "BC11"
+
+[[lidar.channels]]
+name = "signal_532nta"
+link_to= "BT12"
+
+[[lidar.channels]]
+name = "signal_532ntp"
+link_to= "BC12"

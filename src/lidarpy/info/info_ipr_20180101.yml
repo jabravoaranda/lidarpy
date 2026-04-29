@@ -1,0 +1,86 @@
+date: 20230101
+modules:
+  - nf
+  - ff
+channels:
+  1064fta:
+    bin_zero: 0
+  607ftp:
+    bin_zero: 0
+    dead_time_ns: 3.06
+  355fpa:
+    bin_zero: 0
+  355fpp:
+    bin_zero: 0
+    dead_time_ns: 3.06
+  355fsa:
+    bin_zero: 0
+  355fsp:
+    bin_zero: 0
+    dead_time_ns: 3.06
+  387fta:
+    bin_zero: 0
+  387ftp:
+    bin_zero: 0
+    dead_time_ns: 3.06
+  408fta:
+    bin_zero: 0
+  408ftp:
+    bin_zero: 0
+    dead_time_ns: 3.06
+  532fta:
+    bin_zero: 0
+  532ftp:
+    bin_zero: 0
+    dead_time_ns: 3.06
+  355nta:
+    bin_zero: 0
+  355ntp:
+    bin_zero: 0
+    dead_time_ns: 3.06
+  387nta:
+    bin_zero: 0
+  387ntp:
+    bin_zero: 0
+    dead_time_ns: 3.06
+  532nta:
+    bin_zero: 0
+  532ntp: 
+    bin_zero: 0
+    dead_time_ns: 3.06
+polarized_channels:
+  ff:
+    355:
+      a: 
+        T: 355fsa
+        R: 355fpa
+      p:
+        T: 355fsp
+        R: 355fpp
+      g:
+        T: 355fsg
+        R: 355fpg        
+product_channels:
+  355fta:
+    - 355fpa
+    - 355fsa
+  lvd_355fa:
+    - 355fpa
+    - 355fpa
+  355ftp:
+    - 355fpp
+    - 355fsp
+  lvd_355fp:
+    - 355fpp
+    - 355fsp
+GHK_channels:
+  - 355f
+overlap_channels:
+  532fta: 532nta
+overlap_linked_channels:
+  532fta:
+    - 532fta
+    - 532ftp
+    - 607ftp
+    - 607fta
+    - 1064fta 

@@ -1,0 +1,27 @@
+[lidar]
+bin_count = 8190
+bin_width = 7.5
+bins_per_microsecond = 20
+
+[lidar.attrs]
+location = "Payerne"
+system = "PERICLES"
+manufacturers = "Raymetrics"
+overlap_is_corrected = "false"
+BCK_MIN_ALT = 50000
+BCK_MAX_ALT = 60000
+
+[options]
+channel_not_present_all_ok = true
+
+[[lidar.channels]]
+name = "signal_355xta"
+link_to= "BT0"
+
+[[lidar.channels]]
+name = "signal_355xtp"
+link_to= "BC0"
+
+[[lidar.channels]]
+name = "signal_470xtp"
+link_to= "BC12"

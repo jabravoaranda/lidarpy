@@ -1,0 +1,164 @@
+[lidar]
+date_from = 20240201
+bin_count = 2000
+bin_width = 7.5
+bins_per_microsecond = 20
+
+[lidar.attrs]
+location = "Granada"
+system = "GENERALIFE"
+manufacturers = "HORIBA"
+overlap_is_corrected = "false"
+BCK_MIN_ALT = 500
+BCK_MAX_ALT = 3000
+
+[options]
+channel_not_present_all_ok = true
+
+[[options.time_lidar_variables]]
+name = "zenith_angle"
+type = "f4"
+
+[[options.time_lidar_variables]]
+name = "azimuth_angle"
+type = "f4"
+
+[[options.time_lidar_variables]]
+name = "longitude"
+type = "f4"
+
+[[options.time_lidar_variables]]
+name = "latitude"
+type = "f4"
+
+[[options.time_lidar_variables]]
+name = "altitude"
+type = "f4"
+
+[[lidar.channels]]
+name = "signal_0"
+link_to= "BC0"
+
+[[lidar.channels]]
+name = "signal_1"
+link_to= "BC1"
+
+[[lidar.channels]]
+name = "signal_2"
+link_to= "BC2"
+
+[[lidar.channels]]
+name = "signal_3"
+link_to= "BC3"
+
+[[lidar.channels]]
+name = "signal_4"
+link_to= "BC4"
+
+[[lidar.channels]]
+name = "signal_5"
+link_to= "BC5"
+
+[[lidar.channels]]
+name = "signal_6"
+link_to= "BC6"
+
+[[lidar.channels]]
+name = "signal_7"
+link_to= "BC7"
+
+[[lidar.channels]]
+name = "signal_8"
+link_to= "BC8"
+
+[[lidar.channels]]
+name = "signal_9"
+link_to= "BC9"
+
+[[lidar.channels]]
+name = "signal_10"
+link_to= "BCA"
+
+[[lidar.channels]]
+name = "signal_11"
+link_to= "BCB"
+
+[[lidar.channels]]
+name = "signal_12"
+link_to= "BCC"
+
+[[lidar.channels]]
+name = "signal_13"
+link_to= "BCD"
+
+[[lidar.channels]]
+name = "signal_14"
+link_to= "BCE"
+
+[[lidar.channels]]
+name = "signal_15"
+link_to= "BCF"
+
+[[lidar.channels]]
+name = "signal_16"
+link_to= "BC10"
+
+[[lidar.channels]]
+name = "signal_17"
+link_to= "BC11"
+
+[[lidar.channels]]
+name = "signal_18"
+link_to= "BC12"
+
+[[lidar.channels]]
+name = "signal_19"
+link_to= "BC13"
+
+[[lidar.channels]]
+name = "signal_20"
+link_to= "BC14"
+
+[[lidar.channels]]
+name = "signal_21"
+link_to= "BC15"
+
+[[lidar.channels]]
+name = "signal_22"
+link_to= "BC16"
+
+[[lidar.channels]]
+name = "signal_23"
+link_to= "BC17"
+
+[[lidar.channels]]
+name = "signal_24"
+link_to= "BC18"
+
+[[lidar.channels]]
+name = "signal_25"
+link_to= "BC19"
+
+[[lidar.channels]]
+name = "signal_26"
+link_to= "BC1A"
+
+[[lidar.channels]]
+name = "signal_27"
+link_to= "BC1B"
+
+[[lidar.channels]]
+name = "signal_28"
+link_to= "BC1C"
+
+[[lidar.channels]]
+name = "signal_29"
+link_to= "BC1D"
+
+[[lidar.channels]]
+name = "signal_30"
+link_to= "BC1E"
+
+[[lidar.channels]]
+name = "signal_31"
+link_to= "BC1F"

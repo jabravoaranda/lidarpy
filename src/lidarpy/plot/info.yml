@@ -1,0 +1,207 @@
+limits:
+  Vmin:
+    mulhacen:
+      532xpa: 100000
+      532xpp: 5000000
+      532xsa: 100000
+      532xsp: 100000
+      532xta: 100000
+      532xtp: 100000
+      355xta: 100000
+      355xtp: 100000
+      1064xta: 100000
+      lvd_532xa: 0
+      lvd_532xp: 0
+    alhambra:
+      1064fta: 0
+      1061fta: 0
+      532fta: 0
+      532ftp: 0
+      531fta: 0
+      531ftp: 0
+      355fpa: 0
+      355fpp: 0
+      355fsa: 0
+      355fsp: 0
+      354fta: 0
+      354ftp: 0
+      408fta: 0
+      408ftp: 0
+      1064nta: 0
+      532npa: 0
+      532npp: 0
+      532nsa: 0
+      532nsp: 0
+      355npa: 0
+      355npp: 0
+      355nsa: 0
+      355nsp: 0
+      387nta: 0
+      387ntp: 0
+      607nta: 0
+      607ntp: 0
+      lvd_355fa: 0
+      lvd_355na: 0
+      lvd_532na: 0
+    veleta:
+      355xpa: 0
+      355xpp: 0
+      355xsa: 0
+      355xsp: 0
+  Vmax:
+    mulhacen:
+      532xpa: 1000000000
+      532xpp: 1000000000
+      532xsa: 1000000000
+      532xsp: 1000000000
+      532xta: 1000000000
+      532xtp: 1000000000
+      355xta: 1000000000
+      355xtp: 1000000000
+      1064xta: 100000000
+      lvd_532xa: 0.5
+      lvd_532xp: 0.5
+    alhambra:
+      1064fta: 10000000
+      1061fta: 10000000
+      532fta: 10000000
+      532ftp: 10000000
+      531fta: 10000000
+      531ftp: 10000000
+      355fpa: 10000000
+      355fpp: 10000000
+      355fsa: 10000000
+      355fsp: 10000000
+      354fta: 10000000
+      354ftp: 10000000
+      408fta: 10000000
+      408ftp: 10000000
+      1064nta: 10000000
+      532npa: 10000000
+      532npp: 10000000
+      532nsa: 10000000
+      532nsp: 10000000
+      355npa: 10000000
+      355npp: 10000000
+      355nsa: 10000000
+      355nsp: 10000000
+      387nta: 10000000
+      387ntp: 10000000
+      607nta: 10000000
+      607ntp: 10000000
+      lvd_355fa: 0.5
+      lvd_355na: 0.5
+      lvd_532na: 0.5
+    veleta:
+      355xpa: 1.0e+6
+      355xpp: 1.0e+6
+      355xsa: 1.0e+6
+      355xsp: 1.0e+6
+  backscatter:
+    - 0.0
+    - 10
+  extinction:
+    - 0.0
+    - 300
+  attenuated_backscatter:
+    354:
+      - 1.0e-2
+      - 100
+    355:
+      - 1.0e-2
+      - 100   
+    387:  
+      - 1.0e-2
+      - 100
+    531: 
+      - 1.0e-2
+      - 50
+    532:
+      - 1.0e-2
+      - 50
+    607:
+      - 1.0e-2
+      - 50
+    1064: 
+      - 1.0e-3
+      - 30
+  depolarization:
+    - 0
+    - 1.
+  angstrom_exponent:
+    - -0.5
+    - 3.
+  lidar_ratio:
+    - 20.
+    - 150.
+plot_default:
+  mulhacen:
+    - 532xpa
+    - 1064xta
+  alhambra:
+    - 532fta
+    - 532npa
+  veleta:
+    - 355xpa
+wavelength2color:
+  355: b
+  532: g
+  1064: r
+wavelength2cmaps:
+  354: Purples
+  355: Blues
+  387: Purples
+  531: Oranges
+  532: Greens
+  607: Oranges
+  1061: Oranges
+  1064: Reds
+backscatter2color:
+  355: b
+  532: g
+  1064: r
+  # eb1064f: red
+  # eb1064n: coral
+  # eb532f: darkgreen
+  # ebdr355f: mediumblue
+  # ebdr532n: lightgreen
+  # ebdr355n: dodgerblue
+  # rbdr532n: lawngreen
+  # rb532f: olivedrab
+  # rbdr355f: indigo
+  # rbdr355n: mediumorchid
+extinction2color:
+  355: b
+  532: g
+  1064: r
+  # lre355n: mediumorchid
+  # lre355f: indigo
+  # eo532f: olivedrab
+  # lre532f: olivedrab
+  # lre532n: lawngreen
+lidar_ratio2color:
+  355: b
+  532: g
+  1064: r
+  # lre355n: mediumorchid
+  # lre355f: indigo
+  # lre532n: lawngreen
+  # lre532f: olivedrab
+depolarization2color:
+  355: b
+  532: g
+  1064: r
+  # ebdr355f: mediumblue
+  # rbdr355f: indigo
+  # rbdr355n: mediumorchid
+  # ebdr355n: dodgerblue
+  # ebdr532n: lightgreen
+  # rbdr532n: lawngreen
+ae2color:
+  355-532: red
+  532-1064: indigo
+  355-1064: darkgreen
+ae2CMAPS:
+  355-532: Reds
+  532-1064: Blues
+  355-1064: Greens

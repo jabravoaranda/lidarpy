@@ -1,0 +1,36 @@
+date: 20150101
+modules:
+  - xf
+channels: 
+  355xpa:
+    bin_zero: 5
+  355xpp:
+    bin_zero: -2
+    dead_time_ns: 4
+  355xsa:
+    bin_zero: 5
+  355xsp:
+    bin_zero: -1
+    dead_time_ns: 4
+polarized_channels:
+  xf:
+    355:
+      355xpa: Tan
+      355xpp: Tpc
+      355xsa: Ran
+      355xsp: Rpc
+product_channels:
+  355xta:
+    - 355xpa
+    - 355xsa
+  lvd_355xa:
+    - 355xpa
+    - 355xpa
+  355xtp:
+    - 355xpp
+    - 355xsp
+  lvd_355xp:
+    - 355xpp
+    - 355xsp
+GHK_channels:
+  - 355x

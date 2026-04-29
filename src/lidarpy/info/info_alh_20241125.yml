@@ -1,0 +1,192 @@
+date: 20231121
+modules:
+  - nf
+  - ff
+channels:
+  1064fta:
+    bin_zero: 833
+  1058fta:
+    bin_zero: 833
+  532fta:
+    bin_zero: 833
+  532ftp:
+    bin_zero: 831
+    dead_time_ns: 4
+  531fta:
+    bin_zero: 833
+  531ftp:
+    bin_zero: 831
+    dead_time_ns: 4
+  355fpa:
+    bin_zero: 833
+  355fpp:
+    bin_zero: 831
+    dead_time_ns: 4
+  355fsa:
+    bin_zero: 833
+  355fsp:
+    bin_zero: 831
+    dead_time_ns: 4
+  354fta:
+    bin_zero: 833
+  354ftp:
+    bin_zero: 831
+    dead_time_ns: 4
+  408fta:
+    bin_zero: 833
+  408ftp:
+    bin_zero: 831
+    dead_time_ns: 4
+  1064nta:
+    bin_zero: 808
+  532npa:
+    bin_zero: 808
+  532npp:
+    bin_zero: 806
+    dead_time_ns: 4
+  532nsa:
+    bin_zero: 808
+  532nsp:
+    bin_zero: 806
+    dead_time_ns: 4
+  355npa:
+    bin_zero: 808
+  355npp:
+    bin_zero: 806
+    dead_time_ns: 4
+  355nsa:
+    bin_zero: 808
+  355nsp:
+    bin_zero: 806
+    dead_time_ns: 4
+  387nta:
+    bin_zero: 808
+  387ntp:
+    bin_zero: 806
+    dead_time_ns: 4
+  607nta:
+    bin_zero: 808
+  607ntp:
+    bin_zero: 806    
+    dead_time_ns: 4
+  408nta:
+    bin_zero: 811   
+  408ntp:
+    bin_zero: 809
+    dead_time_ns: 4
+polarized_channels:
+  nf:
+    355:
+      a: 
+        T: 355nsa
+        R: 355npa
+      p:
+        T: 355nsp
+        R: 355npp
+      g:
+        T: 355nsg
+        R: 355npg
+    532:
+      a: 
+        T: 532nsa
+        R: 532npa
+      p:
+        T: 532nsp
+        R: 532npp
+      g:
+        T: 532nsg
+        R: 532npg
+  ff:
+    355:
+      a: 
+        T: 355fsa
+        R: 355fpa
+      p:
+        T: 355fsp
+        R: 355fpp
+      g:
+        T: 355fsg
+        R: 355fpg        
+depolarization_calibration_transmittance:
+  355fs: 0.0818
+  355ns: 0.0349
+  532ns: 0.1452            
+product_channels:
+  355fta:
+    - 355fpa
+    - 355fsa
+  lvd_355fa:
+    - 355fpa
+    - 355fpa
+  355ftp:
+    - 355fpp
+    - 355fsp
+  lvd_355fp:
+    - 355fpp
+    - 355fsp
+  355nta:
+    - 355npa
+    - 355nsa
+  lvd_355na:
+    - 355npa
+    - 355nsa
+  355ntp:
+    - 355npp
+    - 355nsp
+  lvd_355np:
+    - 355npp
+    - 355nsp
+  532nta:
+    - 532npa
+    - 532nsa
+  lvd_532na:
+    - 532npa
+    - 532nsa
+  532ntp:
+    - 532npp
+    - 532nsp
+  lvd_532np:
+    - 532npp
+    - 532nsp
+GHK:
+  355n:
+    GR: 0.9966  
+    HR: 0.98521
+    GT: 1.0034
+    HT: -0.99196
+    K: 1.  
+  532n:
+    GR: 1.02893
+    HR: 1.01406
+    GT: 0.97699
+    HT: -0.96284
+    K: 1.0
+  355f:
+    GR: 1.00021
+    HR: 0.99476
+    GT: 0.99383
+    HT: -0.98844
+    K: 1.0
+overlap_channels:
+  355fpa: 355npa
+  532fta: 532npa
+  1064fta: 1064nta
+overlap_linked_channels:
+  355fpa: 
+    - 355fpa
+    - 355fpp
+    - 355fsa
+    - 355fsp
+    - 354fta
+    - 354ftp
+    - 408fta
+    - 408ftp
+  532fta:
+    - 532fta
+    - 532ftp
+    - 531fta
+    - 531ftp
+  1064fta: 
+    - 1064fta
+    - 1058fta
+    - 1064ftp

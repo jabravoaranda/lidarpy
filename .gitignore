@@ -49,6 +49,10 @@ coverage.xml
 *.py.cover
 .hypothesis/
 .pytest_cache/
+.pytest_tmp/
+.pytest_tmp_snr_check/
+tmp_unzipped_*/
+artifacts/
 cover/
 
 # Translations
@@ -151,6 +155,9 @@ activemq-data/
 .env
 .envrc
 .venv
+.venv*/
+.uv-cache/
+.uv-python/
 env/
 venv/
 ENV/

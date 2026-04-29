@@ -1,0 +1,260 @@
+[lidar]
+date_from = 20231121
+bin_count = 16380
+bin_width = 3.75
+bins_per_microsecond = 40
+
+[lidar.attrs]
+location = "Granada"
+system = "ALHAMBRA"
+manufacturers = "Raymetrics"
+overlap_is_corrected = "false"
+BCK_MIN_ALT = 50000
+BCK_MAX_ALT = 60000
+
+[options]
+channel_not_present_all_ok = true
+
+[[options.time_lidar_variables]]
+name = "zenith_angle"
+type = "f4"
+
+[[options.time_lidar_variables]]
+name = "azimuth_angle"
+type = "f4"
+
+[[options.time_lidar_variables]]
+name = "longitude"
+type = "f4"
+
+[[options.time_lidar_variables]]
+name = "latitude"
+type = "f4"
+
+[[options.time_lidar_variables]]
+name = "altitude"
+type = "f4"
+
+[[lidar.channels]]
+name = "signal_1064fta"
+link_to= "BT0"
+
+[[lidar.channels]]
+name = "stderr_1064fta"
+link_to= "S2A0"
+
+[[lidar.channels]]
+name = "signal_1058fta"
+link_to= "BT1"
+
+[[lidar.channels]]
+name = "stderr_1058fta"
+link_to= "S2A1"
+
+[[lidar.channels]]
+name = "signal_532fta"
+link_to= "BT2"
+
+[[lidar.channels]]
+name = "stderr_532fta"
+link_to= "S2A2"
+
+[[lidar.channels]]
+name = "signal_532ftp"
+link_to= "BC2"
+
+[[lidar.channels]]
+name = "stderr_532ftp"
+link_to= "S2P2"
+
+[[lidar.channels]]
+name = "signal_531fta"
+link_to= "BT3"
+
+[[lidar.channels]]
+name = "stderr_531fta"
+link_to= "S2A3"
+
+[[lidar.channels]]
+name = "signal_531ftp"
+link_to= "BC3"
+
+[[lidar.channels]]
+name = "stderr_531ftp"
+link_to= "S2P3"
+
+[[lidar.channels]]
+name = "signal_355fpa"
+link_to= "BT4"
+
+[[lidar.channels]]
+name = "stderr_355fpa"
+link_to= "S2A4"
+
+[[lidar.channels]]
+name = "signal_355fpp"
+link_to= "BC4"
+
+[[lidar.channels]]
+name = "stderr_355fpp"
+link_to= "S2P4"
+
+[[lidar.channels]]
+name = "signal_355fsa"
+link_to= "BT5"
+
+[[lidar.channels]]
+name = "stderr_355fsa"
+link_to= "S2A5"
+
+[[lidar.channels]]
+name = "signal_355fsp"
+link_to= "BC5"
+
+[[lidar.channels]]
+name = "stderr_355fsp"
+link_to= "S2P5"
+
+[[lidar.channels]]
+name = "signal_354fta"
+link_to= "BT6"
+
+[[lidar.channels]]
+name = "stderr_354fta"
+link_to= "S2A6"
+
+[[lidar.channels]]
+name = "signal_354ftp"
+link_to= "BC6"
+
+[[lidar.channels]]
+name = "stderr_354ftp"
+link_to= "S2P6"
+
+[[lidar.channels]]
+name = "signal_408fta"
+link_to= "BT7"
+
+[[lidar.channels]]
+name = "stderr_408fta"
+link_to= "S2A7"
+
+[[lidar.channels]]
+name = "signal_408ftp"
+link_to= "BC7"
+
+[[lidar.channels]]
+name = "stderr_408ftp"
+link_to= "S2P7"
+
+[[lidar.channels]]
+name = "signal_1064nta"
+link_to= "BT10"
+
+[[lidar.channels]]
+name = "stderr_1064nta"
+link_to= "S2A10"
+
+[[lidar.channels]]
+name = "signal_532npa"
+link_to= "BT11"
+
+[[lidar.channels]]
+name = "stderr_532npa"
+link_to= "S2A11"
+
+[[lidar.channels]]
+name = "signal_532npp"
+link_to= "BC11"
+
+[[lidar.channels]]
+name = "stderr_532npp"
+link_to= "S2P11"
+
+[[lidar.channels]]
+name = "signal_532nsa"
+link_to= "BT12"
+
+[[lidar.channels]]
+name = "stderr_532nsa"
+link_to= "S2A12"
+
+[[lidar.channels]]
+name = "signal_532nsp"
+link_to= "BC12"
+
+[[lidar.channels]]
+name = "stderr_532nsp"
+link_to= "S2P12"
+
+[[lidar.channels]]
+name = "signal_355npa"
+link_to= "BT13"
+
+[[lidar.channels]]
+name = "stderr_355npa"
+link_to= "S2A13"
+
+[[lidar.channels]]
+name = "signal_355npp"
+link_to= "BC13"
+
+[[lidar.channels]]
+name = "stderr_355npp"
+link_to= "S2P13"
+
+[[lidar.channels]]
+name = "signal_355nsa"
+link_to= "BT14"
+
+[[lidar.channels]]
+name = "stderr_355nsa"
+link_to= "S2A14"
+
+[[lidar.channels]]
+name = "signal_355nsp"
+link_to= "BC14"
+
+[[lidar.channels]]
+name = "stderr_355nsp"
+link_to= "S2P14"
+
+[[lidar.channels]]
+name = "signal_387nta"
+link_to= "BT15"
+
+[[lidar.channels]]
+name = "stderr_387nta"
+link_to= "S2A15"
+
+[[lidar.channels]]
+name = "signal_387ntp"
+link_to= "BC15"
+
+[[lidar.channels]]
+name = "stderr_387ntp"
+link_to= "S2P15"
+
+[[lidar.channels]]
+name = "signal_607nta"
+link_to= "BT16"
+
+[[lidar.channels]]
+name = "stderr_607nta"
+link_to= "S2A16"
+
+[[lidar.channels]]
+name = "signal_607ntp"
+link_to= "BC16"
+
+[[lidar.channels]]
+name = "stderr_607ntp"
+link_to= "S2P16"
+
+[[lidar.channels]]
+name = "signal_408nta"
+link_to= "BT17"
+
+[[lidar.channels]]
+name = "signal_408ntp"
+link_to= "BC17"

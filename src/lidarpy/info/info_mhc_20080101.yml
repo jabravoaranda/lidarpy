@@ -1,0 +1,73 @@
+date: 20080101
+modules:
+  - xf
+channels:
+  532xpa:
+    bin_zero: 5
+  532xpp:
+    bin_zero: -2
+    dead_time_ns: 4
+  532xsa:
+    bin_zero: 5
+  532xsp:
+    bin_zero: -1
+    dead_time_ns: 4
+  355xta:
+    bin_zero: 5
+  355xtp:
+    bin_zero: -2
+    dead_time_ns: 4
+  1064xta:
+    bin_zero: 5
+  387xtp:
+    bin_zero: -2
+    dead_time_ns: 4
+  408xtp:
+    bin_zero: -2
+    dead_time_ns: 4
+  # Updated channels
+  530xtp:
+    bin_zero: -2
+    dead_time_ns: 4
+  607xtp:
+    bin_zero: -2
+    dead_time_ns: 4    
+  354xtp:
+    bin_zero: -2
+    dead_time_ns: 4
+polarized_channels:
+  xf:
+    532:
+      a:
+        T: 532xsa
+        R: 532xpa
+      p:
+        T: 532xsp
+        R: 532xpp
+      g:
+        T: 532xsg
+        R: 532xpg
+GHK_channels:
+  - 532x
+depolarization_calibration_transmittance:
+  532xs: 1. 
+GHK:
+  532x:
+    GR: 0.9966  
+    HR: 0.98521
+    GT: 1.0034
+    HT: -0.99196
+    K: 1.    
+product_channels:
+  532xta:
+    532xpa: R
+    532xsa: T
+  lvd_532xa:
+    532xpa: R
+    532xsa: T
+  532xtp:
+    532xpp: T
+    532xsp: R
+  lvd_532xp:
+    532xpp: R
+    532xsp: T

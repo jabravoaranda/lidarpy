@@ -1,0 +1,66 @@
+lidars:
+  - mulhacen
+  - alhambra
+  - veleta
+  - pericles
+  - ipral
+  - generalife
+metadata:
+  licel_file_wildcard: "[RDTOH]"
+  name2nick:
+    mulhacen: mhc
+    alhambra: alh
+    veleta: vlt
+    pericles: prc
+    ipral: ipr
+    generalife: gnl
+  nick2name:
+    mhc: mulhacen
+    alh: alhambra
+    vlt: veleta
+    prc: pericles
+    ipr: ipral
+    gnl: generalife
+  measurement_type:
+    - RS
+    - DC
+    - TC
+    - DP
+    - HF
+    - OT
+  code_telescope_str2number:
+    xf: 1
+    ff: 1
+    nf: 2
+  code_telescope_number2str:
+    xf: 0
+    ff: 1
+    nf: 2
+  code_mode_str2number:
+    a: 0
+    p: 1
+    g: 2
+  code_polarization_str2number:
+    t: 0
+    p: 1
+    s: 2
+  code_mode_number2str:
+    0: a
+    1: p
+    2: g
+  code_polarization_number2str:
+    0: t
+    1: p
+    2: s
+  code_polarization_str2long_name:
+    t: all
+    p: parallel
+    s: perpendicular
+  code_mode_str2long_name:
+    a: analog
+    p: photoncounting
+    g: gluing
+  code_mode_long_name2str:
+    analog: a 
+    photoncounting: p 
+    gluing: g 

@@ -1,0 +1,63 @@
+[project]
+name = "lidarpy"
+version = "0.1.0"
+description = "A python package for lidar data processing"
+authors = [{ name = "Juan Diego De la Rosa", email = "jdidelarc@gmail.com" }]
+requires-python = ">=3.11.11,<3.12"
+readme = "README.md"
+license = "BSD-3-Clause"
+dependencies = [
+    "numpy>=2.0.2,<2.1",
+    "pandas>=2.1.2",
+    "matplotlib>=3.10.0",
+    "scipy>=1.13.1,<2",
+    "netCDF4>=1.7.2,<2",
+    "loguru>=0.7.0,<1",
+    "xarray>=2025.1.2,<2026",
+    "dask>=2024.11.2,<2025",
+    "typer>=0.15.1,<1",
+    "PyYAML>=6.0.2,<7",
+    "requests>=2.32.3,<3",
+    "notebook>=6.5.5,<7",
+    "ipywidgets>=7.7.1,<9",
+    "typing-extensions>=4.12.0,<5",
+    "seaborn>=0.13.2,<0.14",
+    "numba>=0.60.0,<1",
+    "linc==3.0.6",
+    "atmospheric_lidar==0.5.4",
+    "pyarrow>=18.1.0,<19",
+    "statsmodels>=0.14.4,<0.15",
+    "distributed>=2024.12.1",
+]
+
+[project.optional-dependencies]
+docs = ["pdoc>=15.0.1,<16"]
+jupyter = []
+
+[project.urls]
+Homepage = "https://github.com/gfatugr/lidarpy"
+
+[dependency-groups]
+dev = [
+    "black>=22.6.0,<23",
+    "pytest>8,<8.3.5",
+    "pre-commit>=2.20.0,<3",
+    "pykalman>=0.9.5,<0.10",
+    "pyts>=0.11.0,<0.12",
+]
+
+[tool.hatch.build.targets.sdist]
+include = ['/README.md', '/src/lidarpy', '/tests', '/pyproject.toml', '/LICENSE']
+exclude = ['/tests/data/RAW/mulhacen', '/tests/data/RAW/generalife', '/tests/data/RAW/alhambra']
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/lidarpy"]
+artifacts = ["src/lidarpy/assets/*"]
+
+[tool.pytest.ini_options]
+addopts = "--basetemp=.pytest_tmp"
+testpaths = ["tests"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
