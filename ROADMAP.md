@@ -55,11 +55,18 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 - Added packaging config tests to keep coordination files out of sdist/wheel.
 - Added synthetic edge-case tests for Raman activation and current
   `force_zero_aer_after_bin` behavior.
+- Added retrieval smoke tests that feed synthetic elastic/Raman signals into
+  Klett, iterative elastic, Raman extinction, and Raman backscatter retrievals.
 - Refined synthetic Raman activation so scalar `wavelengths` can use an
   explicit `wavelength_raman`, while the default remains elastic-only.
 - Fixed 2D synthetic `force_zero_aer_after_bin` to target the range axis.
 - Removed unused notebook/UI/heavy runtime dependencies from `pyproject.toml`
   and added direct `psutil`/`pytz` dependencies for imported modules.
+- Made `general_utils` the canonical implementation for duplicated utility
+  modules and kept `utils` wrappers for compatibility imports.
+- Validated the package build artifacts with `uv build`: `AGENTS.md` and
+  `ROADMAP.md` are absent from sdist/wheel, while lidar package data such as
+  assets, YAML, and TOML config files are present.
 
 ## In Progress
 
@@ -70,10 +77,11 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 1. Add a migrated `apply_ov=True` preprocessing test.
 2. Add a migrated `gluing_products=True` preprocessing test.
 3. Decide whether `retrieval` remains in the package after overlap migration.
-4. Review package-data rules for YAML, TOML, and assets.
+4. Add stricter numerical validation for retrieval algorithms once synthetic
+   reference tolerances are agreed.
 5. Run the migrated test suite on a machine with enough disk space.
-6. Decide whether `utils` and `general_utils` should both remain or whether one
-   can become a compatibility layer.
+6. Continue reducing `utils`/`general_utils` duplication where modules are not
+   exact duplicates.
 
 ## Known Risks
 

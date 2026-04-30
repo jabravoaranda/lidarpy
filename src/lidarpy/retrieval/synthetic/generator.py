@@ -108,13 +108,16 @@ def synthetic_signals(
     meteo_profiles: tuple[np.ndarray, np.ndarray] | None = None,
     apply_overlap: bool = True,
     number_of_initial_nan_values: int = 10, #Number of values to eliminate from the signal at the beginning
-) -> tuple[np.ndarray, np.ndarray | None, ParamsDict]:
+) -> tuple[xr.DataArray, xr.DataArray | None, ParamsDict]:
     """It generates synthetic lidar signal.
 
     Args:
         ranges (np.ndarray): Range
-        wavelength (float, optional): Wavelength. Defaults to 532.
-        wavelength_raman (float | None, optional): Raman wavelength. Defaults to None. If None, signal is elastic.
+        wavelengths (float | tuple[float, float], optional): Elastic wavelength, or
+            ``(elastic, Raman)`` wavelengths. Defaults to 532.
+        wavelength_raman (float | None, optional): Raman wavelength used when
+            ``wavelengths`` is scalar. Defaults to None, which generates only
+            the elastic signal.
         overlap_midpoint (float, optional): Inflexion point of the overlap function. Defaults to 500.
         overlap_slope (float, optional): Slope of the overlap function. Defaults to 1 / 150.
         k_lidar (float | tuple[float, float], optional): Absolute lidar factor calibration (elastic, raman). Defaults to (1e11, 1e10).
@@ -125,10 +128,12 @@ def synthetic_signals(
         force_zero_aer_after_bin (int | None, optional): Force zero aerosol after bin. Defaults to None.
         meteo_profiles (tuple[np.ndarray, np.ndarray] | None, optional): Meteorological profiles (pressure, temperature). Defaults to None.
         apply_overlap (bool, optional): Apply overlap function. Defaults to True.
-        N (int, optional): Number of values to eliminate from the signal at the beginning. Defaults to 107 (approx 400 m).
+        number_of_initial_nan_values (int, optional): Number of values to
+            eliminate from the signal at the beginning. Defaults to 10.
 
     Returns:
-        tuple[np.ndarray, ParamsDict]: Elastic signal, Raman signal (if wavelength_raman is not None) and parameters.
+        tuple[xr.DataArray, xr.DataArray | None, ParamsDict]: Elastic signal,
+        Raman signal when requested, and synthetic parameters.
     """
     
     z = ranges
@@ -300,7 +305,7 @@ def synthetic_signals_despo(
     meteo_profiles: tuple[np.ndarray, np.ndarray] | None = None,
     apply_overlap: bool = True,
     number_of_initial_nan_values: int = 10, #Numero de valores para eliminar de la señal al inicio
-) -> tuple[np.ndarray, np.ndarray | None, ParamsDict]:
+) -> tuple[xr.DataArray, xr.DataArray, ParamsDict]:
     """It generates polarized synthetic lidar signal.
 
     Args:
@@ -325,7 +330,8 @@ def synthetic_signals_despo(
         N (int, optional): Number of values to eliminate from the signal at the beginning. Defaults to 10 (approx 40 m).
 
     Returns:
-        tuple[np.ndarray, ParamsDict]: _description_
+        tuple[xr.DataArray, xr.DataArray, ParamsDict]: Reflected signal,
+        transmitted signal, and synthetic parameters.
     """
     
     z = ranges
