@@ -48,7 +48,13 @@ dev = [
 
 [tool.hatch.build.targets.sdist]
 include = ['/README.md', '/src/lidarpy', '/tests', '/pyproject.toml', '/LICENSE']
-exclude = ['/tests/data/RAW/mulhacen', '/tests/data/RAW/generalife', '/tests/data/RAW/alhambra']
+exclude = [
+    '/AGENTS.md',
+    '/ROADMAP.md',
+    '/tests/data/RAW/mulhacen',
+    '/tests/data/RAW/generalife',
+    '/tests/data/RAW/alhambra',
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/lidarpy"]
