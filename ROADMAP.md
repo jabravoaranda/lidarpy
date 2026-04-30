@@ -62,8 +62,9 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 - Fixed 2D synthetic `force_zero_aer_after_bin` to target the range axis.
 - Removed unused notebook/UI/heavy runtime dependencies from `pyproject.toml`
   and added direct `psutil`/`pytz` dependencies for imported modules.
-- Made `general_utils` the canonical implementation for duplicated utility
-  modules and kept `utils` wrappers for compatibility imports.
+- Made `general_utils` the canonical location for generic utilities and
+  removed duplicated `utils` wrappers; `utils` now keeps only lidar-specific
+  helpers.
 - Validated the package build artifacts with `uv build`: `AGENTS.md` and
   `ROADMAP.md` are absent from sdist/wheel, while lidar package data such as
   assets, YAML, and TOML config files are present.
@@ -80,8 +81,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 4. Add stricter numerical validation for retrieval algorithms once synthetic
    reference tolerances are agreed.
 5. Run the migrated test suite on a machine with enough disk space.
-6. Continue reducing `utils`/`general_utils` duplication where modules are not
-   exact duplicates.
+6. Continue checking whether remaining `utils` modules are genuinely
+   lidar-specific or should move to `general_utils`.
 
 ## Known Risks
 
