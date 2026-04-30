@@ -94,8 +94,8 @@ def test_iterative_elastic_retrievals_accept_synthetic_elastic_signal():
         calibration_factor=1e11,
         range_profile=ranges,
         params=params,
-        lr_part=60.0,
-        full_overlap_height=500.0,
+        lr_part=50.0,
+        full_overlap_height=30.0,
     )
     forward_profile = iterative_beta_forward(
         rcs,
@@ -109,6 +109,65 @@ def test_iterative_elastic_retrievals_accept_synthetic_elastic_signal():
 
     _assert_retrieved_profile(np.asarray(quasi_profile), ranges)
     _assert_retrieved_profile(forward_profile, ranges)
+
+
+def test_quasi_beta_matches_synthetic_truth_after_fixed_point_iterations():
+    ranges, elastic, _, params = _synthetic_profiles()
+
+    rcs = signal_to_rcs(elastic, ranges)
+    particle_beta = quasi_beta(
+        rcs,
+        calibration_factor=1e11,
+        range_profile=ranges,
+        params=params,
+        lr_part=50.0,
+        full_overlap_height=30.0,
+        iterations=10,
+    )
+    truth = np.asarray(params["particle_beta"])
+    error = _relative_error(np.asarray(particle_beta), truth)
+    useful = _useful_range_mask(ranges, truth)
+
+    assert np.nanmedian(error[useful]) < 1e-6
+    assert np.nanpercentile(error[useful], 95) < 1e-5
+
+
+def test_quasi_beta_returns_last_finite_profile_when_iteration_diverges():
+    ranges, elastic, _, params = _synthetic_profiles()
+
+    rcs = signal_to_rcs(elastic, ranges)
+    particle_beta = quasi_beta(
+        rcs,
+        calibration_factor=1e11,
+        range_profile=ranges,
+        params=params,
+        lr_part=60.0,
+        full_overlap_height=500.0,
+        iterations=10,
+    )
+
+    _assert_retrieved_profile(np.asarray(particle_beta), ranges)
+
+
+def test_iterative_beta_forward_matches_synthetic_truth_when_started_at_first_bin():
+    ranges, elastic, _, params = _synthetic_profiles()
+
+    rcs = signal_to_rcs(elastic, ranges)
+    particle_beta = iterative_beta_forward(
+        rcs,
+        calibration_factor=1e11,
+        range_profile=ranges,
+        params=params,
+        lr_part=50.0,
+        start_height=None,
+        height_top=2400.0,
+    )
+    truth = np.asarray(params["particle_beta"])
+    error = _relative_error(particle_beta, truth)
+    useful = _useful_range_mask(ranges, truth)
+
+    assert np.nanmedian(error[useful]) < 1e-3
+    assert np.nanpercentile(error[useful], 95) < 1e-2
 
 
 def test_raman_retrievals_accept_synthetic_elastic_and_raman_signals():

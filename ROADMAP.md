@@ -60,6 +60,10 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 - Added numerical retrieval tests against synthetic truth for Klett
   backscatter, Raman extinction, and Raman backscatter in a useful range
   outside near-field/boundary regions.
+- Added numerical synthetic-truth coverage for converged `quasi_beta` and
+  bottom-up `iterative_beta_forward`; `quasi_beta` now iterates to convergence
+  and falls back to the last finite profile if an inconsistent configuration
+  diverges.
 - Added physical-property tests for synthetic signals covering lidar-ratio
   consistency, Angstrom wavelength scaling, elastic/Raman lidar equations,
   bounded monotonic transmittance, and depolarization component ratios.
@@ -84,10 +88,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 1. Add a migrated `apply_ov=True` preprocessing test.
 2. Add a migrated `gluing_products=True` preprocessing test.
 3. Decide whether `retrieval` remains in the package after overlap migration.
-4. Define expected numerical behavior for `quasi_beta` and
-   `iterative_beta_forward` against synthetic truth.
-5. Run the migrated test suite on a machine with enough disk space.
-6. Continue checking whether remaining `utils` modules are genuinely
+4. Run the migrated test suite on a machine with enough disk space.
+5. Continue checking whether remaining `utils` modules are genuinely
    lidar-specific or should move to `general_utils`.
 
 ## Known Risks
@@ -99,9 +101,9 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   tests.
 - Synthetic quicklooks currently adapt the generated signal to the plotting
   contract by assigning datetime coordinates and renaming it to `signal_*`.
-- `quasi_beta` and `iterative_beta_forward` currently have smoke coverage only;
-  preliminary synthetic-truth checks showed large relative differences in this
-  scenario, so they need a separate algorithm review before strict tolerances.
+- `iterative_beta_forward` strict synthetic-truth validation assumes the
+  retrieval starts at the first range bin. Starting higher needs an explicit
+  boundary condition for particle optical depth below the start height.
 - These coordination files are tracked for development only and must not be
   included in PyPI distributions.
 
