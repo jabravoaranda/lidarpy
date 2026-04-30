@@ -26,7 +26,7 @@ def test_quicklook_from_synthetic_signal():
     )
     signal = signal.assign_coords(time=times).rename("signal_532fta")
     finite_values = signal.values[np.isfinite(signal.values)]
-    scale_bounds = (0.0, float(finite_values.max()))
+    scale_bounds = (0.0, float(finite_values.max() * 1.4))
 
     fig, _ = quicklook_xarray(
         signal,
