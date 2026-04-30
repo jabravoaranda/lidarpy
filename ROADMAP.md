@@ -57,6 +57,9 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   `force_zero_aer_after_bin` behavior.
 - Added retrieval smoke tests that feed synthetic elastic/Raman signals into
   Klett, iterative elastic, Raman extinction, and Raman backscatter retrievals.
+- Added numerical retrieval tests against synthetic truth for Klett
+  backscatter, Raman extinction, and Raman backscatter in a useful range
+  outside near-field/boundary regions.
 - Added physical-property tests for synthetic signals covering lidar-ratio
   consistency, Angstrom wavelength scaling, elastic/Raman lidar equations,
   bounded monotonic transmittance, and depolarization component ratios.
@@ -81,8 +84,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 1. Add a migrated `apply_ov=True` preprocessing test.
 2. Add a migrated `gluing_products=True` preprocessing test.
 3. Decide whether `retrieval` remains in the package after overlap migration.
-4. Add stricter numerical validation for retrieval algorithms once synthetic
-   reference tolerances are agreed.
+4. Define expected numerical behavior for `quasi_beta` and
+   `iterative_beta_forward` against synthetic truth.
 5. Run the migrated test suite on a machine with enough disk space.
 6. Continue checking whether remaining `utils` modules are genuinely
    lidar-specific or should move to `general_utils`.
@@ -96,6 +99,9 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   tests.
 - Synthetic quicklooks currently adapt the generated signal to the plotting
   contract by assigning datetime coordinates and renaming it to `signal_*`.
+- `quasi_beta` and `iterative_beta_forward` currently have smoke coverage only;
+  preliminary synthetic-truth checks showed large relative differences in this
+  scenario, so they need a separate algorithm review before strict tolerances.
 - These coordination files are tracked for development only and must not be
   included in PyPI distributions.
 
