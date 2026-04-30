@@ -50,7 +50,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 .pytest_tmp/
-.pytest_tmp_snr_check/
+.pytest_tmp*/
 tmp_unzipped_*/
 artifacts/
 cover/

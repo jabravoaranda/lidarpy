@@ -42,6 +42,10 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   - depolarization synthetic signals.
   - 2D elastic synthetic signals.
   - 2D Raman synthetic signals.
+- Added a synthetic quicklook smoke test using `synthetic_signals_2D` and
+  `quicklook_xarray`.
+- Made quicklook color normalization ignore NaNs for `"auto"` and `"limits"`
+  scale bounds.
 - Fixed `bin_rescale()` to coarsen each `DataArray` instead of indexing a
   `DatasetCoarsen`.
 - Fixed root package imports after removing `quality_assurance`.
@@ -73,6 +77,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   tests.
 - Synthetic signal annotations and implementation contracts do not always
   match. Current tests capture the implementation behavior before refactoring.
+- Synthetic quicklooks currently adapt the generated signal to the plotting
+  contract by assigning datetime coordinates and renaming it to `signal_*`.
 - These coordination files are tracked for development only and must not be
   included in PyPI distributions.
 
