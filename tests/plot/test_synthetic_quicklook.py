@@ -25,13 +25,15 @@ def test_quicklook_from_synthetic_signal():
         number_of_initial_nan_values=3,
     )
     signal = signal.assign_coords(time=times).rename("signal_532fta")
+    finite_values = signal.values[np.isfinite(signal.values)]
+    scale_bounds = (0.0, float(finite_values.max()))
 
     fig, _ = quicklook_xarray(
         signal,
         lidar_name="SYNTHETIC",
         location="Synthetic",
         is_rcs=True,
-        scale_bounds="auto",
+        scale_bounds=scale_bounds,
         ylims=(0.0, 3000.0),
     )
 
