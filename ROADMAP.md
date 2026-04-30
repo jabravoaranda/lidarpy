@@ -55,6 +55,11 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 - Added packaging config tests to keep coordination files out of sdist/wheel.
 - Added synthetic edge-case tests for Raman activation and current
   `force_zero_aer_after_bin` behavior.
+- Refined synthetic Raman activation so scalar `wavelengths` can use an
+  explicit `wavelength_raman`, while the default remains elastic-only.
+- Fixed 2D synthetic `force_zero_aer_after_bin` to target the range axis.
+- Removed unused notebook/UI/heavy runtime dependencies from `pyproject.toml`
+  and added direct `psutil`/`pytz` dependencies for imported modules.
 
 ## In Progress
 
@@ -67,8 +72,7 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 3. Decide whether `retrieval` remains in the package after overlap migration.
 4. Review package-data rules for YAML, TOML, and assets.
 5. Run the migrated test suite on a machine with enough disk space.
-6. Review external dependencies in `pyproject.toml` and remove unused ones.
-7. Decide whether `utils` and `general_utils` should both remain or whether one
+6. Decide whether `utils` and `general_utils` should both remain or whether one
    can become a compatibility layer.
 
 ## Known Risks
@@ -78,8 +82,6 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 - `apply_ov=True` may require a generated or fixture overlap file.
 - `gluing_products=True` may expose assumptions inherited from old fixed-product
   tests.
-- Synthetic signal annotations and implementation contracts do not always
-  match. Current tests capture the implementation behavior before refactoring.
 - Synthetic quicklooks currently adapt the generated signal to the plotting
   contract by assigning datetime coordinates and renaming it to `signal_*`.
 - These coordination files are tracked for development only and must not be

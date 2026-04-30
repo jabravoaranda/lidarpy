@@ -95,7 +95,7 @@ def generate_particle_properties(
 def synthetic_signals(
     ranges: np.ndarray,
     wavelengths: float | tuple[float, float] = 532,
-    wavelength_raman: float | None = 531,
+    wavelength_raman: float | None = None,
     overlap_midpoint: float = 500,
     overlap_slope: float = 1 / 150,
     k_lidar: float | tuple[float, float] = (1e11, 1e10), #El coeficiente de ganancias es igual que el coeficiente de k_lidar. Representan la elastica y la raman 
@@ -157,8 +157,15 @@ def synthetic_signals(
 
     if isinstance(k_lidar, float):
         k_lidar_elastic = k_lidar
+        k_lidar_raman = k_lidar
     else:
         k_lidar_elastic, k_lidar_raman = k_lidar
+
+    if isinstance(wavelengths, tuple):
+        wavelength = wavelengths[0]
+        wavelength_raman = wavelengths[1]
+    else:
+        wavelength = wavelengths
 
     # Check temperature and pressure profiles
     if meteo_profiles is None:
@@ -170,14 +177,6 @@ def synthetic_signals(
         else:
             P = meteo_profiles[0]
             T = meteo_profiles[1]
-
-    # Check if wavelength is a tuple
-    if isinstance(wavelengths, tuple):
-        wavelength = wavelengths[0]
-        wavelength_raman = wavelengths[1]
-    else:
-        wavelength = wavelengths
-        wavelength_raman = None
 
     # Generate molecular profiles for elastic wavelength
     mol_properties = molecular_properties(wavelength, P, T, heights=z)
@@ -783,8 +782,8 @@ def synthetic_signals_2D(
     }
 
     if force_zero_aer_after_bin is not None:
-        alpha_part2D[force_zero_aer_after_bin:] = 0
-        beta_part2D[force_zero_aer_after_bin:] = 0
+        alpha_part2D[:, force_zero_aer_after_bin:] = 0
+        beta_part2D[:, force_zero_aer_after_bin:] = 0
         
     # Convertir a xarray.DataArray
     P_elastic_xarray = xr.DataArray(
@@ -1050,8 +1049,8 @@ def synthetic_raman_signals_2D(
     
 
     if force_zero_aer_after_bin is not None:
-        alpha_part_elastic2D[force_zero_aer_after_bin:] = 0
-        alpha_part_raman2D[force_zero_aer_after_bin:] = 0
+        alpha_part_elastic2D[:, force_zero_aer_after_bin:] = 0
+        alpha_part_raman2D[:, force_zero_aer_after_bin:] = 0
         
     # Convertir a xarray.DataArray
     P_raman_xarray = xr.DataArray(

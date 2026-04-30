@@ -22,3 +22,23 @@ def test_wheel_only_packages_lidarpy_source_tree():
 
     assert wheel["packages"] == ["src/lidarpy"]
     assert "src/lidarpy/assets/*" in wheel["artifacts"]
+
+
+def test_runtime_dependencies_do_not_include_removed_notebook_stack():
+    pyproject = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+
+    dependency_names = {
+        dependency.split("==", 1)[0].split(">=", 1)[0].split("<", 1)[0]
+        for dependency in pyproject["project"]["dependencies"]
+    }
+
+    assert {"psutil", "pytz"}.issubset(dependency_names)
+    assert {
+        "notebook",
+        "ipywidgets",
+        "seaborn",
+        "pyarrow",
+        "distributed",
+        "atmospheric_lidar",
+        "typer",
+    }.isdisjoint(dependency_names)

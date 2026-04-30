@@ -15,19 +15,14 @@ dependencies = [
     "loguru>=0.7.0,<1",
     "xarray>=2025.1.2,<2026",
     "dask>=2024.11.2,<2025",
-    "typer>=0.15.1,<1",
     "PyYAML>=6.0.2,<7",
     "requests>=2.32.3,<3",
-    "notebook>=6.5.5,<7",
-    "ipywidgets>=7.7.1,<9",
     "typing-extensions>=4.12.0,<5",
-    "seaborn>=0.13.2,<0.14",
     "numba>=0.60.0,<1",
     "linc==3.0.6",
-    "atmospheric_lidar==0.5.4",
-    "pyarrow>=18.1.0,<19",
     "statsmodels>=0.14.4,<0.15",
-    "distributed>=2024.12.1",
+    "psutil>=6.1.1,<7",
+    "pytz>=2024.2",
 ]
 
 [project.optional-dependencies]
