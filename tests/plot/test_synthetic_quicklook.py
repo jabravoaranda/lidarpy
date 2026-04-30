@@ -1,13 +1,16 @@
 from __future__ import annotations
 
-from io import BytesIO
 from datetime import datetime, timedelta
+from pathlib import Path
 
 import numpy as np
 from matplotlib import pyplot as plt
 
 from lidarpy.plot.quicklook import quicklook_xarray
 from lidarpy.retrieval.synthetic.generator import synthetic_signals_2D
+
+
+ARTIFACT_DIR = Path("artifacts/synthetic_quicklook")
 
 
 def test_quicklook_from_synthetic_signal():
@@ -33,8 +36,10 @@ def test_quicklook_from_synthetic_signal():
     )
 
     try:
-        output = BytesIO()
-        fig.savefig(output, format="png", dpi=100, bbox_inches="tight")
-        assert output.tell() > 0
+        ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
+        output_path = ARTIFACT_DIR / "quicklook_synthetic_532fta.png"
+        fig.savefig(output_path, format="png", dpi=100, bbox_inches="tight")
+        assert output_path.exists()
+        assert output_path.stat().st_size > 0
     finally:
         plt.close(fig)
