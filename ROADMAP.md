@@ -57,6 +57,9 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   `force_zero_aer_after_bin` behavior.
 - Added retrieval smoke tests that feed synthetic elastic/Raman signals into
   Klett, iterative elastic, Raman extinction, and Raman backscatter retrievals.
+- Added physical-property tests for synthetic signals covering lidar-ratio
+  consistency, Angstrom wavelength scaling, elastic/Raman lidar equations,
+  bounded monotonic transmittance, and depolarization component ratios.
 - Refined synthetic Raman activation so scalar `wavelengths` can use an
   explicit `wavelength_raman`, while the default remains elastic-only.
 - Fixed 2D synthetic `force_zero_aer_after_bin` to target the range axis.
