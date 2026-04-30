@@ -35,6 +35,13 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   - `apply_dt=True`
   - `apply_bin=True`
   - `apply_sm=True` with `smooth_mode="gaussian"`
+- Added lightweight contract tests for synthetic signal generation:
+  - `generate_particle_properties`
+  - 1D elastic synthetic signals.
+  - 1D elastic/Raman synthetic signals.
+  - depolarization synthetic signals.
+  - 2D elastic synthetic signals.
+  - 2D Raman synthetic signals.
 - Fixed `bin_rescale()` to coarsen each `DataArray` instead of indexing a
   `DatasetCoarsen`.
 - Fixed root package imports after removing `quality_assurance`.
@@ -64,6 +71,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 - `apply_ov=True` may require a generated or fixture overlap file.
 - `gluing_products=True` may expose assumptions inherited from old fixed-product
   tests.
+- Synthetic signal annotations and implementation contracts do not always
+  match. Current tests capture the implementation behavior before refactoring.
 - These coordination files are tracked for development only and must not be
   included in PyPI distributions.
 
