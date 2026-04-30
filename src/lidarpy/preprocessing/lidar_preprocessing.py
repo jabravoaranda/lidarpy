@@ -454,16 +454,16 @@ def add_height(dataset: xr.Dataset) -> xr.Dataset:
     - if zenithal_angle == 0 → height = range
     """
     if "zenithal_angle" in dataset:
-        if dataset["zenithal_angle"].values.all():
-            zenithal_angle = np.deg2rad(dataset["zenithal_angle"].values[0])
-            if zenithal_angle != 0:
-                dataset["height"] = dataset["range"] * np.cos(zenithal_angle)
-            else:
-                dataset["height"] = dataset["range"].copy()
-        else:
+        zenithal_angles = np.asarray(dataset["zenithal_angle"].values)
+        if not np.allclose(zenithal_angles, zenithal_angles.flat[0], equal_nan=False):
             raise RuntimeError(
                 "Zenithal angle is not constant in time. Cannot add height coordinate."
             )
+        zenithal_angle = np.deg2rad(zenithal_angles.flat[0])
+        if zenithal_angle != 0:
+            dataset["height"] = dataset["range"] * np.cos(zenithal_angle)
+        else:
+            dataset["height"] = dataset["range"].copy()
     return dataset
 
 

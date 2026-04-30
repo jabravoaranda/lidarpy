@@ -44,11 +44,17 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   - 2D Raman synthetic signals.
 - Added a synthetic quicklook smoke test using `synthetic_signals_2D` and
   `quicklook_xarray`.
+- Added synthetic Raman and LPDR quicklook smoke tests.
 - Made quicklook color normalization ignore NaNs for `"auto"` and `"limits"`
   scale bounds.
 - Fixed `bin_rescale()` to coarsen each `DataArray` instead of indexing a
   `DatasetCoarsen`.
 - Fixed root package imports after removing `quality_assurance`.
+- Fixed `add_height()` when zenith angle is zero and added unit coverage for
+  constant and time-varying zenith angles.
+- Added packaging config tests to keep coordination files out of sdist/wheel.
+- Added synthetic edge-case tests for Raman activation and current
+  `force_zero_aer_after_bin` behavior.
 
 ## In Progress
 
@@ -58,20 +64,17 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 
 1. Add a migrated `apply_ov=True` preprocessing test.
 2. Add a migrated `gluing_products=True` preprocessing test.
-3. Fix `add_height()` when zenith angle is zero.
-4. Decide whether `retrieval` remains in the package after overlap migration.
-5. Review package-data rules for YAML, TOML, and assets.
-6. Run the migrated test suite on a machine with enough disk space.
-7. Review external dependencies in `pyproject.toml` and remove unused ones.
-8. Decide whether `utils` and `general_utils` should both remain or whether one
+3. Decide whether `retrieval` remains in the package after overlap migration.
+4. Review package-data rules for YAML, TOML, and assets.
+5. Run the migrated test suite on a machine with enough disk space.
+6. Review external dependencies in `pyproject.toml` and remove unused ones.
+7. Decide whether `utils` and `general_utils` should both remain or whether one
    can become a compatibility layer.
 
 ## Known Risks
 
 - Long test runs can fill disk because RAW fixtures are unzipped and converted
   to large NetCDF files.
-- `add_height()` currently skips height creation when zenith angle is zero
-  because it checks `zenithal_angle.values.all()`.
 - `apply_ov=True` may require a generated or fixture overlap file.
 - `gluing_products=True` may expose assumptions inherited from old fixed-product
   tests.
