@@ -86,6 +86,20 @@ def test_klett_backscatter_matches_synthetic_truth_in_useful_range():
     assert np.nanpercentile(error[useful], 95) < 0.02
 
 
+def test_klett_raises_when_reference_is_out_of_range():
+    ranges, elastic, _, params = _synthetic_profiles()
+
+    rcs = signal_to_rcs(elastic, ranges)
+    with np.testing.assert_raises(ValueError):
+        klett_rcs(
+            rcs,
+            ranges,
+            params["molecular_beta"],
+            reference=(8000.0, 9000.0),
+            lr_part=50.0,
+        )
+
+
 def test_iterative_elastic_retrievals_accept_synthetic_elastic_signal():
     ranges, elastic, _, params = _synthetic_profiles()
 
@@ -248,6 +262,21 @@ def test_raman_extinction_matches_synthetic_truth_in_useful_range():
     assert np.nanpercentile(error[useful], 95) < 0.01
 
 
+def test_raman_extinction_raises_when_reference_is_out_of_range():
+    ranges, _, raman, params = _synthetic_profiles()
+
+    with np.testing.assert_raises(ValueError):
+        retrieve_extinction(
+            raman,
+            ranges,
+            wavelengths=(532, 607),
+            pressure=params["pressure"],
+            temperature=params["temperature"],
+            reference=(8000.0, 9000.0),
+            particle_angstrom_exponent=1.0,
+        )
+
+
 def test_raman_backscatter_matches_synthetic_truth_in_useful_range():
     ranges, elastic, raman, params = _synthetic_profiles()
     reference = (4500.0, 5500.0)
@@ -280,3 +309,20 @@ def test_raman_backscatter_matches_synthetic_truth_in_useful_range():
 
     assert np.nanmedian(error[useful]) < 1e-4
     assert np.nanpercentile(error[useful], 95) < 1e-3
+
+
+def test_raman_backscatter_raises_when_reference_is_out_of_range():
+    ranges, elastic, raman, params = _synthetic_profiles()
+
+    with np.testing.assert_raises(ValueError):
+        retrieve_backscatter(
+            signal_raman=raman,
+            signal_emission=elastic,
+            extinction_profile=params["particle_alpha"],
+            range_profile=ranges,
+            wavelengths=(532, 607),
+            pressure=params["pressure"],
+            temperature=params["temperature"],
+            reference=(8000.0, 9000.0),
+            particle_angstrom_exponent=1.0,
+        )

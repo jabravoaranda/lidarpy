@@ -84,6 +84,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   when `uv build` can run in the local environment.
 - Removed clear unused imports from active modules/tests and dropped unused
   runtime dependency `pytz`.
+- Added minimal migrated-flow documentation and retrieval edge-case tests for
+  out-of-range reference intervals.
 
 ## In Progress
 

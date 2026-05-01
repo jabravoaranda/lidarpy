@@ -9,6 +9,7 @@ def test_coordination_files_are_not_in_sdist():
 
     sdist = pyproject["tool"]["hatch"]["build"]["targets"]["sdist"]
 
+    assert "/docs" in sdist["include"]
     assert "/AGENTS.md" not in sdist["include"]
     assert "/ROADMAP.md" not in sdist["include"]
     assert "/AGENTS.md" in sdist["exclude"]

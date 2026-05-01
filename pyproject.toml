@@ -41,7 +41,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.sdist]
-include = ['/README.md', '/src/lidarpy', '/tests', '/pyproject.toml', '/LICENSE']
+include = ['/README.md', '/docs', '/src/lidarpy', '/tests', '/pyproject.toml', '/LICENSE']
 exclude = [
     '/AGENTS.md',
     '/ROADMAP.md',
