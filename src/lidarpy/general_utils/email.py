@@ -1,14 +1,9 @@
-import pytz
-from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import formatdate
 import smtplib
-from email import utils
 
 from loguru import logger
-
-from lidarpy.utils.utils import LIDAR_INFO
 
 
 def send_email(email_sender: dict, email_receiver: list[str], subject: str, email_content: str):

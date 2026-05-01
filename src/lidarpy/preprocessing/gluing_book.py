@@ -1,7 +1,5 @@
-import xarray as xr
 import numpy as np
 
-import numpy as np
 import matplotlib.pyplot as plt
 from scipy.ndimage import uniform_filter1d
 from scipy.optimize import curve_fit

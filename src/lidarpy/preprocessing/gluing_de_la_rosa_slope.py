@@ -1,11 +1,9 @@
 from typing import Callable
-from warnings import warn
 
 
 from loguru import logger
 import numpy as np
 import xarray as xr
-import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 
 from lidarpy.general_utils.optimized import best_slope_fit

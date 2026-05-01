@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lidarpy references</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="site-header compact">
+    <div class="wrap">
+      <nav class="nav">
+        <a href="index.html">Overview</a>
+        <a href="getting-started.html">Getting started</a>
+        <a href="processing-workflow.html">Processing workflow</a>
+        <a href="examples.html">Examples</a>
+        <a href="references.html">References</a>
+        <a href="contributing.html">Contributing</a>
+      </nav>
+      <h1>References</h1>
+    </div>
+  </header>
+
+  <main class="wrap prose">
+    <h2>Main processing modules</h2>
+    <ul>
+      <li><code>lidarpy.nc_convert.measurement</code>: binary measurement discovery, parsing and NetCDF writing.</li>
+      <li><code>lidarpy.preprocessing.lidar_preprocessing</code>: preprocessing workflow orchestration.</li>
+      <li><code>lidarpy.plot.quicklook</code>: lidar and synthetic quicklooks.</li>
+    </ul>
+
+    <h2>Synthetic signals</h2>
+    <ul>
+      <li><code>lidarpy.retrieval.synthetic.generator.synthetic_signals</code></li>
+      <li><code>lidarpy.retrieval.synthetic.generator.synthetic_signals_despo</code></li>
+      <li><code>lidarpy.retrieval.synthetic.generator.synthetic_signals_2D</code></li>
+      <li><code>lidarpy.retrieval.synthetic.generator.synthetic_raman_signals_2D</code></li>
+    </ul>
+
+    <h2>Retrieval</h2>
+    <ul>
+      <li><code>lidarpy.retrieval.klett</code>: Klett, quasi-beta and iterative elastic retrievals.</li>
+      <li><code>lidarpy.retrieval.raman</code>: Raman extinction and backscatter retrievals.</li>
+      <li><code>lidarpy.retrieval.overlap</code>: overlap helpers.</li>
+      <li><code>lidarpy.retrieval.calibration</code>: calibration-factor helpers.</li>
+    </ul>
+
+    <h2>Atmosphere and utilities</h2>
+    <ul>
+      <li><code>lidarpy.atmo</code>: standard atmosphere, molecular properties and transmittance.</li>
+      <li><code>lidarpy.utils</code>: lidar-specific filename, signal and type helpers.</li>
+      <li><code>lidarpy.general_utils</code>: generic IO, smoothing, plotting and optimization helpers.</li>
+    </ul>
+
+    <h2>API HTML</h2>
+    <p>
+      The narrative site is static. Full API HTML can be generated locally with
+      <code>pdoc</code> when documentation dependencies are installed:
+    </p>
+    <pre><code>.\.venv311\Scripts\python -m pdoc lidarpy -o site\api</code></pre>
+  </main>
+</body>
+</html>
