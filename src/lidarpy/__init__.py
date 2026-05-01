@@ -1,5 +1,6 @@
 from . import atmo, general_utils, nc_convert, plot, preprocessing, retrieval, utils
 
+__version__ = "0.1.0"
 
 __all__ = [
     "preprocessing",
