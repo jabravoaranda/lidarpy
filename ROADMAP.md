@@ -86,6 +86,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   runtime dependency `pytz`.
 - Added minimal migrated-flow documentation and retrieval edge-case tests for
   out-of-range reference intervals.
+- Removed the transitional migrated-flow document from public docs; migration
+  status remains in `ROADMAP.md`, while `docs/` keeps user-facing references.
 
 ## In Progress
 

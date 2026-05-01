@@ -23,8 +23,7 @@ standalone package is still being cleaned up.
   - `synthetic_raman_signals_2D`
 
 The synthetic generator is used as the package-internal reference for physics
-checks and retrieval tests. See [migrated_lidar_flow.md](migrated_lidar_flow.md)
-for the tested physical contracts.
+checks and retrieval tests.
 
 ## Retrieval
 
