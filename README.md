@@ -14,3 +14,5 @@ Current migrated workflow:
 
 See [docs/migrated_lidar_flow.md](docs/migrated_lidar_flow.md) for the current
 migration flow, tested guarantees, and known boundaries.
+
+The public module reference index is in [docs/references.md](docs/references.md).

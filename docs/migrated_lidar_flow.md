@@ -3,6 +3,9 @@
 This document summarizes the current standalone `lidarpy` workflow during the
 migration from `gfatpy.lidar`.
 
+For a module-oriented index of the current public surface, see
+[references.md](references.md).
+
 ## Processing Flow
 
 The migrated chain currently covered by tests is:
