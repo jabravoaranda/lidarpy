@@ -60,10 +60,9 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 - Added numerical retrieval tests against synthetic truth for Klett
   backscatter, Raman extinction, and Raman backscatter in a useful range
   outside near-field/boundary regions.
-- Added numerical synthetic-truth coverage for converged `quasi_beta` and
-  bottom-up `iterative_beta_forward`; `quasi_beta` now iterates to convergence
-  and falls back to the last finite profile if an inconsistent configuration
-  diverges.
+- Added numerical synthetic-truth coverage for bottom-up
+  `iterative_beta_forward`; `quasi_beta` remains a single-iteration
+  approximation and is tested as such, not as an exact inversion.
 - Added physical-property tests for synthetic signals covering lidar-ratio
   consistency, Angstrom wavelength scaling, elastic/Raman lidar equations,
   bounded monotonic transmittance, and depolarization component ratios.

@@ -102,8 +102,6 @@ def quasi_beta(
     params: dict | ParamsDict,
     lr_part: float | np.ndarray = 45.0,    
     full_overlap_height: float = 1000.0,    
-    iterations: int = 10,
-    tolerance: float = 1e-12,
     debug: bool = False,
 ) -> np.ndarray:
     """Calculate aerosol backscattering aproximation using algorithm verified with Baars, H., et al (2017). Atmospheric Measurement Techniques, 10(9), 3175-3201.
@@ -115,8 +113,6 @@ def quasi_beta(
         params (dict | ParamsDict): Dictionary containing molecular backscatter and extinction profiles.
         lr_part (float, optional): Aerosol lidar ratio (default is 45 sr).
         full_overlap_height (float, optional): Height above which the overlap is considered full. Defaults to 1000 m.
-        iterations (int, optional): Maximum number of fixed-point iterations.
-        tolerance (float, optional): Absolute convergence threshold for particle backscatter.
     Returns:
         np.ndarray: Aerosol-particle backscattering profile.
     """
@@ -124,27 +120,19 @@ def quasi_beta(
     #calculate beta attenuated 
     att_beta = rcs_profile / calibration_factor 
     
-    quasi_beta = att_beta / transmittance(params["molecular_alpha"], range_profile)**2 - params["molecular_beta"]
+    star_beta = att_beta / transmittance(params["molecular_alpha"], range_profile)**2 - params["molecular_beta"]
 
-    for _ in range(iterations):
-        star_alpha = quasi_beta * lr_part
+    star_alpha = star_beta * lr_part
 
-        #refill overlap
-        star_alpha = refill_overlap(star_alpha, range_profile, full_overlap_height) # type: ignore
+    #refill overlap
+    star_alpha = refill_overlap(star_alpha, range_profile, full_overlap_height) # type: ignore
 
-        # T2 = np.ones(len(range_profile))
-        # for i in range(1, len(range_profile)):
-        #     T2[i] = T2[i-1] * np.exp(-2 * (params["molecular_alpha"][i-1] + star_alpha[i-1]) * (range_profile[i] - range_profile[i-1]))
+    # T2 = np.ones(len(range_profile))
+    # for i in range(1, len(range_profile)):
+    #     T2[i] = T2[i-1] * np.exp(-2 * (params["molecular_alpha"][i-1] + star_alpha[i-1]) * (range_profile[i] - range_profile[i-1]))
 
-        # quasi_beta1 = att_beta / T2  - params["molecular_beta"]
-        with np.errstate(divide="ignore", invalid="ignore", over="ignore"):
-            next_quasi_beta = att_beta / transmittance(params["molecular_alpha"] + star_alpha, range_profile)**2 - params["molecular_beta"]
-        if not np.isfinite(next_quasi_beta).all():
-            break
-        if np.nanmax(np.abs(next_quasi_beta - quasi_beta)) < tolerance:
-            quasi_beta = next_quasi_beta
-            break
-        quasi_beta = next_quasi_beta
+    # quasi_beta1 = att_beta / T2  - params["molecular_beta"]
+    quasi_beta = att_beta / transmittance(params["molecular_alpha"] + star_alpha, range_profile)**2 - params["molecular_beta"]
 
     quasi_alpha = quasi_beta * lr_part    
 
