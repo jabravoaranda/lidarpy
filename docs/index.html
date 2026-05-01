@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lidarpy</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <nav class="nav">
+        <a href="index.html">Overview</a>
+        <a href="getting-started.html">Getting started</a>
+        <a href="processing-workflow.html">Processing workflow</a>
+        <a href="examples.html">Examples</a>
+        <a href="references.html">References</a>
+        <a href="contributing.html">Contributing</a>
+      </nav>
+      <p class="eyebrow">lidarpy</p>
+      <h1>Process, validate and inspect lidar measurements</h1>
+      <p class="lead">
+        <code>lidarpy</code> is a standalone Python package for lidar data
+        processing. It includes Licel binary to NetCDF conversion, preprocessing,
+        quicklooks, synthetic signal generation, and retrieval routines validated
+        against synthetic truth.
+      </p>
+      <div class="cta-row">
+        <a class="button" href="getting-started.html">Getting started</a>
+        <a class="button secondary" href="references.html">Module references</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero-grid">
+      <section class="card">
+        <h2>Current package scope</h2>
+        <ul>
+          <li>Discover and convert Licel RAW measurements to NetCDF.</li>
+          <li>Apply core preprocessing corrections and quicklook generation.</li>
+          <li>Generate synthetic elastic, Raman and depolarization signals.</li>
+          <li>Validate retrieval algorithms with explicit physical assumptions.</li>
+          <li>Keep generic utilities separate from lidar-specific helpers.</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h2>Documentation map</h2>
+        <ul>
+          <li><a href="getting-started.html">Getting started</a>: installation and first commands.</li>
+          <li><a href="processing-workflow.html">Processing workflow</a>: migrated chain and boundaries.</li>
+          <li><a href="examples.html">Examples</a>: minimal snippets for common tasks.</li>
+          <li><a href="references.html">References</a>: public module index.</li>
+          <li><a href="contributing.html">Contributing</a>: development notes.</li>
+        </ul>
+      </section>
+    </section>
+
+    <section class="grid two-up">
+      <section class="card">
+        <h2>Synthetic validation</h2>
+        <p>
+          Synthetic signals are used as a compact reference system for checking
+          lidar-ratio consistency, wavelength scaling, transmittance, depolarization
+          ratios and retrieval behavior.
+        </p>
+        <p><a href="examples.html#synthetic-signals">Open synthetic examples</a></p>
+      </section>
+      <section class="card">
+        <h2>Retrieval boundaries</h2>
+        <p>
+          Retrieval tests compare against synthetic truth only where the underlying
+          assumptions are explicit, including reference intervals and lower-boundary
+          particle optical depth.
+        </p>
+        <p><a href="processing-workflow.html#retrieval-validation">Open retrieval notes</a></p>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

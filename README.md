@@ -5,4 +5,5 @@ former `gfatpy.lidar` submodule.
 
 Current public documentation:
 
-- [Module reference index](docs/references.md)
+- [Documentation site](docs/index.html)
+- [Module reference index](docs/references.html)

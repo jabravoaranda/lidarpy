@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lidarpy getting started</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="site-header compact">
+    <div class="wrap">
+      <nav class="nav">
+        <a href="index.html">Overview</a>
+        <a href="getting-started.html">Getting started</a>
+        <a href="processing-workflow.html">Processing workflow</a>
+        <a href="examples.html">Examples</a>
+        <a href="references.html">References</a>
+        <a href="contributing.html">Contributing</a>
+      </nav>
+      <h1>Getting started</h1>
+    </div>
+  </header>
+
+  <main class="wrap prose">
+    <h2>Installation for development</h2>
+    <pre><code>uv sync --group dev
+$env:PYTHONPATH = "src"
+.\.venv311\Scripts\python -c "import lidarpy; print(lidarpy.__name__)"</code></pre>
+
+    <h2>Run the fast validation tests</h2>
+    <pre><code>$env:PYTHONPATH = "src"
+$env:MPLBACKEND = "Agg"
+.\.venv311\Scripts\python -m pytest tests\synthetic tests\retrieval -q -p no:cacheprovider</code></pre>
+
+    <h2>Build distribution artifacts</h2>
+    <pre><code>$env:UV_PYTHON_INSTALL_DIR = ".uv-python"
+$env:UV_CACHE_DIR = ".uv-cache"
+$env:UV_PROJECT_ENVIRONMENT = ".venv311"
+uv build</code></pre>
+
+    <p class="note">
+      On Windows, use local pytest base temp directories. Large RAW conversion
+      tests can generate sizeable NetCDF files and should be run in chunks.
+    </p>
+  </main>
+</body>
+</html>

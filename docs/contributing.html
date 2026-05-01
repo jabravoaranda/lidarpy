@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lidarpy contributing</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="site-header compact">
+    <div class="wrap">
+      <nav class="nav">
+        <a href="index.html">Overview</a>
+        <a href="getting-started.html">Getting started</a>
+        <a href="processing-workflow.html">Processing workflow</a>
+        <a href="examples.html">Examples</a>
+        <a href="references.html">References</a>
+        <a href="contributing.html">Contributing</a>
+      </nav>
+      <h1>Contributing</h1>
+    </div>
+  </header>
+
+  <main class="wrap prose">
+    <h2>Development workflow</h2>
+    <pre><code>uv sync --group dev
+$env:PYTHONPATH = "src"
+$env:MPLBACKEND = "Agg"
+.\.venv311\Scripts\python -m pytest tests\synthetic tests\retrieval -q</code></pre>
+
+    <h2>Repository conventions</h2>
+    <ul>
+      <li>Migration coordination belongs in <code>ROADMAP.md</code> and <code>AGENTS.md</code>.</li>
+      <li>User-facing documentation belongs under <code>docs/</code>.</li>
+      <li>Generated artifacts should stay in ignored folders such as <code>artifacts/</code> or <code>dist/</code>.</li>
+      <li>Run RAW/NetCDF tests in chunks on Windows to avoid temp-folder permission issues.</li>
+    </ul>
+
+    <h2>Documentation</h2>
+    <p>
+      GitHub Pages is configured to publish the <code>docs/</code> folder from
+      the main branch. Keep <code>docs/index.html</code> as the site entry point.
+    </p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lidarpy processing workflow</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="site-header compact">
+    <div class="wrap">
+      <nav class="nav">
+        <a href="index.html">Overview</a>
+        <a href="getting-started.html">Getting started</a>
+        <a href="processing-workflow.html">Processing workflow</a>
+        <a href="examples.html">Examples</a>
+        <a href="references.html">References</a>
+        <a href="contributing.html">Contributing</a>
+      </nav>
+      <h1>Processing workflow</h1>
+    </div>
+  </header>
+
+  <main class="wrap prose">
+    <h2>Data flow</h2>
+    <ol>
+      <li>Discover a lidar measurement with <code>lidarpy.utils.file_manager</code>.</li>
+      <li>Convert Licel binary files to NetCDF with <code>lidarpy.nc_convert.measurement</code>.</li>
+      <li>Run basic preprocessing with <code>lidarpy.preprocessing.lidar_preprocessing</code>.</li>
+      <li>Inspect products with <code>lidarpy.plot.quicklook</code>.</li>
+      <li>Use synthetic signals to validate retrieval behavior independently from RAW fixtures.</li>
+    </ol>
+
+    <h2>Basic preprocessing currently covered by tests</h2>
+    <ul>
+      <li>background correction.</li>
+      <li>bin-zero handling.</li>
+      <li>dark-current correction.</li>
+      <li>dead-time correction.</li>
+      <li>binning.</li>
+      <li>Gaussian smoothing.</li>
+    </ul>
+
+    <h2 id="retrieval-validation">Retrieval validation</h2>
+    <p>
+      Retrieval tests compare Klett, Raman extinction and Raman backscatter against
+      synthetic truth in a useful range that avoids near-field and boundary regions.
+    </p>
+    <ul>
+      <li><code>quasi_beta</code> is a single-iteration approximation, not an exact inversion.</li>
+      <li><code>iterative_beta_forward</code> can start above the first range bin when
+        <code>initial_particle_optical_depth</code> is provided.</li>
+      <li>Reference intervals outside the range profile raise <code>ValueError</code>.</li>
+    </ul>
+
+    <h2>Open workflow boundaries</h2>
+    <p>
+      Advanced overlap correction and gluing products are handled as separate
+      migration steps so they can be reviewed without changing the basic chain.
+    </p>
+  </main>
+</body>
+</html>
