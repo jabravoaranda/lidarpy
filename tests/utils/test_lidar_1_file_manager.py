@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import datetime
-from pathlib import Path
 
 import numpy as np
 

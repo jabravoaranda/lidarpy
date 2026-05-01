@@ -80,6 +80,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 - Validated the package build artifacts with `uv build`: `AGENTS.md` and
   `ROADMAP.md` are absent from sdist/wheel, while lidar package data such as
   assets, YAML, and TOML config files are present.
+- Removed clear unused imports from active modules/tests and dropped unused
+  runtime dependency `pytz`.
 
 ## In Progress
 

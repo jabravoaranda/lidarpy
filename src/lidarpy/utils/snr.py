@@ -1,6 +1,5 @@
 import numpy as np
 import xarray as xr
-from pathlib import Path
 
 def snr_analog(signal, background, dim="time"):
     """

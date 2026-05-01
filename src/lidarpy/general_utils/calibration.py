@@ -8,7 +8,6 @@ from lidarpy.atmo.freudenthaler_molecular_properties import molecular_properties
 from lidarpy.atmo.ecmwf import get_ecmwf_day
 from lidarpy.general_utils.utils import parse_datetime
 from lidarpy.general_utils.smoothing import moving_average
-from typing import List
 from scipy.signal import savgol_filter
 
 

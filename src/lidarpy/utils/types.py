@@ -1,4 +1,3 @@
-import email
 from enum import Enum
 from typing import Tuple, TypedDict
 import xarray as xr

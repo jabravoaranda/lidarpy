@@ -1,4 +1,3 @@
-from pdb import set_trace
 from typing import Any
 import numpy as np
 import math
@@ -6,7 +5,7 @@ import pandas as pd
 import xarray as xr
 from pandas.core.arrays import ExtensionArray
 from scipy.constants import physical_constants
-from lidarpy.atmo.atmo import attenuated_backscatter, transmittance
+from lidarpy.atmo.atmo import transmittance
 from lidarpy.atmo.freudenthaler_molecular_properties import molecular_depolarization, f_kbwt, f_kbwc
 
 

@@ -32,7 +32,7 @@ def test_runtime_dependencies_do_not_include_removed_notebook_stack():
         for dependency in pyproject["project"]["dependencies"]
     }
 
-    assert {"psutil", "pytz"}.issubset(dependency_names)
+    assert "psutil" in dependency_names
     assert {
         "notebook",
         "ipywidgets",
@@ -41,4 +41,5 @@ def test_runtime_dependencies_do_not_include_removed_notebook_stack():
         "distributed",
         "atmospheric_lidar",
         "typer",
+        "pytz",
     }.isdisjoint(dependency_names)

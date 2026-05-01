@@ -336,7 +336,6 @@ dependencies = [
     { name = "numpy" },
     { name = "pandas" },
     { name = "psutil" },
-    { name = "pytz" },
     { name = "pyyaml" },
     { name = "requests" },
     { name = "scipy" },
@@ -371,7 +370,6 @@ requires-dist = [
     { name = "pandas", specifier = ">=2.1.2" },
     { name = "pdoc", marker = "extra == 'docs'", specifier = ">=15.0.1,<16" },
     { name = "psutil", specifier = ">=6.1.1,<7" },
-    { name = "pytz", specifier = ">=2024.2" },
     { name = "pyyaml", specifier = ">=6.0.2,<7" },
     { name = "requests", specifier = ">=2.32.3,<3" },
     { name = "scipy", specifier = ">=1.13.1,<2" },
@@ -889,15 +887,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/2d/15/444244559cef646202d83265ed7039adccc57ef92debdefb31a8c58fdbd8/pyts-0.11.0.tar.gz", hash = "sha256:4b9cc6266f3673c88b339047544dbf3412522e95bbe7e68d026300609149f3a7", size = 2425744 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b6/2b/1a62c0d32b40ee85daa8f6a6160828537b3d846c9fe93253b38846c6ec1f/pyts-0.11.0-py3-none-any.whl", hash = "sha256:f280e2fc7aed90d9b79093a8b2e79d10ba3caa73a80204bef9cbe5094ffb0767", size = 2523363 },
-]
-
-[[package]]
-name = "pytz"
-version = "2026.1.post1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/56/db/b8721d71d945e6a8ac63c0fc900b2067181dbb50805958d4d4661cf7d277/pytz-2026.1.post1.tar.gz", hash = "sha256:3378dde6a0c3d26719182142c56e60c7f9af7e968076f31aae569d72a0358ee1", size = 321088 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/10/99/781fe0c827be2742bcc775efefccb3b048a3a9c6ce9aec0cbf4a101677e5/pytz-2026.1.post1-py2.py3-none-any.whl", hash = "sha256:f2fd16142fda348286a75e1a524be810bb05d444e5a081f37f7affc635035f7a", size = 510489 },
 ]
 
 [[package]]
