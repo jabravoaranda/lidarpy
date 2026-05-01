@@ -63,6 +63,9 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 - Added numerical synthetic-truth coverage for bottom-up
   `iterative_beta_forward`; `quasi_beta` remains a single-iteration
   approximation and is tested as such, not as an exact inversion.
+- Added `initial_particle_optical_depth` to `iterative_beta_forward` so
+  bottom-up retrieval can start above the first range bin when the particle AOD
+  below `start_height` is known.
 - Added physical-property tests for synthetic signals covering lidar-ratio
   consistency, Angstrom wavelength scaling, elastic/Raman lidar equations,
   bounded monotonic transmittance, and depolarization component ratios.
@@ -100,9 +103,9 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   tests.
 - Synthetic quicklooks currently adapt the generated signal to the plotting
   contract by assigning datetime coordinates and renaming it to `signal_*`.
-- `iterative_beta_forward` strict synthetic-truth validation assumes the
-  retrieval starts at the first range bin. Starting higher needs an explicit
-  boundary condition for particle optical depth below the start height.
+- `iterative_beta_forward` started above the first range bin requires a valid
+  `initial_particle_optical_depth`; otherwise the retrieval is missing its
+  lower-boundary particle transmittance.
 - These coordination files are tracked for development only and must not be
   included in PyPI distributions.
 

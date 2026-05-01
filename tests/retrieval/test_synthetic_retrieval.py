@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import matplotlib
 import numpy as np
+from scipy.integrate import cumulative_trapezoid
 
 matplotlib.use("Agg")
 
@@ -150,6 +151,51 @@ def test_iterative_beta_forward_matches_synthetic_truth_when_started_at_first_bi
 
     assert np.nanmedian(error[useful]) < 1e-3
     assert np.nanpercentile(error[useful], 95) < 1e-2
+
+
+def test_iterative_beta_forward_matches_synthetic_truth_with_start_height_boundary():
+    ranges, elastic, _, params = _synthetic_profiles()
+    start_height = 600.0
+
+    rcs = signal_to_rcs(elastic, ranges)
+    start_idx = np.abs(ranges - start_height).argmin()
+    initial_particle_optical_depth = cumulative_trapezoid(
+        params["particle_alpha"],
+        ranges,
+        initial=0.0,
+    )[start_idx]
+    particle_beta = iterative_beta_forward(
+        rcs,
+        calibration_factor=1e11,
+        range_profile=ranges,
+        params=params,
+        lr_part=50.0,
+        start_height=start_height,
+        height_top=2400.0,
+        initial_particle_optical_depth=float(initial_particle_optical_depth),
+    )
+    truth = np.asarray(params["particle_beta"])
+    error = _relative_error(particle_beta, truth)
+    useful = _useful_range_mask(ranges, truth) & (ranges >= start_height)
+
+    assert np.nanmedian(error[useful]) < 1e-3
+    assert np.nanpercentile(error[useful], 95) < 1e-2
+
+
+def test_iterative_beta_forward_rejects_negative_initial_particle_optical_depth():
+    ranges, elastic, _, params = _synthetic_profiles()
+
+    rcs = signal_to_rcs(elastic, ranges)
+    with np.testing.assert_raises(ValueError):
+        iterative_beta_forward(
+            rcs,
+            calibration_factor=1e11,
+            range_profile=ranges,
+            params=params,
+            lr_part=50.0,
+            start_height=600.0,
+            initial_particle_optical_depth=-1e-3,
+        )
 
 
 def test_raman_retrievals_accept_synthetic_elastic_and_raman_signals():

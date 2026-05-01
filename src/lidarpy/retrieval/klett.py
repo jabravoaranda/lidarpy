@@ -386,6 +386,7 @@ def iterative_beta_forward(
     lr_part: float | np.ndarray = 45.0,  
     start_height: float | None = None,
     height_top: float | None = None,                  # ← NUEVO
+    initial_particle_optical_depth: float = 0.0,
     layer_tolerance: float = 1e-4,
     max_iter_per_layer: int = 30,
     debug: bool = False
@@ -400,6 +401,8 @@ def iterative_beta_forward(
         params: {'molecular_alpha', 'molecular_beta'}
         lr_part: lidar ratio (Sr)
         start_height: altura inicial z0 (si None, se toma la más baja)
+        initial_particle_optical_depth: aerosol optical depth accumulated
+            below ``start_height``. Use 0 when starting at the first bin.
         layer_tolerance: tolerancia relativa de convergencia por capa
         max_iter_per_layer: máximo número de iteraciones por capa
         debug: imprime progreso
@@ -431,6 +434,8 @@ def iterative_beta_forward(
     else:
         idx_start = 0  # Empezar desde el suelo si no se define
         
+    if initial_particle_optical_depth < 0:
+        raise ValueError("initial_particle_optical_depth must be non-negative.")
         
     # Inicializar arrays de resultado con ceros
     beta_a = np.zeros(n)
@@ -440,20 +445,20 @@ def iterative_beta_forward(
     molecular_transmittance =  transmittance(params["molecular_alpha"], z) 
     molecular_transmittance_zero = molecular_transmittance[idx_start]
     beta_mol_zero = params["molecular_beta"][idx_start]
-    alpha_mol_zero = params["molecular_alpha"][idx_start]
     
     beta_att = rcs_profile / calibration_factor
     beta_att_zero = beta_att[idx_start]
     
-    beta_part_star = beta_att_zero / molecular_transmittance_zero**2 - beta_mol_zero
-    alpha_part_star = S_r[idx_start] * beta_part_star
-    
-    # tau_star = alpha_part_star * z[idx_start]
-    tau_total = (alpha_mol_zero + alpha_part_star) * z[idx_start]
-    total_transmittance_zero_squared = np.exp(-2*tau_total)
-    
-    beta_a[idx_start] = beta_att_zero / (total_transmittance_zero_squared) - beta_mol_zero
+    particle_transmittance_zero_squared = np.exp(
+        -2 * initial_particle_optical_depth
+    )
+    beta_a[idx_start] = (
+        beta_att_zero
+        / (molecular_transmittance_zero**2 * particle_transmittance_zero_squared)
+        - beta_mol_zero
+    )
     alpha_a[idx_start] = S_r[idx_start] * beta_a[idx_start]
+    tau_a[idx_start] = initial_particle_optical_depth
 
     if debug:
         print(f"Init z0 index={idx_start} ({z[idx_start]:.1f}m): Beta_a={beta_a[idx_start]:.2e}")
