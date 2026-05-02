@@ -135,12 +135,10 @@ def _plot_truth_vs_retrieved(
     legend: bool = False,
 ) -> None:
     height_km = ranges / 1000.0
-    validated = (height_km >= 0.6) & (height_km <= 2.4)
-    retrieved_in_validated_range = np.where(validated, retrieved, np.nan)
 
     ax.plot(truth, height_km, color="#106c78", linewidth=2.0, label="Synthetic truth")
     ax.plot(
-        retrieved_in_validated_range,
+        retrieved,
         height_km,
         color="#7b4e16",
         linewidth=1.8,
@@ -151,7 +149,7 @@ def _plot_truth_vs_retrieved(
     ax.set_title(title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel("Height (km)")
-    ax.set_ylim(0.0, 3.0)
+    ax.set_ylim(0.0, 6.0)
     if xlim is not None:
         ax.set_xlim(*xlim)
     ax.ticklabel_format(axis="x", useOffset=False)
