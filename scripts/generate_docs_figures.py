@@ -132,6 +132,7 @@ def _plot_truth_vs_retrieved(
     title: str,
     xlabel: str,
     xlim: tuple[float, float] | None = None,
+    legend: bool = False,
 ) -> None:
     height_km = ranges / 1000.0
     validated = (height_km >= 0.6) & (height_km <= 2.4)
@@ -155,6 +156,8 @@ def _plot_truth_vs_retrieved(
         ax.set_xlim(*xlim)
     ax.ticklabel_format(axis="x", useOffset=False)
     ax.grid(True, alpha=0.25)
+    if legend:
+        ax.legend(loc="lower left", fontsize=8, frameon=True)
 
 
 def _particle_depolarization_from_volume(
@@ -257,61 +260,55 @@ def generate_retrieval_validation_figure() -> None:
 
     lpdr_ranges, lpdr_truth, lpdr_retrieved = _synthetic_particle_depolarization()
 
-    fig, axes = plt.subplots(3, 2, figsize=(10, 11.5), sharey=False)
+    fig, axes = plt.subplots(1, 5, figsize=(18, 3.9), sharey=True)
     _plot_truth_vs_retrieved(
-        axes[0, 0],
+        axes[0],
         ranges,
-        np.asarray(params["particle_beta"]),
-        np.asarray(klett_beta),
+        np.asarray(params["particle_beta"]) * 1e6,
+        np.asarray(klett_beta) * 1e6,
         "Klett backscatter",
-        "Particle beta",
+        r"Beta (Mm$^{-1}$ sr$^{-1}$)",
+        legend=True,
     )
     _plot_truth_vs_retrieved(
-        axes[0, 1],
+        axes[1],
         ranges,
-        np.asarray(params["particle_beta"]),
-        np.asarray(forward_beta),
+        np.asarray(params["particle_beta"]) * 1e6,
+        np.asarray(forward_beta) * 1e6,
         "Iterative elastic backscatter",
-        "Particle beta",
+        r"Beta (Mm$^{-1}$ sr$^{-1}$)",
     )
     _plot_truth_vs_retrieved(
-        axes[1, 0],
+        axes[2],
         ranges,
-        np.asarray(params["particle_alpha"]),
-        np.asarray(raman_alpha),
+        np.asarray(params["particle_alpha"]) * 1e6,
+        np.asarray(raman_alpha) * 1e6,
         "Raman extinction",
-        "Particle alpha",
+        r"Alpha (Mm$^{-1}$)",
     )
     _plot_truth_vs_retrieved(
-        axes[1, 1],
+        axes[3],
         ranges,
-        np.asarray(params["particle_beta"]),
-        np.asarray(raman_beta),
+        np.asarray(params["particle_beta"]) * 1e6,
+        np.asarray(raman_beta) * 1e6,
         "Raman backscatter",
-        "Particle beta",
+        r"Beta (Mm$^{-1}$ sr$^{-1}$)",
     )
     _plot_truth_vs_retrieved(
-        axes[2, 0],
+        axes[4],
         lpdr_ranges,
         lpdr_truth,
         lpdr_retrieved,
-        "Linear particle depolarization ratio",
-        "LPDR",
+        "Particle depolarization",
+        "LPDR (#)",
         xlim=(0.0, 0.5),
     )
-    axes[2, 1].axis("off")
 
-    handles, labels = axes[0, 0].get_legend_handles_labels()
-    fig.legend(
-        handles,
-        labels,
-        loc="upper center",
-        bbox_to_anchor=(0.5, 0.975),
-        ncol=3,
-        frameon=False,
-    )
-    fig.suptitle("Synthetic truth vs retrieved aerosol properties", y=0.995)
-    fig.tight_layout(rect=(0, 0, 1, 0.94))
+    for ax in axes[1:]:
+        ax.set_ylabel("")
+
+    fig.suptitle("Synthetic truth vs retrieved aerosol properties", y=1.04)
+    fig.tight_layout()
     try:
         fig.savefig(
             ASSET_DIR / "retrieval-synthetic-validation.png",
