@@ -22,6 +22,7 @@ from lidarpy.utils.utils import signal_to_rcs
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSET_DIR = ROOT / "docs" / "assets"
+MOLECULAR_REFERENCE = (5500.0, 5900.0)
 
 
 def _synthetic_coordinates() -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -146,6 +147,13 @@ def _plot_truth_vs_retrieved(
         label="Retrieved",
     )
     ax.axhspan(0.6, 2.4, color="#106c78", alpha=0.08, label="Validated range")
+    ax.axhspan(
+        MOLECULAR_REFERENCE[0] / 1000.0,
+        MOLECULAR_REFERENCE[1] / 1000.0,
+        color="#7b4e16",
+        alpha=0.08,
+        label="Molecular reference",
+    )
     ax.set_title(title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel("Height (km)")
@@ -203,15 +211,14 @@ def generate_retrieval_validation_figure() -> None:
     ranges, elastic, raman, params = _synthetic_retrieval_profiles()
     rcs = signal_to_rcs(elastic, ranges)
 
-    klett_reference = (3000.0, 3500.0)
     klett_beta = klett_rcs(
         rcs,
         ranges,
         params["molecular_beta"],
-        reference=klett_reference,
+        reference=MOLECULAR_REFERENCE,
         lr_part=50.0,
         lr_mol=float(8 * np.pi / 3),
-        beta_aer_ref=_reference_beta(params, ranges, klett_reference),
+        beta_aer_ref=_reference_beta(params, ranges, MOLECULAR_REFERENCE),
     )
 
     start_height = 600.0
@@ -228,11 +235,11 @@ def generate_retrieval_validation_figure() -> None:
         params=params,
         lr_part=50.0,
         start_height=start_height,
-        height_top=2400.0,
+        height_top=5900.0,
         initial_particle_optical_depth=float(initial_particle_optical_depth),
     )
 
-    raman_reference = (4500.0, 5500.0)
+    raman_reference = MOLECULAR_REFERENCE
     raman_alpha = retrieve_extinction(
         raman,
         ranges,
