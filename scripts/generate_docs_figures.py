@@ -258,7 +258,7 @@ def generate_retrieval_validation_figure() -> None:
 
     lpdr_ranges, lpdr_truth, lpdr_retrieved = _synthetic_particle_depolarization()
 
-    fig, axes = plt.subplots(1, 5, figsize=(18, 3.9), sharey=True)
+    fig, axes = plt.subplots(1, 5, figsize=(13.5, 6.8), sharey=True)
     _plot_truth_vs_retrieved(
         axes[0],
         ranges,
