@@ -77,6 +77,14 @@ def test_static_docs_can_link_to_generated_api_reference():
 def test_reference_docs_mention_core_public_modules():
     references = Path("docs/references.html").read_text(encoding="utf-8")
 
+    assert "Scientific references" in references
+    assert "doi:10.1364/AO.20.000211" in references
+    assert "doi:10.1364/AO.24.001638" in references
+    assert "doi:10.1364/OL.15.000746" in references
+    assert "doi:10.1364/AO.31.007113" in references
+    assert "doi:10.5194/amt-9-4935-2016" in references
+    assert "doi:10.1364/AO.41.000511" in references
+    assert "doi:10.5194/amt-9-491-2016" in references
     assert "lidarpy.nc_convert.measurement" in references
     assert "lidarpy.preprocessing.lidar_preprocessing" in references
     assert "lidarpy.retrieval.synthetic.generator" in references

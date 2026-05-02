@@ -23,7 +23,9 @@
 
   <main class="wrap prose">
     <h2 id="synthetic-signals">Synthetic elastic and Raman signals</h2>
-    <pre><code>import numpy as np
+    <div class="content-pair reverse">
+      <div>
+        <pre><code>import numpy as np
 
 from lidarpy.retrieval.synthetic.generator import synthetic_signals
 
@@ -36,23 +38,34 @@ elastic, raman, params = synthetic_signals(
     apply_overlap=False,
     number_of_initial_nan_values=0,
 )</code></pre>
+      </div>
+      <div>
+        <p>
+          The synthetic generators create compact elastic, Raman and
+          depolarization cases that can be inspected visually before using
+          them in retrieval tests.
+        </p>
+      </div>
+    </div>
 
-    <figure class="figure">
-      <img src="assets/synthetic-elastic-quicklook.png" alt="Synthetic elastic quicklook example">
-      <figcaption>Elastic synthetic quicklook for the 532 nm channel.</figcaption>
-    </figure>
+    <div class="figure-grid">
+      <figure class="figure">
+        <img src="assets/synthetic-elastic-quicklook.png" alt="Synthetic elastic quicklook example">
+        <figcaption>Elastic synthetic quicklook for the 532 nm channel.</figcaption>
+      </figure>
 
-    <figure class="figure">
-      <img src="assets/synthetic-raman-quicklook.png" alt="Synthetic Raman quicklook example">
-      <figcaption>Raman synthetic quicklook for the 607 nm channel.</figcaption>
-    </figure>
+      <figure class="figure">
+        <img src="assets/synthetic-raman-quicklook.png" alt="Synthetic Raman quicklook example">
+        <figcaption>Raman synthetic quicklook for the 607 nm channel.</figcaption>
+      </figure>
 
-    <figure class="figure">
-      <img src="assets/synthetic-lpdr-quicklook.png" alt="Synthetic LPDR quicklook example">
-      <figcaption>
-        Synthetic LPDR quicklook built from the depolarization signal generator.
-      </figcaption>
-    </figure>
+      <figure class="figure">
+        <img src="assets/synthetic-lpdr-quicklook.png" alt="Synthetic LPDR quicklook example">
+        <figcaption>
+          Synthetic LPDR quicklook built from the depolarization signal generator.
+        </figcaption>
+      </figure>
+    </div>
 
     <h2>Klett retrieval against synthetic signal</h2>
     <pre><code>from lidarpy.retrieval.klett import klett_rcs
@@ -91,14 +104,23 @@ particle_beta = iterative_beta_forward(
 )</code></pre>
 
     <h2>Retrieval validation with synthetic truth</h2>
-    <figure class="figure">
-      <img src="assets/retrieval-synthetic-validation.png" alt="Retrieval validation with synthetic truth">
-      <figcaption>
-        Expected comparison pattern for retrieval tests: the synthetic particle
-        property is plotted against the property retrieved or derived from the
-        generated signal.
-      </figcaption>
-    </figure>
+    <div class="content-pair reverse">
+      <figure class="figure">
+        <img src="assets/retrieval-synthetic-validation.png" alt="Retrieval validation with synthetic truth">
+        <figcaption>
+          Expected comparison pattern for retrieval tests: the synthetic particle
+          property is plotted against the property retrieved or derived from the
+          generated signal.
+        </figcaption>
+      </figure>
+      <div>
+        <p>
+          Use the generated truth fields to verify whether the retrieval is
+          recovering the expected aerosol structure and where boundary or
+          reference assumptions limit the comparison.
+        </p>
+      </div>
+    </div>
   </main>
 </body>
 </html>

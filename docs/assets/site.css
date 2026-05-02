@@ -118,6 +118,83 @@ a:hover {
   padding: 2rem 0 1rem;
 }
 
+.feature-band {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.95fr) minmax(360px, 1.05fr);
+  gap: 3rem;
+  align-items: center;
+  padding: 2.75rem 0;
+}
+
+.feature-copy {
+  font-size: 1.05rem;
+}
+
+.feature-copy h2 {
+  margin-top: 0;
+  font-size: 1.9rem;
+}
+
+.feature-copy li + li {
+  margin-top: 0.45rem;
+}
+
+.feature-figure {
+  margin: 0;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 16px 36px rgba(29, 38, 48, 0.08);
+}
+
+.feature-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+}
+
+.feature-figure figcaption {
+  margin-top: 0.85rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.content-pair {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.9fr) minmax(360px, 1.1fr);
+  gap: 2rem;
+  align-items: start;
+  margin: 1.5rem 0 2rem;
+}
+
+.content-pair.reverse {
+  grid-template-columns: minmax(420px, 1.15fr) minmax(260px, 0.85fr);
+}
+
+.figure-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.figure-grid .figure,
+.content-pair .figure {
+  margin: 0;
+}
+
+.reference-list li + li {
+  margin-top: 0.75rem;
+}
+
+.reference-list a {
+  white-space: nowrap;
+}
+
 .card,
 .prose {
   background: var(--surface);
@@ -179,7 +256,10 @@ ol {
 }
 
 @media (max-width: 850px) {
-  .hero-grid {
+  .hero-grid,
+  .feature-band,
+  .content-pair,
+  .content-pair.reverse {
     grid-template-columns: 1fr;
   }
 }
