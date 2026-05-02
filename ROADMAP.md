@@ -119,6 +119,10 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   tests.
 - Synthetic quicklooks currently adapt the generated signal to the plotting
   contract by assigning datetime coordinates and renaming it to `signal_*`.
+- TODO: Remove the two diagnostic `print(type(...))` calls emitted by synthetic
+  signal generation. They currently pollute documentation-figure generation
+  output, but were not changed during the docs-only work to avoid mixing
+  production cleanup with documentation changes.
 - `iterative_beta_forward` started above the first range bin requires a valid
   `initial_particle_optical_depth`; otherwise the retrieval is missing its
   lower-boundary particle transmittance.
