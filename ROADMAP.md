@@ -90,6 +90,16 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   status remains in `ROADMAP.md`, while `docs/` keeps user-facing references.
 - Added a static GitHub Pages documentation site under `docs/` with overview,
   getting started, workflow, examples, references, and contributing pages.
+- Configured the `docs` GitHub Actions workflow to build `site/`, generate
+  pdoc API HTML, and publish the generated Pages artifact.
+- Added documentation figures generated from synthetic elastic, Raman, and LPDR
+  quicklooks so users can inspect expected visual outputs.
+- Added a documentation figure comparing synthetic aerosol truth with Klett,
+  iterative elastic, Raman extinction, and Raman backscatter retrieval outputs.
+- Extended the retrieval-validation documentation figure with LPDR derived from
+  polarized synthetic components.
+- Integrated documentation figure generation into `scripts/build_docs.py` so
+  GitHub Actions regenerates figures before publishing the Pages artifact.
 
 ## In Progress
 
@@ -113,6 +123,10 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   tests.
 - Synthetic quicklooks currently adapt the generated signal to the plotting
   contract by assigning datetime coordinates and renaming it to `signal_*`.
+- TODO: Remove the two diagnostic `print(type(...))` calls emitted by synthetic
+  signal generation. They currently pollute documentation-figure generation
+  output, but were not changed during the docs-only work to avoid mixing
+  production cleanup with documentation changes.
 - `iterative_beta_forward` started above the first range bin requires a valid
   `initial_particle_optical_depth`; otherwise the retrieval is missing its
   lower-boundary particle transmittance.

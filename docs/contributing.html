@@ -38,9 +38,16 @@ $env:MPLBACKEND = "Agg"
 
     <h2>Documentation</h2>
     <p>
-      GitHub Pages is configured to publish the <code>docs/</code> folder from
-      the main branch. Keep <code>docs/index.html</code> as the site entry point.
+      GitHub Pages is published by the <code>docs</code> GitHub Actions
+      workflow. Static pages live in <code>docs/</code>; the workflow copies
+      them into <code>site/</code>, regenerates documentation figures,
+      generates the API reference with <code>pdoc</code>, and uploads
+      <code>site/</code> as the Pages artifact.
     </p>
+    <p>For a local figure preview after visual or synthetic-signal changes:</p>
+    <pre><code>$env:PYTHONPATH = "src"
+$env:MPLBACKEND = "Agg"
+.\.venv\Scripts\python scripts\generate_docs_figures.py</code></pre>
   </main>
 </body>
 </html>

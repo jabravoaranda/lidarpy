@@ -38,6 +38,10 @@ def _useful_range_mask(ranges: np.ndarray, truth: np.ndarray) -> np.ndarray:
     return (ranges >= 600.0) & (ranges <= 2400.0) & (truth > 1e-9)
 
 
+def _upper_layer_mask(ranges: np.ndarray, truth: np.ndarray) -> np.ndarray:
+    return (ranges >= 2700.0) & (ranges <= 4800.0) & (truth > 1e-9)
+
+
 def _relative_error(retrieved: np.ndarray, truth: np.ndarray) -> np.ndarray:
     denominator = np.maximum(np.abs(truth), 1e-12)
     return np.abs(retrieved - truth) / denominator
@@ -84,6 +88,28 @@ def test_klett_backscatter_matches_synthetic_truth_in_useful_range():
 
     assert np.nanmedian(error[useful]) < 0.01
     assert np.nanpercentile(error[useful], 95) < 0.02
+
+
+def test_klett_backscatter_matches_synthetic_truth_in_upper_layer_with_molecular_reference():
+    ranges, elastic, _, params = _synthetic_profiles()
+    reference = (5500.0, 5900.0)
+
+    rcs = signal_to_rcs(elastic, ranges)
+    particle_beta = klett_rcs(
+        rcs,
+        ranges,
+        params["molecular_beta"],
+        reference=reference,
+        lr_part=50.0,
+        lr_mol=float(8 * np.pi / 3),
+        beta_aer_ref=_reference_beta(params, ranges, reference),
+    )
+    truth = np.asarray(params["particle_beta"])
+    error = _relative_error(particle_beta, truth)
+    upper_layer = _upper_layer_mask(ranges, truth)
+
+    assert np.nanmedian(error[upper_layer]) < 0.01
+    assert np.nanpercentile(error[upper_layer], 95) < 0.02
 
 
 def test_klett_raises_when_reference_is_out_of_range():
@@ -194,6 +220,35 @@ def test_iterative_beta_forward_matches_synthetic_truth_with_start_height_bounda
 
     assert np.nanmedian(error[useful]) < 1e-3
     assert np.nanpercentile(error[useful], 95) < 1e-2
+
+
+def test_iterative_beta_forward_matches_synthetic_truth_through_upper_layer():
+    ranges, elastic, _, params = _synthetic_profiles()
+    start_height = 600.0
+
+    rcs = signal_to_rcs(elastic, ranges)
+    start_idx = np.abs(ranges - start_height).argmin()
+    initial_particle_optical_depth = cumulative_trapezoid(
+        params["particle_alpha"],
+        ranges,
+        initial=0.0,
+    )[start_idx]
+    particle_beta = iterative_beta_forward(
+        rcs,
+        calibration_factor=1e11,
+        range_profile=ranges,
+        params=params,
+        lr_part=50.0,
+        start_height=start_height,
+        height_top=5900.0,
+        initial_particle_optical_depth=float(initial_particle_optical_depth),
+    )
+    truth = np.asarray(params["particle_beta"])
+    error = _relative_error(particle_beta, truth)
+    upper_layer = _upper_layer_mask(ranges, truth)
+
+    assert np.nanmedian(error[upper_layer]) < 1e-3
+    assert np.nanpercentile(error[upper_layer], 95) < 1e-2
 
 
 def test_iterative_beta_forward_rejects_negative_initial_particle_optical_depth():

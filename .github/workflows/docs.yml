@@ -40,6 +40,8 @@ jobs:
         run: |
           test -d site
           test -f site/index.html
+          test -f site/assets/site.css
+          test -f site/api/lidarpy.html
 
       - name: Set up Pages
         uses: actions/configure-pages@v5

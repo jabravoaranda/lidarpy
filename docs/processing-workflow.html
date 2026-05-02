@@ -31,6 +31,14 @@
       <li>Use synthetic signals to validate retrieval behavior independently from RAW fixtures.</li>
     </ol>
 
+    <figure class="figure">
+      <img src="assets/synthetic-elastic-quicklook.png" alt="Expected synthetic quicklook output">
+      <figcaption>
+        Expected quicklook style for a range-corrected synthetic elastic signal.
+        Real measurement quicklooks should follow the same plotting contract.
+      </figcaption>
+    </figure>
+
     <h2>Basic preprocessing currently covered by tests</h2>
     <ul>
       <li>background correction.</li>
@@ -46,6 +54,17 @@
       Retrieval tests compare Klett, Raman extinction and Raman backscatter against
       synthetic truth in a useful range that avoids near-field and boundary regions.
     </p>
+    <figure class="figure">
+      <img src="assets/retrieval-synthetic-validation.png" alt="Synthetic truth versus retrieved aerosol properties">
+      <figcaption>
+        Retrieval validation uses synthetic aerosol properties as the reference
+        and compares them with properties inverted from synthetic elastic and
+        Raman signals. LPDR is derived from the generated polarized components
+        and compared with the synthetic particle depolarization profile. Elastic
+        and Raman retrievals use a molecular reference interval above the
+        synthetic aerosol layer.
+      </figcaption>
+    </figure>
     <ul>
       <li><code>quasi_beta</code> is a single-iteration approximation, not an exact inversion.</li>
       <li><code>iterative_beta_forward</code> can start above the first range bin when

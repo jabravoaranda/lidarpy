@@ -37,6 +37,23 @@ elastic, raman, params = synthetic_signals(
     number_of_initial_nan_values=0,
 )</code></pre>
 
+    <figure class="figure">
+      <img src="assets/synthetic-elastic-quicklook.png" alt="Synthetic elastic quicklook example">
+      <figcaption>Elastic synthetic quicklook for the 532 nm channel.</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <img src="assets/synthetic-raman-quicklook.png" alt="Synthetic Raman quicklook example">
+      <figcaption>Raman synthetic quicklook for the 607 nm channel.</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <img src="assets/synthetic-lpdr-quicklook.png" alt="Synthetic LPDR quicklook example">
+      <figcaption>
+        Synthetic LPDR quicklook built from the depolarization signal generator.
+      </figcaption>
+    </figure>
+
     <h2>Klett retrieval against synthetic signal</h2>
     <pre><code>from lidarpy.retrieval.klett import klett_rcs
 from lidarpy.utils.utils import signal_to_rcs
@@ -72,6 +89,16 @@ particle_beta = iterative_beta_forward(
     height_top=2400.0,
     initial_particle_optical_depth=float(initial_aod),
 )</code></pre>
+
+    <h2>Retrieval validation with synthetic truth</h2>
+    <figure class="figure">
+      <img src="assets/retrieval-synthetic-validation.png" alt="Retrieval validation with synthetic truth">
+      <figcaption>
+        Expected comparison pattern for retrieval tests: the synthetic particle
+        property is plotted against the property retrieved or derived from the
+        generated signal.
+      </figcaption>
+    </figure>
   </main>
 </body>
 </html>
