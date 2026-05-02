@@ -159,6 +159,25 @@ ol {
   background: #fff8ec;
 }
 
+.figure {
+  margin: 1.5rem 0;
+}
+
+.figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+}
+
+.figure figcaption {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
 @media (max-width: 850px) {
   .hero-grid {
     grid-template-columns: 1fr;

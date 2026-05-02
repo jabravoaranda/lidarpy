@@ -92,6 +92,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   getting started, workflow, examples, references, and contributing pages.
 - Configured the `docs` GitHub Actions workflow to build `site/`, generate
   pdoc API HTML, and publish the generated Pages artifact.
+- Added documentation figures generated from synthetic elastic, Raman, and LPDR
+  quicklooks so users can inspect expected visual outputs.
 
 ## In Progress
 

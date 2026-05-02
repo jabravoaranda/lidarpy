@@ -51,6 +51,16 @@ def test_static_docs_links_are_local_and_existing():
             assert (page.parent / target).exists(), f"{page} links to missing {link}"
 
 
+def test_static_docs_images_exist():
+    for page in DOC_PAGES:
+        html = page.read_text(encoding="utf-8")
+        images = re.findall(r'src="([^"]+)"', html)
+
+        for image in images:
+            target = image.split("#", 1)[0]
+            assert (page.parent / target).exists(), f"{page} embeds missing {image}"
+
+
 def test_static_docs_can_link_to_generated_api_reference():
     index = Path("docs/index.html").read_text(encoding="utf-8")
     workflow = Path(".github/workflows/docs.yml").read_text(encoding="utf-8")
