@@ -98,6 +98,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   iterative elastic, Raman extinction, and Raman backscatter retrieval outputs.
 - Extended the retrieval-validation documentation figure with LPDR derived from
   polarized synthetic components.
+- Integrated documentation figure generation into `scripts/build_docs.py` so
+  GitHub Actions regenerates figures before publishing the Pages artifact.
 
 ## In Progress
 

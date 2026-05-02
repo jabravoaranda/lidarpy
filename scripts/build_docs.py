@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 from lidarpy import __version__
+from generate_docs_figures import main as generate_docs_figures
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -47,6 +48,7 @@ def _build_api_reference() -> None:
 
 
 def main() -> None:
+    generate_docs_figures()
     _copy_static_docs()
     _build_api_reference()
 

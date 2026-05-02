@@ -64,9 +64,11 @@ def test_static_docs_images_exist():
 def test_static_docs_can_link_to_generated_api_reference():
     index = Path("docs/index.html").read_text(encoding="utf-8")
     workflow = Path(".github/workflows/docs.yml").read_text(encoding="utf-8")
+    build_docs = Path("scripts/build_docs.py").read_text(encoding="utf-8")
 
     assert 'href="api/lidarpy.html"' in index
     assert "python scripts/build_docs.py" in workflow
+    assert "generate_docs_figures()" in build_docs
     assert "test -f site/api/lidarpy.html" in workflow
     assert "actions/upload-pages-artifact" in workflow
     assert "actions/deploy-pages" in workflow

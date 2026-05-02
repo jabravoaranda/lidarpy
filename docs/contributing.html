@@ -40,10 +40,11 @@ $env:MPLBACKEND = "Agg"
     <p>
       GitHub Pages is published by the <code>docs</code> GitHub Actions
       workflow. Static pages live in <code>docs/</code>; the workflow copies
-      them into <code>site/</code>, generates the API reference with
-      <code>pdoc</code>, and uploads <code>site/</code> as the Pages artifact.
+      them into <code>site/</code>, regenerates documentation figures,
+      generates the API reference with <code>pdoc</code>, and uploads
+      <code>site/</code> as the Pages artifact.
     </p>
-    <p>Regenerate documentation figures after visual or synthetic-signal changes:</p>
+    <p>For a local figure preview after visual or synthetic-signal changes:</p>
     <pre><code>$env:PYTHONPATH = "src"
 $env:MPLBACKEND = "Agg"
 .\.venv\Scripts\python scripts\generate_docs_figures.py</code></pre>

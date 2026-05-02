@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import xarray as xr
 from matplotlib import pyplot as plt
@@ -18,6 +19,8 @@ from lidarpy.retrieval.synthetic.generator import (
 )
 from lidarpy.utils.utils import signal_to_rcs
 
+
+matplotlib.use("Agg")
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSET_DIR = ROOT / "docs" / "assets"
