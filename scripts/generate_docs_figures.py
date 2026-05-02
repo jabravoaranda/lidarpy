@@ -6,7 +6,6 @@ from pathlib import Path
 import numpy as np
 import xarray as xr
 from matplotlib import pyplot as plt
-from scipy.integrate import cumulative_trapezoid
 
 from lidarpy.plot.quicklook import quicklook_lpdr, quicklook_xarray
 from lidarpy.retrieval.klett import iterative_beta_forward, klett_rcs
@@ -137,21 +136,22 @@ def _plot_truth_vs_retrieved(
 ) -> None:
     height_km = ranges / 1000.0
 
-    ax.plot(truth, height_km, color="#106c78", linewidth=2.0, label="Synthetic truth")
+    ax.set_facecolor("white")
+    ax.plot(truth, height_km, color="#005f73", linewidth=2.2, label="Synthetic truth")
     ax.plot(
         retrieved,
         height_km,
-        color="#7b4e16",
-        linewidth=1.8,
+        color="#d00000",
+        linewidth=2.0,
         linestyle="--",
         label="Retrieved",
     )
-    ax.axhspan(0.6, 2.4, color="#106c78", alpha=0.08, label="Validated range")
+    ax.axhspan(0.6, 2.4, color="#005f73", alpha=0.045, label="Validated range")
     ax.axhspan(
         MOLECULAR_REFERENCE[0] / 1000.0,
         MOLECULAR_REFERENCE[1] / 1000.0,
-        color="#7b4e16",
-        alpha=0.08,
+        color="#d00000",
+        alpha=0.04,
         label="Molecular reference",
     )
     ax.set_title(title)
@@ -221,22 +221,14 @@ def generate_retrieval_validation_figure() -> None:
         beta_aer_ref=_reference_beta(params, ranges, MOLECULAR_REFERENCE),
     )
 
-    start_height = 600.0
-    start_idx = np.abs(ranges - start_height).argmin()
-    initial_particle_optical_depth = cumulative_trapezoid(
-        params["particle_alpha"],
-        ranges,
-        initial=0.0,
-    )[start_idx]
     forward_beta = iterative_beta_forward(
         rcs,
         calibration_factor=1e11,
         range_profile=ranges,
         params=params,
         lr_part=50.0,
-        start_height=start_height,
+        start_height=None,
         height_top=5900.0,
-        initial_particle_optical_depth=float(initial_particle_optical_depth),
     )
 
     raman_reference = MOLECULAR_REFERENCE
