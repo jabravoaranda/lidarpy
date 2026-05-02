@@ -45,7 +45,21 @@ def test_static_docs_links_are_local_and_existing():
                 continue
 
             target = link.split("#", 1)[0]
+            if target.startswith("api/"):
+                continue
+
             assert (page.parent / target).exists(), f"{page} links to missing {link}"
+
+
+def test_static_docs_can_link_to_generated_api_reference():
+    index = Path("docs/index.html").read_text(encoding="utf-8")
+    workflow = Path(".github/workflows/docs.yml").read_text(encoding="utf-8")
+
+    assert 'href="api/lidarpy.html"' in index
+    assert "python scripts/build_docs.py" in workflow
+    assert "test -f site/api/lidarpy.html" in workflow
+    assert "actions/upload-pages-artifact" in workflow
+    assert "actions/deploy-pages" in workflow
 
 
 def test_reference_docs_mention_core_public_modules():

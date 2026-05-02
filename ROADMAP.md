@@ -90,6 +90,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   status remains in `ROADMAP.md`, while `docs/` keeps user-facing references.
 - Added a static GitHub Pages documentation site under `docs/` with overview,
   getting started, workflow, examples, references, and contributing pages.
+- Configured the `docs` GitHub Actions workflow to build `site/`, generate
+  pdoc API HTML, and publish the generated Pages artifact.
 
 ## In Progress
 
