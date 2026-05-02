@@ -100,6 +100,9 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   polarized synthetic components.
 - Integrated documentation figure generation into `scripts/build_docs.py` so
   GitHub Actions regenerates figures before publishing the Pages artifact.
+- Added and expanded a scientific-references section to the public docs linking
+  the migrated retrieval, molecular-atmosphere, depolarization, overlap, and
+  preprocessing routines to their source papers.
 
 ## In Progress
 
