@@ -96,6 +96,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   quicklooks so users can inspect expected visual outputs.
 - Added a documentation figure comparing synthetic aerosol truth with Klett,
   iterative elastic, Raman extinction, and Raman backscatter retrieval outputs.
+- Extended the retrieval-validation documentation figure with LPDR derived from
+  polarized synthetic components.
 
 ## In Progress
 

@@ -131,6 +131,7 @@ def _plot_truth_vs_retrieved(
     retrieved: np.ndarray,
     title: str,
     xlabel: str,
+    xlim: tuple[float, float] | None = None,
 ) -> None:
     height_km = ranges / 1000.0
     validated = (height_km >= 0.6) & (height_km <= 2.4)
@@ -150,7 +151,51 @@ def _plot_truth_vs_retrieved(
     ax.set_xlabel(xlabel)
     ax.set_ylabel("Height (km)")
     ax.set_ylim(0.0, 3.0)
+    if xlim is not None:
+        ax.set_xlim(*xlim)
+    ax.ticklabel_format(axis="x", useOffset=False)
     ax.grid(True, alpha=0.25)
+
+
+def _particle_depolarization_from_volume(
+    volume_depolarization: np.ndarray,
+    molecular_depolarization: np.ndarray,
+    backscattering_ratio: np.ndarray,
+) -> np.ndarray:
+    numerator = (
+        volume_depolarization
+        * (1.0 + molecular_depolarization)
+        * backscattering_ratio
+        - molecular_depolarization * (1.0 + volume_depolarization)
+    )
+    denominator = (
+        (1.0 + molecular_depolarization) * backscattering_ratio
+        - (1.0 + volume_depolarization)
+    )
+    return numerator / denominator
+
+
+def _synthetic_particle_depolarization() -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    ranges = np.arange(30.0, 6000.0, 30.0)
+    _, _, params = synthetic_signals_despo(
+        ranges,
+        apply_overlap=False,
+        number_of_initial_nan_values=0,
+    )
+    volume_depolarization = (
+        np.asarray(params["signal_perpendicular_path"])
+        / np.asarray(params["signal_parallel_path"])
+    )
+    particle_depolarization = _particle_depolarization_from_volume(
+        volume_depolarization,
+        np.asarray(params["despolarization_molecular"]),
+        np.asarray(params["backscattering_ratio"]),
+    )
+    return (
+        ranges,
+        np.asarray(params["despolarization_particle"]),
+        particle_depolarization,
+    )
 
 
 def generate_retrieval_validation_figure() -> None:
@@ -210,7 +255,9 @@ def generate_retrieval_validation_figure() -> None:
         beta_part_ref=_reference_beta(params, ranges, raman_reference),
     )
 
-    fig, axes = plt.subplots(2, 2, figsize=(10, 8), sharey=True)
+    lpdr_ranges, lpdr_truth, lpdr_retrieved = _synthetic_particle_depolarization()
+
+    fig, axes = plt.subplots(3, 2, figsize=(10, 11.5), sharey=False)
     _plot_truth_vs_retrieved(
         axes[0, 0],
         ranges,
@@ -243,11 +290,28 @@ def generate_retrieval_validation_figure() -> None:
         "Raman backscatter",
         "Particle beta",
     )
+    _plot_truth_vs_retrieved(
+        axes[2, 0],
+        lpdr_ranges,
+        lpdr_truth,
+        lpdr_retrieved,
+        "Linear particle depolarization ratio",
+        "LPDR",
+        xlim=(0.0, 0.5),
+    )
+    axes[2, 1].axis("off")
 
     handles, labels = axes[0, 0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc="upper center", ncol=3, frameon=False)
-    fig.suptitle("Synthetic truth vs retrieved aerosol properties", y=0.98)
-    fig.tight_layout(rect=(0, 0, 1, 0.93))
+    fig.legend(
+        handles,
+        labels,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.975),
+        ncol=3,
+        frameon=False,
+    )
+    fig.suptitle("Synthetic truth vs retrieved aerosol properties", y=0.995)
+    fig.tight_layout(rect=(0, 0, 1, 0.94))
     try:
         fig.savefig(
             ASSET_DIR / "retrieval-synthetic-validation.png",
