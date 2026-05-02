@@ -94,6 +94,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   pdoc API HTML, and publish the generated Pages artifact.
 - Added documentation figures generated from synthetic elastic, Raman, and LPDR
   quicklooks so users can inspect expected visual outputs.
+- Added a documentation figure comparing synthetic aerosol truth with Klett,
+  iterative elastic, Raman extinction, and Raman backscatter retrieval outputs.
 
 ## In Progress
 
