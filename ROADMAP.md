@@ -103,6 +103,8 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 - Added and expanded a scientific-references section to the public docs linking
   the migrated retrieval, molecular-atmosphere, depolarization, overlap, and
   preprocessing routines to their source papers.
+- Added `.github/workflows/publish-package.yml` to build distributions, check
+  them with Twine, and publish to PyPI through Trusted Publishing.
 
 ## In Progress
 
@@ -135,6 +137,9 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   lower-boundary particle transmittance.
 - These coordination files are tracked for development only and must not be
   included in PyPI distributions.
+- The `Publish Package` workflow expects PyPI Trusted Publishing to be
+  configured for the GitHub environment named `pypi` before the publish job can
+  upload real releases.
 
 ## Commit Landmarks
 
