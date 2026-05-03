@@ -2,7 +2,7 @@ from pdb import set_trace
 import numpy as np
 import xarray as xr
 
-from lidarpy.general_utils.optimized import windowed_proportional
+from lidarpy.general_utils.numerics import windowed_proportional
 
 
 def gluing(

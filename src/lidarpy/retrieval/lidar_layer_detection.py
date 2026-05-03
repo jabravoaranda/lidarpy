@@ -7,7 +7,7 @@ from loguru import logger
 from scipy import signal
 import matplotlib.pyplot as plt
 
-from lidarpy.general_utils import utils
+from lidarpy.general_utils.numerics import normalize
 
 """ LAYER DETECTION
 
@@ -72,7 +72,7 @@ def find_peaks_1d(rcs, ranges, check=True, plot_results=False):
     logger.debug("Start Method Simple")
     method = "simple"
     # Use normalized RCS
-    rcs_norm = utils.normalize(rcs)
+    rcs_norm = normalize(rcs)
     # Focus on intense peaks
     peak_candidates, out_dict = signal.find_peaks(rcs_norm, height=0.98)
     logger.debug("End Method Simple")

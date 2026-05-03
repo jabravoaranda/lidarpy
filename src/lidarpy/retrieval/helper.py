@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 from .klett import klett_rcs
 from lidarpy.atmo.freudenthaler_molecular_properties import molecular_properties
-from lidarpy.general_utils.utils import parse_datetime
+from lidarpy.general_utils.dates import parse_datetime
 from lidarpy.plot.quicklook import quicklook_xarray
 from lidarpy.atmo.ecmwf import get_ecmwf_temperature_pressure
 

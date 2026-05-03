@@ -3,7 +3,7 @@ from pdb import set_trace
 import numpy as np
 from scipy.signal import savgol_filter
 
-from lidarpy.general_utils import utils
+from lidarpy.general_utils.numerics import find_nearest_1d
 
 """ GLUING
 
@@ -67,8 +67,8 @@ def estimate_first_range(
         )
 
         # with PC, lower height is estimated
-        idx_fo_up, z_fo_up = utils.find_nearest_1d(ranges, full_overlap_range[1])
-        idx_fo_bo, z_fo_bo = utils.find_nearest_1d(ranges, full_overlap_range[0])
+        idx_fo_up, z_fo_up = find_nearest_1d(ranges, full_overlap_range[1])
+        idx_fo_bo, z_fo_bo = find_nearest_1d(ranges, full_overlap_range[0])
         idx_tmp = idx_fo_bo
         state = False
         while not state:

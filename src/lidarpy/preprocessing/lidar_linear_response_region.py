@@ -2,7 +2,7 @@ import numpy as np
 from typing import Any, Tuple
 from scipy.signal import savgol_filter
 
-from lidarpy.general_utils import utils
+from lidarpy.general_utils.fitting import linear_regression
 
 """ LINEAR RESPONSE REGION
 """
@@ -70,7 +70,7 @@ def estimate_linear_response_region(
             he = hi + subregion
             while he < h_max:
                 idx = np.logical_and(ranges >= hi, ranges <= he)
-                a, b, rvalue_i = utils.linear_regression(an[idx], pc[idx])
+                a, b, rvalue_i = linear_regression(an[idx], pc[idx])
                 if rvalue_i >= correlation_thres:
                     slope_arr.append(a)
                     intercept_arr.append(b)

@@ -12,14 +12,13 @@ from cycler import cycler
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 import matplotlib.patches as mpatches
-from lidarpy import general_utils as utils
-
 from lidarpy.preprocessing.lidar_preprocessing import preprocess
 from lidarpy.preprocessing.lidar_preprocessing_tools import (
     apply_dead_time_correction,
 )
 from lidarpy.preprocessing.gluing_proportional import gluing
-from lidarpy.general_utils.utils import residuals
+from lidarpy.general_utils.dates import numpy_to_datetime
+from lidarpy.general_utils.numerics import residuals
 
 plt.ion()
 
@@ -171,8 +170,8 @@ def plot_scatter_dead_time(fn=None, ds=None):
 
     date_ini = ds.times[0].values
     date_end = ds.times[-1].values
-    date_ini = utils.numpy_to_datetime(date_ini)
-    date_end = utils.numpy_to_datetime(date_end)
+    date_ini = numpy_to_datetime(date_ini)
+    date_end = numpy_to_datetime(date_end)
     delta_t = (date_end - date_ini).seconds / 3600
     plot_title = "%s: %.1f hours. %i profiles" % (
         date_ini.strftime("%Y%m%d"),
@@ -231,8 +230,8 @@ def plot_dead_time_hist(fn=None, ds=None, label=None):
 
     date_ini = ds.times[0].values
     date_end = ds.times[-1].values
-    date_ini = utils.numpy_to_datetime(date_ini)
-    date_end = utils.numpy_to_datetime(date_end)
+    date_ini = numpy_to_datetime(date_ini)
+    date_end = numpy_to_datetime(date_end)
     delta_t = (date_end - date_ini).seconds / 3600
     plot_title = "%s: %.1f hours. %i profiles" % (
         date_ini.strftime("%Y%m%d"),
