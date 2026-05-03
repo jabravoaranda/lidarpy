@@ -1,11 +1,19 @@
 [project]
-name = "lidarpy"
+name = "atmolidarpy"
 version = "0.1.0"
-description = "A python package for lidar data processing"
+description = "Standalone atmospheric lidar data processing package"
 authors = [{ name = "Juan Diego De la Rosa", email = "jdidelarc@gmail.com" }]
 requires-python = ">=3.11.11,<3.12"
 readme = "README.md"
 license = "BSD-3-Clause"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+]
 dependencies = [
     "numpy>=2.0.2,<2.1",
     "pandas>=2.1.2",
@@ -29,7 +37,10 @@ docs = ["pdoc>=15.0.1,<16"]
 jupyter = []
 
 [project.urls]
-Homepage = "https://github.com/gfatugr/lidarpy"
+Homepage = "https://github.com/jabravoaranda/lidarpy"
+Repository = "https://github.com/jabravoaranda/lidarpy"
+Documentation = "https://jabravoaranda.github.io/lidarpy/"
+Issues = "https://github.com/jabravoaranda/lidarpy/issues"
 
 [dependency-groups]
 dev = [
@@ -57,6 +68,12 @@ artifacts = ["src/lidarpy/assets/*"]
 [tool.pytest.ini_options]
 addopts = "--basetemp=.pytest_tmp"
 testpaths = ["tests"]
+markers = [
+    "docs: documentation and link checks",
+    "integration: tests that exercise converted RAW fixtures or end-to-end workflows",
+    "packaging: distribution and package metadata checks",
+    "slow: tests that generate larger temporary products or take noticeably longer",
+]
 
 [build-system]
 requires = ["hatchling"]

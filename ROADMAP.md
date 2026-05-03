@@ -3,13 +3,16 @@
 ## Current Status
 
 Migration closed. The lidar processing workflow has been migrated from
-`gfatpy/lidar` to standalone `lidarpy`; remaining work is maintenance and
-release hardening.
+`gfatpy/lidar` to the standalone PyPI distribution `atmolidarpy`; the importable
+Python package remains `lidarpy`. Remaining work is maintenance and release
+hardening.
 
 ## Done
 
 - Created standalone `src/lidarpy` package.
 - Added `pyproject.toml` for `lidarpy`.
+- Renamed the PyPI distribution to `atmolidarpy` because `lidarpy` is already
+  taken on PyPI; imports remain `import lidarpy`.
 - Configured pytest with `--basetemp=.pytest_tmp`.
 - Added `.gitignore` entries for local runtimes, pytest temp folders, unzip
   folders, and generated artifacts.
@@ -108,6 +111,17 @@ release hardening.
   preprocessing routines to their source papers.
 - Added `.github/workflows/publish-package.yml` to build distributions, check
   them with Twine, and publish to PyPI through Trusted Publishing.
+- Added `.github/workflows/tests.yml` so pushes and pull requests against
+  `main` and `develop` run the pytest suite on GitHub Actions.
+- Updated package metadata URLs to point to the standalone `lidarpy`
+  repository, documentation site, and issue tracker.
+- Removed active `pdb.set_trace()` calls and obvious diagnostic print output
+  from active utility/preprocessing paths.
+- Added pytest markers for documentation, packaging, integration, and slow
+  tests so the full suite can be split cleanly during development without
+  changing the default CI behavior.
+- Replaced remaining noisy `print()` output in active retrieval/reference-range
+  paths with `loguru` logging or existing debug gates.
 - Added a migrated `apply_ov=True` preprocessing test using a generated
   per-channel overlap NetCDF profile.
 - Added a migrated `gluing_products=True` preprocessing test for ALHAMBRA
@@ -133,7 +147,10 @@ release hardening.
 
 ## Next Tasks
 
-1. Prepare release hardening for the first standalone package publication.
+1. Release blocker: configure PyPI Trusted Publishing for the `atmolidarpy`
+   project, this GitHub repository, and the GitHub environment named `pypi`
+   before tagging the first standalone release. The workflow is already
+   present, but PyPI/GitHub trust configuration is external to the repository.
 
 ## Post-Migration Maintenance
 
@@ -143,10 +160,6 @@ release hardening.
   migrated preprocessing coverage uses a generated overlap file.
 - Synthetic quicklooks currently adapt the generated signal to the plotting
   contract by assigning datetime coordinates and renaming it to `signal_*`.
-- TODO: Remove the two diagnostic `print(type(...))` calls emitted by synthetic
-  signal generation. They currently pollute documentation-figure generation
-  output, but were not changed during the docs-only work to avoid mixing
-  production cleanup with documentation changes.
 - `iterative_beta_forward` started above the first range bin requires a valid
   `initial_particle_optical_depth`; otherwise the retrieval is missing its
   lower-boundary particle transmittance.

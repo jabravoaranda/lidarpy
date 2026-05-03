@@ -217,7 +217,6 @@ def gapsizer(ax, time, range, gapsize, colour="#c7c7c7"):
     # search for holes in data
     # --------------------------------------------------------------------
     dif_time = time[1:] - time[0:-1]
-    print(type(dif_time))
     for index, delta in enumerate(dif_time):
         if delta > dt.timedelta(minutes=gapsize):
             # missing hide bad data

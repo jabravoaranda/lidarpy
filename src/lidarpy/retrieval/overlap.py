@@ -5,6 +5,7 @@ import datetime as dt
 import numpy as np
 import pandas as pd
 import xarray as xr
+from loguru import logger
 
 from lidarpy.preprocessing.lidar_preprocessing_tools import ff_2D_overlap_from_channels
 from lidarpy.general_utils.dates import numpy_to_datetime
@@ -186,7 +187,7 @@ def retrieve_ff_overlap(
 
         # save overlap files
         overlap.to_netcdf(output_path)
-        print(f"Overlap saved in {output_path}")
+        logger.info(f"Overlap saved in {output_path}")
     else:
         raise ValueError("Could not calculate overlap for any channel")
     

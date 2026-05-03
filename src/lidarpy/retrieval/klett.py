@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Any, Tuple
 from matplotlib import pyplot as plt
 import numpy as np
+from loguru import logger
 from scipy import integrate
 from scipy.integrate import cumulative_trapezoid as cumtrapz
 from scipy.integrate import trapezoid as trapz
@@ -338,7 +339,7 @@ def find_lidar_ratio(
         rel_diff_aod = 100 * (aod_ - reference_aod) / reference_aod
 
         if debugging:
-            print(
+            logger.debug(
                 "lidar_ratio: %.1f | lidar_aod: %.3f| reference_aod: %.3f | relative_difference: %.1f%%"
                 % (lr_, aod_, reference_aod, rel_diff_aod)
             )
@@ -348,24 +349,24 @@ def find_lidar_ratio(
             if rel_diff_aod > 0:
                 if lr_ < 20:
                     run = False
-                    print("No convergence. LR goes too low.")
+                    logger.warning("No convergence. LR goes too low.")
                 else:
                     lr_ = lr_ - 1
             else:
                 if lr_ > 150:
                     run = False
-                    print("No convergence. LR goes too high.")
+                    logger.warning("No convergence. LR goes too high.")
                 else:
                     lr_ = lr_ + 1
         else:
-            print("LR found: %f" % lr_)
+            logger.info("LR found: %f" % lr_)
             run = False
             success = True
 
         # Check maximum number of iterations
         if iter_ == max_iterations:
             run = False
-            print("No convergence. Too many iterations.")
+            logger.warning("No convergence. Too many iterations.")
 
     return lr_, rel_diff_aod, success # type: ignore
 
@@ -452,7 +453,9 @@ def iterative_beta_forward(
     tau_a[idx_start] = initial_particle_optical_depth
 
     if debug:
-        print(f"Init z0 index={idx_start} ({z[idx_start]:.1f}m): Beta_a={beta_a[idx_start]:.2e}")
+        logger.debug(
+            f"Init z0 index={idx_start} ({z[idx_start]:.1f}m): Beta_a={beta_a[idx_start]:.2e}"
+        )
 
     # --- 2. BUCLE ITERATIVO CAPA POR CAPA (Bottom-Up) ---
     # Empezamos desde la siguiente capa (idx_start + 1) hacia arriba
@@ -461,7 +464,8 @@ def iterative_beta_forward(
         # --- COMPROBACIÓN H_TOP (Diagrama: rombo zi >= htop) ---
         # Si hemos superado la altura máxima, terminamos el proceso.
         if height_top is not None and z[i] > height_top:
-            if debug: print(f"Reached h_top at {z[i]:.1f}m. Stopping.")
+            if debug:
+                logger.debug(f"Reached h_top at {z[i]:.1f}m. Stopping.")
             break
         
         # Variables de la capa anterior (i-1) fijas
@@ -525,7 +529,9 @@ def iterative_beta_forward(
         tau_a[i] = current_tau
         
         if debug and not converged:
-            print(f"Warning: Layer {i} ({z[i]:.1f}m) did not converge. Diff: {rel_diff:.2e}")
+            logger.warning(
+                f"Layer {i} ({z[i]:.1f}m) did not converge. Diff: {rel_diff:.2e}"
+            )
 
     # Devolver el perfil de retrodispersión
     return beta_a

@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import xarray as xr
+from loguru import logger
 from scipy.integrate import trapezoid
 
 from lidarpy.atmo.rayleigh import molecular_properties
@@ -174,7 +175,8 @@ def get_reference_window(
     #get range from masked_slope[~mask]
     masked_ranges = nrcs.range.values[mask]
     
-    print("Masked ranges:", masked_ranges)
+    if debugging:
+        logger.debug(f"Masked ranges: {masked_ranges}")
 
     #create candidates['derivate'] with the ranges with mask true
     candidates['derivate'] = {}
@@ -211,7 +213,9 @@ def get_reference_window(
     if len(candidates['residual']) > 0:
         candidates_ = candidates['residual'].copy()
     else:
-        print("No candidates passed residual filter, using derivative candidates instead.")
+        logger.warning(
+            "No candidates passed residual filter, using derivative candidates instead."
+        )
         candidates_ = candidates['derivate'].copy()
     
     # Step 3: extinction filter
@@ -263,8 +267,8 @@ def get_reference_window(
 
     # print("Final reference range:", final_reference_slice)
     if debugging:
-        print("Candidates after derivative filter:", candidates['derivate'].keys())
-        print("Candidates after residual filter:", candidates['residual'].keys())
+        logger.debug(f"Candidates after derivative filter: {candidates['derivate'].keys()}")
+        logger.debug(f"Candidates after residual filter: {candidates['residual'].keys()}")
         
         final_keys = list(candidates['final'].keys())
         mask_final = np.isin(attenuated_backscatter.range.values, final_keys)
@@ -313,7 +317,7 @@ def get_reference_window(
         
         fig.savefig(Path(__file__).parent.parent.parent.parent / 'tests' / 'figures' / 'reference_range.png')
 
-        print("Final reference range:", final_reference_slice)
+        logger.debug(f"Final reference range: {final_reference_slice}")
     return candidates, final_reference_slice
 
 
@@ -417,7 +421,9 @@ def get_reference_range(
         for range_ in candidates['residual']:
             candidates['final'] = candidates['residual'].copy()
     else:
-        print("No candidates passed residual filter, using derivative candidates instead.")
+        logger.warning(
+            "No candidates passed residual filter, using derivative candidates instead."
+        )
         candidates['final'] = candidates['derivate'].copy()
 
 
@@ -447,8 +453,8 @@ def get_reference_range(
     
         # --- DEBUGGING PLOTS UNIFICADOS ---
     if debugging:
-        print("Candidates after derivative filter:", candidates['derivate'].keys())
-        print("Candidates after residual filter:", candidates['residual'].keys())
+        logger.debug(f"Candidates after derivative filter: {candidates['derivate'].keys()}")
+        logger.debug(f"Candidates after residual filter: {candidates['residual'].keys()}")
         
         final_keys = list(candidates['final'].keys())
         mask_final = np.isin(attenuated_backscatter.range.values, final_keys)
@@ -496,6 +502,6 @@ def get_reference_range(
         ax.set_facecolor("white")
         fig.savefig(Path(__file__).parent.parent.parent.parent / 'tests' / 'figures' / 'reference_height.png')  
 
-
-    print("Final reference height:", final_reference_height)
+    if debugging:
+        logger.debug(f"Final reference height: {final_reference_height}")
     return candidates, final_reference_height

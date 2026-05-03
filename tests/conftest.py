@@ -17,6 +17,13 @@ OUTPUT_DIR = Path(r"./tests/data/PRODUCTS")
 ALHAMBRA_TEST_DATE = date(2023, 8, 30)
 ALHAMBRA_RS_FILENAME = "RS_20230830_0315.zip"
 ALHAMBRA_DC_FILENAME = "DC_20230830_0315.zip"
+RAW_FIXTURE_NAMES = {
+    "alhambra_rs_measurement",
+    "alhambra_dc_measurement",
+    "alhambra_rs_nc",
+    "alhambra_dc_nc",
+    "alhambra_rs_dc_nc",
+}
 
 
 def pytest_addoption(parser):
@@ -24,6 +31,22 @@ def pytest_addoption(parser):
     parser.addoption("--runalh", action="store_true", default=False)
     parser.addoption("--runlinc", action="store_true", default=False)
     parser.addoption("--cleanup", action="store_true", default=False)
+
+
+def pytest_collection_modifyitems(items):
+    for item in items:
+        fixture_names = set(getattr(item, "fixturenames", ()))
+        test_path = item.path.as_posix()
+
+        if fixture_names & RAW_FIXTURE_NAMES:
+            item.add_marker(pytest.mark.integration)
+            item.add_marker(pytest.mark.slow)
+
+        if "/tests/docs/" in test_path:
+            item.add_marker(pytest.mark.docs)
+
+        if "/tests/packaging/" in test_path:
+            item.add_marker(pytest.mark.packaging)
 
 
 @pytest.fixture(scope="session")

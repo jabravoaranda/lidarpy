@@ -20,7 +20,7 @@ def built_distributions():
     build_dir = root / "artifacts" / "packaging_tests"
     dist_dir = build_dir / "dist"
     dist_dir.mkdir(parents=True, exist_ok=True)
-    for artifact in dist_dir.glob("lidarpy-*"):
+    for artifact in dist_dir.glob("atmolidarpy-*"):
         artifact.unlink()
 
     env = os.environ.copy()
@@ -43,8 +43,8 @@ def built_distributions():
             pytest.skip("uv build requires network/cache access that is unavailable")
         raise
 
-    sdist = next(dist_dir.glob("lidarpy-*.tar.gz"))
-    wheel = next(dist_dir.glob("lidarpy-*.whl"))
+    sdist = next(dist_dir.glob("atmolidarpy-*.tar.gz"))
+    wheel = next(dist_dir.glob("atmolidarpy-*.whl"))
     return sdist, wheel
 
 

@@ -1,6 +1,5 @@
-from asyncio.log import logger
-from pdb import set_trace
 import numpy as np
+from loguru import logger
 from scipy.signal import savgol_filter
 
 from lidarpy.general_utils.numerics import find_nearest_1d
@@ -97,7 +96,6 @@ def estimate_first_range(
                 analog_signal[lower_idx:upper_idx], photon_signal[lower_idx:upper_idx]
             )[0, 1]
             # Linear Correlation is Good Enough
-            set_trace()
             if correlation >= correlation_threshold:
                 region_found = True
             else:
@@ -237,7 +235,7 @@ def optimize_with_slope_test(
 
     if not glue_found:
         low_idx, up_idx = False, False
-        print(
+        logger.warning(
             "No suitable region found. Lower gluing idx: {0}. Upper gluing idx: {1}.".format(
                 low_idx, up_idx
             )
@@ -290,7 +288,7 @@ def optimize_with_stability_test(
 
     if not glue_found:
         low_idx, up_idx = False, False
-        print(
+        logger.warning(
             "No suitable region found. Lower gluing idx: {0}. Upper gluing idx: {1}.".format(
                 low_idx, up_idx
             )
@@ -350,10 +348,21 @@ def estimate_gluing_region(
     # Stability Test is performed only after Slope Test
     if stability_test:
         slope_test = True
-    set_trace()
+
     """ First Estimation of Gluing Range """
-    first_lower_idx, first_upper_idx, first_res, _ = estimate_first_range( analog_signal, photon_signal, ranges, photon_bg, photon_threshold, adc_range, adc_bits, n_res, correlation_threshold, min_points, range_threshold, )
-    set_trace()
+    first_lower_idx, first_upper_idx, first_res, _ = estimate_first_range(
+        analog_signal,
+        photon_signal,
+        ranges,
+        photon_bg,
+        photon_threshold,
+        adc_range,
+        adc_bits,
+        n_res,
+        correlation_threshold,
+        min_points,
+        range_threshold,
+    )
     if first_res:
         """Slope Test"""
         if slope_test:
@@ -394,7 +403,6 @@ def estimate_gluing_region(
         else:
             # Final Indices are from First Estimation
             lower_idx, upper_idx = first_lower_idx, first_upper_idx
-    set_trace()
     if np.logical_and(lower_idx, upper_idx):
         glue = True
 
