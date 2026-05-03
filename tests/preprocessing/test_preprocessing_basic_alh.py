@@ -155,3 +155,84 @@ def test_preprocess_alhambra_with_gaussian_smoothing(alhambra_rs_nc):
         assert _has_finite_values(dataset["signal_1064fta"])
     finally:
         dataset.close()
+
+
+def test_preprocess_alhambra_with_overlap_file(alhambra_rs_nc, tmp_path):
+    with xr.open_dataset(alhambra_rs_nc) as raw_dataset:
+        ranges = raw_dataset["range"].load()
+
+    overlap_profile = xr.DataArray(
+        np.linspace(0.5, 1.0, ranges.size, dtype=np.float64)[np.newaxis, :],
+        dims=("channel", "range"),
+        coords={"channel": ["1064fta"], "range": ranges},
+        name="overlap",
+    )
+    overlap_path = tmp_path / "overlap_1064fta.nc"
+    overlap_profile.to_netcdf(overlap_path)
+
+    common_kwargs = dict(
+        channels=["1064fta"],
+        crop_ranges=(0.0, 15000.0),
+        apply_dc=False,
+        apply_dt=False,
+        apply_bg=True,
+        apply_bz=True,
+        gluing_products=False,
+        apply_sm=False,
+    )
+    baseline = preprocess(alhambra_rs_nc, apply_ov=False, **common_kwargs)
+    corrected = preprocess(
+        alhambra_rs_nc,
+        apply_ov=True,
+        overlap_path=overlap_path,
+        **common_kwargs,
+    )
+
+    try:
+        assert corrected.attrs["ov_corrected"] == "True"
+        assert "overlap_corrected" in corrected
+        assert "overlap_1064fta" in corrected
+        assert corrected["signal_1064fta"].attrs["overlap_applied"] == "1064fta"
+        assert corrected["overlap_corrected"].sel(channel="1064fta").item() == 1
+
+        expected_overlap = overlap_profile.sel(channel="1064fta", drop=True).sel(
+            range=corrected.range
+        )
+        expected_signal = baseline["signal_1064fta"] / expected_overlap
+
+        xr.testing.assert_allclose(corrected["overlap_1064fta"], expected_overlap)
+        xr.testing.assert_allclose(corrected["signal_1064fta"], expected_signal)
+        assert _has_finite_values(corrected["signal_1064fta"])
+    finally:
+        baseline.close()
+        corrected.close()
+
+
+def test_preprocess_alhambra_with_gluing_products(alhambra_rs_nc):
+    dataset = preprocess(
+        alhambra_rs_nc,
+        channels=["532nta", "532ntp"],
+        crop_ranges=(0.0, 15000.0),
+        apply_dc=False,
+        apply_dt=False,
+        apply_bg=True,
+        apply_bz=True,
+        apply_ov=False,
+        gluing_products=True,
+        apply_sm=False,
+    )
+
+    try:
+        available_channels = {str(channel) for channel in dataset.channel.values}
+        assert {"532npa", "532npp", "532nsa", "532nsp"}.issubset(
+            available_channels
+        )
+        assert {"532npg", "532nsg"}.issubset(available_channels)
+
+        for channel in ("532npg", "532nsg"):
+            signal_name = f"signal_{channel}"
+            assert signal_name in dataset
+            assert dataset[signal_name].dims == ("time", "range")
+            assert _has_finite_values(dataset[signal_name])
+    finally:
+        dataset.close()

@@ -1,7 +1,7 @@
 from typing import Tuple
 from pathlib import Path
 from lidarpy.atmo.atmo import attenuated_backscatter
-from lidarpy.general_utils.optimized import moving_linear_fit
+from lidarpy.general_utils.fitting import linear_fit, moving_linear_fit
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -11,7 +11,6 @@ from scipy.integrate import trapezoid
 from lidarpy.atmo.rayleigh import molecular_properties
 from lidarpy.utils.file_manager import channel2info
 from lidarpy.utils.utils import signal_to_rcs
-from lidarpy.general_utils.utils import linear_fit
 
 def _attenuated_backscatter(
     rcs: xr.DataArray,

@@ -12,7 +12,7 @@ from lidarpy.nc_convert.measurement import merge_measurements_by_date
 from lidarpy.utils.types import MeasurementType
 from lidarpy.general_utils import plot
 from lidarpy.general_utils.io import read_yaml_from_info
-from lidarpy.general_utils.utils import parse_datetime
+from lidarpy.general_utils.dates import parse_datetime
 from lidarpy.utils.file_manager import filename2info
 from lidarpy.utils.utils import LIDAR_INFO, signal_to_rcs
 from lidarpy.preprocessing.lidar_preprocessing import preprocess

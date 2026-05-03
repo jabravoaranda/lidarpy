@@ -6,7 +6,7 @@ import numpy as np
 
 from lidarpy.utils.utils import LIDAR_INFO
 from lidarpy.general_utils.io import read_yaml_from_info
-from lidarpy.general_utils.utils import parse_datetime
+from lidarpy.general_utils.dates import parse_datetime
 
 
 def channel2info(channel: str) -> tuple[int, str, str | None, str]:

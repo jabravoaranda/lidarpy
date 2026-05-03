@@ -8,8 +8,14 @@ import numpy as np
 from typing import Any
 from pathlib import Path
 from datetime import datetime
+import os
 
-from lidarpy.general_utils.utils import datetime_np2dt
+from lidarpy.general_utils.dates import datetime_np2dt
+
+
+def check_dir(dir_name):
+    """Check if a directory exists and is writable."""
+    return os.access(dir_name, os.W_OK)
 
 
 def read_yaml(path: Path | str) -> Any:

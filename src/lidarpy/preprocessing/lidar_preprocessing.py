@@ -837,7 +837,8 @@ def apply_overlap_correction(
     dataset["overlap_corrected"] = overlap_corrected
 
     if ff_overlap_path is not None:
-        overlap = xr.open_dataarray(ff_overlap_path)
+        with xr.open_dataarray(ff_overlap_path) as overlap_data:
+            overlap = overlap_data.load()
     else:
         overlap = None
 
@@ -950,4 +951,4 @@ def apply_detection_mode_merge(dataset: xr.Dataset) -> xr.Dataset:
         },
     )
 
-    return xr.merge([dataset, glued_dataset])
+    return xr.merge([dataset, glued_dataset], join="outer")

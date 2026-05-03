@@ -6,7 +6,7 @@ import numpy as np
 import xarray as xr
 from scipy.signal import savgol_filter
 
-from lidarpy.general_utils.optimized import best_slope_fit
+from lidarpy.general_utils.fitting import best_slope_fit
 
 
 def _create_smoother_normalizer(window_size: int) -> Callable[[np.ndarray], np.ndarray]:

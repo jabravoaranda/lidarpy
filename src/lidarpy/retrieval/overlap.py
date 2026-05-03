@@ -7,7 +7,7 @@ import pandas as pd
 import xarray as xr
 
 from lidarpy.preprocessing.lidar_preprocessing_tools import ff_2D_overlap_from_channels
-from lidarpy.general_utils.utils import numpy_to_datetime
+from lidarpy.general_utils.dates import numpy_to_datetime
 from lidarpy.utils.utils import refill_overlap, signal_to_rcs
 from lidarpy.preprocessing.lidar_preprocessing import preprocess
 from lidarpy.retrieval.klett import klett_rcs

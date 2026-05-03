@@ -22,7 +22,7 @@ from lidarpy.utils.utils import filter_wildcard
 from lidarpy.nc_convert.utils import search_config_file
 from lidarpy.utils.file_manager import filename2info, info2general_path, info2path
 from lidarpy.utils.types import LidarName, MeasurementType, Telescope
-from lidarpy.general_utils.utils import parse_datetime
+from lidarpy.general_utils.dates import parse_datetime
 
 RAW_FIRST_LETTER = LIDAR_INFO["metadata"]["licel_file_wildcard"]
 

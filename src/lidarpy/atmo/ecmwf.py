@@ -8,7 +8,7 @@ import xarray as xr
 from netCDF4 import Dataset  # type: ignore
 from scipy.interpolate import interp1d
 
-from lidarpy.general_utils.utils import parse_datetime
+from lidarpy.general_utils.dates import parse_datetime
 
 API_URL = "https://cloudnet.fmi.fi/api"
 

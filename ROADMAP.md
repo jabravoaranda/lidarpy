@@ -1,9 +1,10 @@
 # ROADMAP
 
-## Current Goal
+## Current Status
 
-Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
-`lidarpy`.
+Migration closed. The lidar processing workflow has been migrated from
+`gfatpy/lidar` to standalone `lidarpy`; remaining work is maintenance and
+release hardening.
 
 ## Done
 
@@ -18,7 +19,9 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 - Removed legacy modules/tests outside the current migration focus:
   `scc`, `quality_assurance`, `depolarization`, `mulhacen`, `synthetic`, and
   old retrieval tests.
-- Kept `retrieval` for now because `apply_ov=True` may need overlap retrieval.
+- Kept `retrieval` as part of the standalone package scope; retrieval was in
+  the migration roadmap and is covered by synthetic Klett, iterative elastic,
+  Raman extinction, Raman backscatter, and overlap-related tests/docs.
 - Added tests for:
   - RS binary to NetCDF conversion.
   - DC binary to NetCDF conversion.
@@ -103,6 +106,26 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 - Added and expanded a scientific-references section to the public docs linking
   the migrated retrieval, molecular-atmosphere, depolarization, overlap, and
   preprocessing routines to their source papers.
+- Added `.github/workflows/publish-package.yml` to build distributions, check
+  them with Twine, and publish to PyPI through Trusted Publishing.
+- Added a migrated `apply_ov=True` preprocessing test using a generated
+  per-channel overlap NetCDF profile.
+- Added a migrated `gluing_products=True` preprocessing test for ALHAMBRA
+  near-field 532 nm analog/photon-counting products.
+- Confirmed that `retrieval` remains in `lidarpy` as part of the standalone
+  package migration scope.
+- Reviewed the remaining `utils` modules. `file_manager`, `types`, `snr`, and
+  `get_reference_range` are lidar-specific; the remaining helpers in
+  `utils.py` are tied to lidar/Licel naming, signal/RCS handling, overlap, or
+  retrieval/synthetic workflows, so no additional move to `general_utils` is
+  needed for migration closure.
+- Split general utility helpers into clearer `general_utils.fitting`,
+  `general_utils.numerics`, and `general_utils.dates` modules. Removed the old
+  `optimized` and `utils` modules, moved `check_dir` into `general_utils.io`,
+  and deleted unused calendar/legacy miscellaneous helpers.
+- Validated the migrated test suite on 2026-05-04:
+  `$env:PYTHONPATH='src'; $env:MPLBACKEND='Agg'; .\.venv\Scripts\python -m pytest tests -q`
+  passed with `78 passed in 499.29s`.
 
 ## In Progress
 
@@ -110,20 +133,14 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
 
 ## Next Tasks
 
-1. Add a migrated `apply_ov=True` preprocessing test.
-2. Add a migrated `gluing_products=True` preprocessing test.
-3. Decide whether `retrieval` remains in the package after overlap migration.
-4. Run the migrated test suite on a machine with enough disk space.
-5. Continue checking whether remaining `utils` modules are genuinely
-   lidar-specific or should move to `general_utils`.
+1. Prepare release hardening for the first standalone package publication.
 
-## Known Risks
+## Post-Migration Maintenance
 
 - Long test runs can fill disk because RAW fixtures are unzipped and converted
   to large NetCDF files.
-- `apply_ov=True` may require a generated or fixture overlap file.
-- `gluing_products=True` may expose assumptions inherited from old fixed-product
-  tests.
+- Derived `apply_ov=True` overlap retrieval still needs coverage; current
+  migrated preprocessing coverage uses a generated overlap file.
 - Synthetic quicklooks currently adapt the generated signal to the plotting
   contract by assigning datetime coordinates and renaming it to `signal_*`.
 - TODO: Remove the two diagnostic `print(type(...))` calls emitted by synthetic
@@ -135,6 +152,9 @@ Migrate the lidar processing workflow from `gfatpy/lidar` to standalone
   lower-boundary particle transmittance.
 - These coordination files are tracked for development only and must not be
   included in PyPI distributions.
+- The `Publish Package` workflow expects PyPI Trusted Publishing to be
+  configured for the GitHub environment named `pypi` before the publish job can
+  upload real releases.
 
 ## Commit Landmarks
 

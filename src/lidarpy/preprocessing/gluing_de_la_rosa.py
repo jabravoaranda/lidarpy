@@ -2,7 +2,7 @@ import numpy as np
 import xarray as xr
 from numpy.polynomial.polynomial import polyfit, polyval
 
-from lidarpy.general_utils.optimized import windowed_corrcoefs
+from lidarpy.general_utils.fitting import windowed_corrcoefs
 
 
 def gluing(
