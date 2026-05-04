@@ -12,7 +12,7 @@ def test_search_config_alh_with_configfile(alhambra_rs_measurement):
     config_filepath = search_config_file(
         LidarName.alh,
         target_datetime,
-        Path(r".\src\lidarpy\nc_convert\configs\ALHAMBRA_20180101.toml"),
+        Path("src") / "lidarpy" / "nc_convert" / "configs" / "ALHAMBRA_20180101.toml",
     )
     config = get_config(config_filepath)
     assert config.lidar.attrs["system"] == "ALHAMBRA"
