@@ -50,6 +50,7 @@ dev = [
     "pre-commit>=2.20.0,<3",
     "pykalman>=0.9.5,<0.10",
     "pyts>=0.11.0,<0.12",
+    "twine>=6.1.0,<7",
 ]
 
 [tool.hatch.build.targets.sdist]
