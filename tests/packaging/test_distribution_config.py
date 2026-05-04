@@ -31,6 +31,8 @@ def test_distribution_name_keeps_lidarpy_import_package():
     pyproject = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
 
     assert pyproject["project"]["name"] == "atmolidarpy"
+    assert pyproject["project"]["version"] == "0.1.0"
+    assert "Development Status :: 3 - Alpha" in pyproject["project"]["classifiers"]
     assert pyproject["tool"]["hatch"]["build"]["targets"]["wheel"]["packages"] == [
         "src/lidarpy"
     ]

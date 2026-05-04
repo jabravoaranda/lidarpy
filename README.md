@@ -35,6 +35,15 @@ GitHub Actions runs the same pytest suite on pushes and pull requests targeting
 
 ## Release
 
+Current package version: `0.1.0`.
+
+Versioning policy while the project remains alpha:
+
+- Bug fixes that keep the public API compatible use `0.1.x`.
+- Public API changes use `0.2.0`, `0.3.0`, etc.
+- `1.0.0` is reserved for the first stable API intended for production
+  dependants such as `gfat-worker`.
+
 Tag releases as `v*`. The publish workflow builds the source distribution and
 wheel, checks them with Twine, and publishes through PyPI Trusted Publishing.
 Before the first real release, configure the PyPI project to trust the GitHub
