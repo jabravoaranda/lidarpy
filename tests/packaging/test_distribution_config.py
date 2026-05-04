@@ -29,9 +29,12 @@ def test_wheel_only_packages_lidarpy_source_tree():
 
 def test_distribution_name_keeps_lidarpy_import_package():
     pyproject = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+    init_py = Path("src/lidarpy/__init__.py").read_text(encoding="utf-8")
+    readme = Path("README.md").read_text(encoding="utf-8")
 
     assert pyproject["project"]["name"] == "atmolidarpy"
-    assert pyproject["project"]["version"] == "0.1.0"
+    assert f'__version__ = "{pyproject["project"]["version"]}"' in init_py
+    assert f'Current package version: `{pyproject["project"]["version"]}`' in readme
     assert "Development Status :: 3 - Alpha" in pyproject["project"]["classifiers"]
     assert pyproject["tool"]["hatch"]["build"]["targets"]["wheel"]["packages"] == [
         "src/lidarpy"

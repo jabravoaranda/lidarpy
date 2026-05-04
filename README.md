@@ -35,7 +35,7 @@ GitHub Actions runs the same pytest suite on pushes and pull requests targeting
 
 ## Release
 
-Current package version: `0.1.0`.
+Current package version: `0.1.1`.
 
 Versioning policy while the project remains alpha:
 

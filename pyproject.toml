@@ -1,6 +1,6 @@
 [project]
 name = "atmolidarpy"
-version = "0.1.0"
+version = "0.1.1"
 description = "Standalone atmospheric lidar data processing package"
 authors = [{ name = "Juan Diego De la Rosa", email = "jdidelarc@gmail.com" }]
 requires-python = ">=3.11.11,<3.12"
