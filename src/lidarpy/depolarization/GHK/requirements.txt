@@ -1,0 +1,6 @@
+version: Lidar-polarisation-GHK-parameter-and-error-calculation-6eb017aeb6fe
+
+numpy
+scipy
+matplotlib
+seaborn

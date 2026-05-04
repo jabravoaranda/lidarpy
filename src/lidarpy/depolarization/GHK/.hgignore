@@ -1,0 +1,6 @@
+syntax: glob
+*~
+re:^\.idea/
+*.orig
+re:^lidar_correction_ghk_0\.9\.8_published\.py$
+re:^lidar_correction_ghk_0\.9\.6\.py$

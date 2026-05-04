@@ -1,0 +1,13 @@
+{
+        "name": "earlinet",
+        "lidar_config":{
+                "ngt":{
+                        "scc": 555,
+                        "hour_ini": 18,
+                        "hour_end": 24,
+                        "hour_res": 0.5,
+                        "timestamp": 1,
+                        "slot_name_type": 1
+                }
+        }
+}

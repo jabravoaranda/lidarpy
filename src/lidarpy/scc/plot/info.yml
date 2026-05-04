@@ -1,0 +1,173 @@
+2223:
+  optical_product: Elastic backscatter
+  wavelength: 1064
+  channels:
+    2203: 1064fta
+  string_ID: eb1064f
+2330:
+  optical_product: Elastic backscatter
+  wavelength: 532
+  channels:
+    2204: 532fta
+    2232: 532ftp
+  string_ID: eb532f
+2335:
+  optical_product: Elastic backscatter and Depolarization ratio
+  wavelength: 355
+  channels:
+    2213: 355fpa
+    2233: 355fpp
+    2214: 355fsa
+    2234: 355fsp
+  string_ID: ebdr355f
+2375:
+  optical_product: Elastic backscatter and Depolarization ratio
+  wavelength: 532
+  channels:
+    2124: 532npa
+    2268: 532npp
+    2126: 532nsa
+    2269: 532nsp
+  string_ID: ebdr532n
+2377:
+  optical_product: Elastic backscatter and Depolarization ratio
+  wavelength: 355
+  channels:
+    2128: 355npa
+    2270: 355npp
+    2130: 355nsa
+    2271: 355nsp
+  string_ID: ebdr355n
+2437:
+  optical_product: Elastic backscatter
+  wavelength: 1064
+  channels:
+    2123: 1064nta
+  string_ID: eb1064n
+2371:
+  optical_product: Raman backscatter and Depolarization ratio
+  wavelength: 532
+  channels:
+    2126: 532nsa
+    2219: 607nta
+    2268: 532npp
+    2269: 532nsp
+    2274: 607ntp
+  string_ID: rbdr532n
+2304:
+  optical_product: Lidar ratio and extinction
+  wavelength: 355
+  channels:
+    2128: 355npa
+    2130: 355nsa
+    2218: 387nta
+    2270: 355npp
+  string_ID: lre355n
+2363:
+  optical_product: Raman backscatter and Depolarization ratio
+  wavelength: 355
+  channels:
+    2213: 355fpa
+    2214: 355fsa
+    2216: 354fta
+    2217: 354ftp
+    2233: 355fpp
+    2234: 355fsp
+  string_ID: rbdr355f
+2364:
+  optical_product: Lidar ratio and extinction
+  wavelength: 355
+  channels:
+    2213: 355fpa
+    2214: 355fsa
+    2216: 354fta
+    2217: 354ftp
+    2233: 355fpp
+    2234: 355fsp
+  string_ID: lre355f
+2365:
+  optical_product: Raman backscatter
+  wavelength: 532
+  channels:
+    2204: 532fta
+    2215: 531fta
+    2232: 532ftp
+    2272: 531ftp
+  string_ID: rb532f
+2366:
+  optical_product: extinction only
+  wavelength: 532
+  channels:
+    2215: 531fta
+    2272: 531ftp
+  string_ID: eo532f
+2367:
+  optical_product: Lidar ratio and extinction
+  wavelength: 532
+  channels:
+    2204: 532fta
+    2215: 531fta
+    2232: 532ftp
+    2272: 531ftp
+  string_ID: lre532f
+2369:
+  optical_product: Raman backscatter and Depolarization ratio
+  wavelength: 355
+  channels:
+    2128: 355npa
+    2130: 355nsa
+    2218: 387nta
+    2270: 355npp
+    2271: 355nsp
+    2273: 387ntp
+  string_ID: rbdr355n
+2374:
+  optical_product: Lidar ratio and extinction
+  wavelength: 532
+  channels:
+    2124: 532npa
+    2126: 532nsa
+    2219: 607nta
+    2268: 532npp
+    2269: 532nsp
+    2274: 607ntp
+  string_ID: lre532n
+2228:
+  optical_product: Depolarization calibration
+  wavelength: 532
+  channels:
+    2132: 532npa_P45
+    2133: 532npp_P45
+    2134: 532nsa_P45
+    2135: 532nsp_P45
+    2136: 532npa_N45
+    2137: 532npp_N45
+    2138: 532nsa_N45
+    2139: 532nsp_N45
+  string_ID: dc532n
+2229:
+  optical_product: Depolarization calibration
+  wavelength: 355
+  channels:
+    2140: 355npa_P45
+    2141: 355npp_P45
+    2142: 355nsa_P45
+    2143: 355nsp_P45
+    2144: 355npa_N45
+    2145: 355npp_N45
+    2146: 355nsa_N45
+    2147: 355nsp_N45
+  string_ID: dc355n
+2296:
+  optical_product: Depolarization calibration
+  wavelength: 532
+  channels:
+    2205: 355fpa_P45
+    2206: 355fpp_P45
+    2207: 355fsa_P45
+    2208: 355fsp_P45
+    2209: 355fpa_N45
+    2210: 355fpp_N45
+    2211: 355fsa_N45
+    2212: 355fsp_N45
+  string_ID: dc355f

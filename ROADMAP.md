@@ -20,8 +20,9 @@ hardening.
   - `tests/data/RAW/alhambra/2023/08/30/RS_20230830_0315.zip`
   - `tests/data/RAW/alhambra/2023/08/30/DC_20230830_0315.zip`
 - Removed legacy modules/tests outside the current migration focus:
-  `scc`, `quality_assurance`, `depolarization`, `mulhacen`, `synthetic`, and
-  old retrieval tests.
+  `quality_assurance`, `mulhacen`, `synthetic`, and old retrieval tests.
+- Restored `scc` and `depolarization` as crucial standalone package modules
+  after discovering they had been incorrectly removed from the migration scope.
 - Kept `retrieval` as part of the standalone package scope; retrieval was in
   the migration roadmap and is covered by synthetic Klett, iterative elastic,
   Raman extinction, Raman backscatter, and overlap-related tests/docs.

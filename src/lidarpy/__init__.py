@@ -1,10 +1,22 @@
-from . import atmo, general_utils, nc_convert, plot, preprocessing, retrieval, utils
+from . import (
+    atmo,
+    depolarization,
+    general_utils,
+    nc_convert,
+    plot,
+    preprocessing,
+    retrieval,
+    scc,
+    utils,
+)
 
 __version__ = "0.1.0"
 
 __all__ = [
     "preprocessing",
     "retrieval",
+    "scc",
+    "depolarization",
     "plot",
     "utils",
     "nc_convert",

@@ -93,3 +93,27 @@ def test_built_wheel_includes_runtime_package_data(built_distributions):
     assert _contains(names, "lidarpy/plot/info.yml")
     assert _contains(names, "lidarpy/nc_convert/configs/ALHAMBRA_20231121.toml")
     assert _contains(names, "lidarpy/assets/LOGO_GFAT_150pp")
+
+
+def test_built_distributions_include_scc_and_depolarization_modules(
+    built_distributions,
+):
+    sdist, wheel = built_distributions
+
+    names = _sdist_names(sdist) | _wheel_names(wheel)
+
+    assert _contains(names, "lidarpy/scc/scc_access.py")
+    assert _contains(names, "lidarpy/scc/scc_configFiles/alh_parameters_scc_729.py")
+    assert _contains(names, "lidarpy/depolarization/calibration.py")
+    assert _contains(names, "lidarpy/depolarization/retrieval.py")
+
+
+def test_built_distributions_exclude_generated_python_artifacts(
+    built_distributions,
+):
+    sdist, wheel = built_distributions
+
+    names = _sdist_names(sdist) | _wheel_names(wheel)
+
+    assert not any(name.endswith(".pyc") for name in names)
+    assert not any(name.endswith(".ipynb") for name in names)

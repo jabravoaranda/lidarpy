@@ -1,0 +1,21 @@
+{
+        "name": "campaign_name",
+        "lidar_config":{
+                "config_1":{
+                        "scc": 555,
+                        "hour_ini": 10.5,
+                        "hour_end": 13.5,
+                        "hour_res": 1,
+                        "timestamp": 0,
+                        "slot_name_type": 0
+                },
+                "config_2":{
+                        "scc": 555,
+                        "hour_ini": 18.5,
+                        "hour_end": 23.5,
+                        "hour_res": 1,
+                        "timestamp": 0,
+                        "slot_name_type": 0
+                }
+        }
+}

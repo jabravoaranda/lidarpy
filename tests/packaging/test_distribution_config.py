@@ -14,6 +14,8 @@ def test_coordination_files_are_not_in_sdist():
     assert "/ROADMAP.md" not in sdist["include"]
     assert "/AGENTS.md" in sdist["exclude"]
     assert "/ROADMAP.md" in sdist["exclude"]
+    assert "/src/lidarpy/**/*.ipynb" in sdist["exclude"]
+    assert "/src/lidarpy/**/*.pyc" in sdist["exclude"]
 
 
 def test_wheel_only_packages_lidarpy_source_tree():
@@ -23,6 +25,15 @@ def test_wheel_only_packages_lidarpy_source_tree():
 
     assert wheel["packages"] == ["src/lidarpy"]
     assert "src/lidarpy/assets/*" in wheel["artifacts"]
+
+
+def test_distribution_name_keeps_lidarpy_import_package():
+    pyproject = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+
+    assert pyproject["project"]["name"] == "atmolidarpy"
+    assert pyproject["tool"]["hatch"]["build"]["targets"]["wheel"]["packages"] == [
+        "src/lidarpy"
+    ]
 
 
 def test_runtime_dependencies_do_not_include_removed_notebook_stack():
@@ -42,5 +53,4 @@ def test_runtime_dependencies_do_not_include_removed_notebook_stack():
         "distributed",
         "atmospheric_lidar",
         "typer",
-        "pytz",
     }.isdisjoint(dependency_names)

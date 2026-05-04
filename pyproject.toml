@@ -30,6 +30,7 @@ dependencies = [
     "linc==3.0.6",
     "statsmodels>=0.14.4,<0.15",
     "psutil>=6.1.1,<7",
+    "pytz>=2024.2",
 ]
 
 [project.optional-dependencies]
@@ -56,6 +57,9 @@ include = ['/README.md', '/docs', '/src/lidarpy', '/tests', '/pyproject.toml', '
 exclude = [
     '/AGENTS.md',
     '/ROADMAP.md',
+    '/src/lidarpy/**/__pycache__',
+    '/src/lidarpy/**/*.pyc',
+    '/src/lidarpy/**/*.ipynb',
     '/tests/data/RAW/mulhacen',
     '/tests/data/RAW/generalife',
     '/tests/data/RAW/alhambra',

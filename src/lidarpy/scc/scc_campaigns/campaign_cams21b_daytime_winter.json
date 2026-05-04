@@ -1,0 +1,13 @@
+{
+        "name": "cams21b",
+        "lidar_config":{
+                "day":{
+                        "scc": 555,
+                        "hour_ini": 10.5,
+                        "hour_end": 13.5,
+                        "hour_res": 1,
+                        "timestamp": 1,
+                        "slot_name_type": 1
+                }
+        }
+}
