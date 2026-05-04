@@ -6,8 +6,8 @@ Python package remains `lidarpy`.
 
 Current public documentation:
 
-- [Documentation site](docs/index.html)
-- [Module reference index](docs/references.html)
+- [Documentation site](https://jabravoaranda.github.io/lidarpy/)
+- [Module reference index](https://jabravoaranda.github.io/lidarpy/references.html)
 
 Install the package from PyPI with:
 

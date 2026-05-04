@@ -16,11 +16,14 @@ DOC_PAGES = [
 
 def test_readme_links_to_existing_docs():
     readme = Path("README.md").read_text(encoding="utf-8")
-    links = re.findall(r"\]\((docs/[^)]+)\)", readme)
+    links = re.findall(r"\]\((https://jabravoaranda\.github\.io/lidarpy/[^)]*)\)", readme)
 
     assert links
     for link in links:
-        assert Path(link).exists()
+        local_path = link.removeprefix("https://jabravoaranda.github.io/lidarpy/")
+        if not local_path:
+            local_path = "index.html"
+        assert (Path("docs") / local_path).exists()
 
 
 def test_static_docs_pages_exist():
