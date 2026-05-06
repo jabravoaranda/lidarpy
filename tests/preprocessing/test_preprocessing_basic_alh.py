@@ -4,6 +4,7 @@ import numpy as np
 import xarray as xr
 
 from lidarpy.preprocessing import preprocess
+from lidarpy.preprocessing.lidar_preprocessing_tools import ff_2D_overlap_from_channels
 
 
 def _has_finite_values(data_array: xr.DataArray) -> bool:
@@ -202,6 +203,44 @@ def test_preprocess_alhambra_with_overlap_file(alhambra_rs_nc, tmp_path):
 
         xr.testing.assert_allclose(corrected["overlap_1064fta"], expected_overlap)
         xr.testing.assert_allclose(corrected["signal_1064fta"], expected_signal)
+        assert _has_finite_values(corrected["signal_1064fta"])
+    finally:
+        baseline.close()
+        corrected.close()
+
+
+def test_preprocess_alhambra_with_derived_overlap(alhambra_rs_nc):
+    common_kwargs = dict(
+        channels=["1064fta", "1064nta"],
+        crop_ranges=(0.0, 15000.0),
+        apply_dc=False,
+        apply_dt=False,
+        apply_bg=True,
+        apply_bz=True,
+        gluing_products=False,
+        apply_sm=False,
+    )
+    baseline = preprocess(alhambra_rs_nc, apply_ov=False, **common_kwargs)
+    corrected = preprocess(alhambra_rs_nc, apply_ov=True, **common_kwargs)
+
+    try:
+        expected_overlap = ff_2D_overlap_from_channels(
+            baseline,
+            channel_ff="1064fta",
+            channel_nf="1064nta",
+        )
+        expected_signal = baseline["signal_1064fta"] / expected_overlap
+
+        assert corrected.attrs["ov_corrected"] == "True"
+        assert "overlap_corrected" in corrected
+        assert "overlap_1064fta" in corrected
+        assert corrected["signal_1064fta"].attrs["overlap_applied"] == "1064fta"
+        assert corrected["overlap_corrected"].sel(channel="1064fta").item() == 1
+        assert corrected["overlap_corrected"].sel(channel="1064nta").item() == 0
+
+        xr.testing.assert_allclose(corrected["overlap_1064fta"], expected_overlap)
+        xr.testing.assert_allclose(corrected["signal_1064fta"], expected_signal)
+        assert _has_finite_values(corrected["overlap_1064fta"])
         assert _has_finite_values(corrected["signal_1064fta"])
     finally:
         baseline.close()
