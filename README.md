@@ -9,6 +9,11 @@ own. It includes RAW Licel conversion, preprocessing, quicklooks, synthetic
 signal generation, retrieval routines, SCC support modules and package data for
 known lidar systems.
 
+Current public documentation:
+
+- [Documentation site](https://jabravoaranda.github.io/lidarpy/)
+- [Module reference index](https://jabravoaranda.github.io/lidarpy/references.html)
+
 ## Documentation Map
 
 - [Overview](docs/index.html): package scope and repository map.
@@ -67,12 +72,14 @@ directories inside the repository.
 
 ## Release
 
+Current package version: `0.1.1`.
+
 The package is published as `atmolidarpy` on PyPI through GitHub Actions Trusted
 Publishing. Releases are tag-driven:
 
 ```powershell
-git tag v0.1.1
-git push origin v0.1.1
+git tag v0.1.2
+git push origin v0.1.2
 ```
 
 The `Publish Package` workflow builds sdist and wheel artifacts, checks them

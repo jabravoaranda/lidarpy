@@ -168,6 +168,9 @@ Publishing is configured for releases from this repository.
 - Validated the migrated test suite on 2026-05-04:
   `$env:PYTHONPATH='src'; $env:MPLBACKEND='Agg'; .\.venv\Scripts\python -m pytest tests -q`
   passed with `78 passed in 499.29s`.
+- Added initial SCC utility unit tests covering Licel filename date parsing,
+  header temperature/pressure extraction, campaign config loading/building, SCC
+  parameter module import, and local SCC output directory checks.
 
 ## In Progress
 
