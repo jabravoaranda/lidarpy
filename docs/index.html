@@ -14,6 +14,7 @@
         <a href="getting-started.html">Getting started</a>
         <a href="processing-workflow.html">Processing workflow</a>
         <a href="examples.html">Examples</a>
+        <a href="operations.html">Operations</a>
         <a href="references.html">References</a>
         <a href="api/lidarpy.html">API reference</a>
         <a href="contributing.html">Contributing</a>
@@ -21,14 +22,15 @@
       <p class="eyebrow">lidarpy</p>
       <h1>Process, validate and inspect lidar measurements</h1>
       <p class="lead">
-        <code>lidarpy</code> is a standalone Python package for lidar data
-        processing. It includes Licel binary to NetCDF conversion, preprocessing,
-        quicklooks, synthetic signal generation, and retrieval routines validated
-        against synthetic truth.
+        <code>lidarpy</code> is the importable package installed from the
+        <code>atmolidarpy</code> PyPI distribution. It is the standalone home
+        for the lidar processing code migrated out of <code>gfatpy.lidar</code>:
+        RAW/Licel conversion, preprocessing, quicklooks, synthetic signals,
+        retrieval routines, SCC support modules and system configuration data.
       </p>
       <div class="cta-row">
         <a class="button" href="getting-started.html">Getting started</a>
-        <a class="button secondary" href="references.html">Module references</a>
+        <a class="button secondary" href="operations.html">Operate the project</a>
       </div>
     </div>
   </header>
@@ -36,13 +38,20 @@
   <main class="wrap">
     <section class="feature-band">
       <section class="feature-copy">
-        <h2>What the package does</h2>
+        <h2>What the package is for</h2>
+        <p>
+          The package is intended for scientific and operational lidar workflows
+          where the processing chain needs to be reproducible outside the
+          original monorepo. It does not run a service by itself; it provides the
+          library code, tests, package data and documentation that downstream
+          applications can depend on.
+        </p>
         <ul>
           <li>Discover and convert Licel RAW measurements to NetCDF.</li>
-          <li>Apply core preprocessing corrections and quicklook generation.</li>
-          <li>Generate synthetic elastic, Raman and depolarization signals.</li>
+          <li>Apply preprocessing corrections, overlap correction and gluing products.</li>
+          <li>Generate synthetic elastic, Raman and depolarization signals for validation.</li>
           <li>Validate retrieval algorithms with explicit physical assumptions.</li>
-          <li>Keep generic utilities separate from lidar-specific helpers.</li>
+          <li>Package SCC and depolarization modules as part of the standalone distribution.</li>
         </ul>
       </section>
       <figure class="feature-figure">
@@ -61,6 +70,7 @@
           <li><a href="getting-started.html">Getting started</a>: installation and first commands.</li>
           <li><a href="processing-workflow.html">Processing workflow</a>: migrated chain and boundaries.</li>
           <li><a href="examples.html">Examples</a>: minimal snippets for common tasks.</li>
+          <li><a href="operations.html">Operations</a>: tests, CI, release, rollback and troubleshooting.</li>
           <li><a href="references.html">References</a>: public module index.</li>
           <li><a href="contributing.html">Contributing</a>: development notes.</li>
         </ul>
@@ -82,6 +92,17 @@
           particle optical depth.
         </p>
         <p><a href="processing-workflow.html#retrieval-validation">Open retrieval notes</a></p>
+      </section>
+      <section class="card">
+        <h2>Runtime Boundaries</h2>
+        <p>
+          This repository does not define a Docker service or HTTP API. Local
+          operation means importing the package, running scripts and executing
+          pytest. CI builds docs, runs tests and publishes PyPI artifacts.
+          Production operation normally happens in downstream systems that
+          install <code>atmolidarpy</code>.
+        </p>
+        <p><a href="operations.html#environment-boundaries">Open environment boundaries</a></p>
       </section>
     </section>
   </main>

@@ -14,6 +14,7 @@
         <a href="getting-started.html">Getting started</a>
         <a href="processing-workflow.html">Processing workflow</a>
         <a href="examples.html">Examples</a>
+        <a href="operations.html">Operations</a>
         <a href="references.html">References</a>
         <a href="contributing.html">Contributing</a>
       </nav>
@@ -148,6 +149,11 @@
     </ul>
 
     <h2>Implemented modules</h2>
+    <p>
+      This section maps the public package areas to operational use. For command
+      sequences, CI behavior and release handling, see the
+      <a href="operations.html">operational guide</a>.
+    </p>
 
     <h3>Main processing modules</h3>
     <ul>
@@ -186,6 +192,12 @@
       <li><code>lidarpy.atmo</code>: standard atmosphere, molecular properties and transmittance.</li>
       <li><code>lidarpy.utils</code>: lidar-specific filename, signal and type helpers.</li>
       <li><code>lidarpy.general_utils</code>: generic IO, smoothing, plotting and optimization helpers.</li>
+    </ul>
+
+    <h3>SCC and depolarization</h3>
+    <ul>
+      <li><code>lidarpy.scc</code>: SCC conversion helpers, access client, configuration resources and plotting support.</li>
+      <li><code>lidarpy.depolarization</code>: calibration and retrieval helpers for depolarization workflows.</li>
     </ul>
 
     <h3>API HTML</h3>

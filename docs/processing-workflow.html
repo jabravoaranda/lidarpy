@@ -14,75 +14,175 @@
         <a href="getting-started.html">Getting started</a>
         <a href="processing-workflow.html">Processing workflow</a>
         <a href="examples.html">Examples</a>
+        <a href="operations.html">Operations</a>
         <a href="references.html">References</a>
         <a href="contributing.html">Contributing</a>
       </nav>
-      <h1>Processing workflow</h1>
+      <h1>Processing Workflow</h1>
+      <p class="lead">
+        The operational path is staged on purpose: first preserve the RAW
+        measurement, then create an inspectable NetCDF product, then apply
+        corrections in a known order, then validate plots and retrieval behavior.
+      </p>
     </div>
   </header>
 
   <main class="wrap prose">
-    <h2>Data flow</h2>
+    <h2>Data Flow</h2>
     <div class="content-pair">
       <div>
         <ol>
           <li>Discover a lidar measurement with <code>lidarpy.utils.file_manager</code>.</li>
           <li>Convert Licel binary files to NetCDF with <code>lidarpy.nc_convert.measurement</code>.</li>
-          <li>Run basic preprocessing with <code>lidarpy.preprocessing.lidar_preprocessing</code>.</li>
+          <li>Run preprocessing with <code>lidarpy.preprocessing.preprocess</code>.</li>
           <li>Inspect products with <code>lidarpy.plot.quicklook</code>.</li>
           <li>Use synthetic signals to validate retrieval behavior independently from RAW fixtures.</li>
+          <li>Use SCC support modules only when the external SCC environment is explicitly available.</li>
         </ol>
       </div>
       <figure class="figure">
         <img src="assets/synthetic-elastic-quicklook.png" alt="Expected synthetic quicklook output">
         <figcaption>
-          Expected quicklook style for a range-corrected synthetic elastic signal.
-          Real measurement quicklooks should follow the same plotting contract.
+          Expected quicklook style for a range-corrected synthetic elastic
+          signal. Real measurement quicklooks should follow the same plotting
+          contract: time on one axis, range or height on the other, and a
+          channel-specific signal field.
         </figcaption>
       </figure>
     </div>
 
-    <h2>Basic preprocessing currently covered by tests</h2>
-    <ul>
-      <li>background correction.</li>
-      <li>bin-zero handling.</li>
-      <li>dark-current correction.</li>
-      <li>dead-time correction.</li>
-      <li>binning.</li>
-      <li>Gaussian smoothing.</li>
-    </ul>
-
-    <h2 id="retrieval-validation">Retrieval validation</h2>
+    <h2>Stage 1: RAW Discovery and NetCDF Conversion</h2>
     <p>
-      Retrieval tests compare Klett, Raman extinction and Raman backscatter against
-      synthetic truth in a useful range that avoids near-field and boundary regions.
+      RAW fixtures are intentionally small in this repository, but the code path
+      mirrors production use: locate a measurement, unzip/read Licel files, map
+      channels through system configuration and write NetCDF. This stage is
+      tested because every downstream correction depends on stable dimensions,
+      coordinates and metadata.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Primary code</th>
+          <th>Expected product</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ALHAMBRA RAW RS/DC zip fixtures</td>
+          <td><code>lidarpy.nc_convert.measurement.Measurement</code></td>
+          <td>One NetCDF file per converted measurement.</td>
+        </tr>
+        <tr>
+          <td>System TOML/YAML package data</td>
+          <td><code>lidarpy.nc_convert.configs</code> and <code>lidarpy.info</code></td>
+          <td>Channel metadata, bin-zero values and lidar system attributes.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Stage 2: Preprocessing</h2>
+    <p>
+      Corrections are ordered so that each step sees a physically meaningful
+      signal. Dark-current correction comes before dead-time and background
+      handling; bin-zero shifts are applied before overlap correction; cropping
+      and smoothing happen after range-dependent corrections.
+    </p>
+    <ul>
+      <li><code>apply_dc</code>: subtract dark current where a matching DC measurement is available.</li>
+      <li><code>apply_dt</code>: correct photon-counting dead time.</li>
+      <li><code>apply_bg</code>: remove background from a far-range interval.</li>
+      <li><code>apply_bz</code>: shift signals using channel bin-zero metadata.</li>
+      <li><code>apply_ov</code>: apply overlap from a file or derive it from full-field/near-field channels.</li>
+      <li><code>gluing_products</code>: merge analog and photon-counting products where configured.</li>
+      <li><code>apply_sm</code>: smooth the final corrected product.</li>
+    </ul>
+    <p>
+      The migrated ALHAMBRA tests cover the basic corrections, generated
+      overlap files, derived overlap from <code>1064fta</code>/<code>1064nta</code>
+      and near-field 532 nm gluing products.
+    </p>
+
+    <h2>Stage 3: Plotting and Inspection</h2>
+    <p>
+      Quicklooks are operational diagnostics. A successful quicklook confirms
+      that a product has the expected dimensions, coordinates and signal naming
+      contract. It does not prove scientific quality by itself, but it catches
+      many data-shape failures that are hard to notice in arrays.
+    </p>
+    <div class="figure-grid">
+      <figure class="figure">
+        <img src="assets/synthetic-elastic-quicklook.png" alt="Synthetic elastic quicklook example">
+        <figcaption>Elastic synthetic signal rendered through the quicklook path.</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="assets/synthetic-raman-quicklook.png" alt="Synthetic Raman quicklook example">
+        <figcaption>Raman quicklook used to verify the plotting contract.</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="assets/synthetic-lpdr-quicklook.png" alt="Synthetic LPDR quicklook example">
+        <figcaption>LPDR quicklook derived from polarized synthetic components.</figcaption>
+      </figure>
+    </div>
+
+    <h2 id="retrieval-validation">Stage 4: Retrieval Validation</h2>
+    <p>
+      Retrieval validation uses synthetic truth because RAW measurements rarely
+      provide exact aerosol profiles. The goal is not to make every retrieval
+      exact everywhere; it is to compare in a range where the assumptions are
+      explicit and the boundary conditions are valid.
     </p>
     <div class="content-pair reverse">
       <figure class="figure">
         <img src="assets/retrieval-synthetic-validation.png" alt="Synthetic truth versus retrieved aerosol properties">
         <figcaption>
-          Retrieval validation uses synthetic aerosol properties as the reference
-          and compares them with properties inverted from synthetic elastic and
-          Raman signals.
+          Retrieval validation compares synthetic aerosol properties with
+          properties inverted from generated elastic, Raman and polarized
+          signals.
         </figcaption>
       </figure>
       <div>
         <ul>
-          <li><code>quasi_beta</code> is a single-iteration approximation, not an exact inversion.</li>
-          <li><code>iterative_beta_forward</code> can start above the first range bin when
-            <code>initial_particle_optical_depth</code> is provided.</li>
-          <li>Reference intervals outside the range profile raise <code>ValueError</code>.</li>
-          <li>Elastic and Raman retrievals use a molecular reference interval above the synthetic aerosol layer.</li>
-          <li>LPDR is derived from polarized synthetic components and compared with the particle depolarization truth.</li>
+          <li><code>quasi_beta</code> is tested as a single-iteration approximation.</li>
+          <li><code>iterative_beta_forward</code> can start above the first range bin when <code>initial_particle_optical_depth</code> is known.</li>
+          <li>Reference intervals outside the profile raise <code>ValueError</code>.</li>
+          <li>Klett, Raman extinction and Raman backscatter are compared outside near-field and boundary regions.</li>
         </ul>
       </div>
     </div>
 
-    <h2>Open workflow boundaries</h2>
-    <p>
-      Advanced overlap correction and gluing products are handled as separate
-      migration steps so they can be reviewed without changing the basic chain.
-    </p>
+    <h2>Operational States</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>State</th>
+          <th>How to recognize it</th>
+          <th>Next action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>RAW converted</td>
+          <td>NetCDF exists and has <code>time</code>, <code>range</code> and <code>channel</code>.</td>
+          <td>Run a narrow preprocessing test or inspect with xarray.</td>
+        </tr>
+        <tr>
+          <td>Preprocessed</td>
+          <td>Dataset attrs show correction flags such as <code>bg_corrected</code> and <code>ov_corrected</code>.</td>
+          <td>Generate or inspect quicklooks.</td>
+        </tr>
+        <tr>
+          <td>Validated by synthetic truth</td>
+          <td>Focused retrieval tests pass in the expected comparison range.</td>
+          <td>Use the algorithm with measured data and document assumptions.</td>
+        </tr>
+        <tr>
+          <td>SCC ready offline</td>
+          <td>SCC package data and mocked access-client tests pass.</td>
+          <td>Use real SCC credentials only in an explicit external environment.</td>
+        </tr>
+      </tbody>
+    </table>
   </main>
 </body>
 </html>
