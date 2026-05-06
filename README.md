@@ -72,7 +72,7 @@ directories inside the repository.
 
 ## Release
 
-Current package version: `0.1.1`.
+Current package version: `0.1.2`.
 
 The package is published as `atmolidarpy` on PyPI through GitHub Actions Trusted
 Publishing. Releases are tag-driven:
