@@ -14,33 +14,140 @@
         <a href="getting-started.html">Getting started</a>
         <a href="processing-workflow.html">Processing workflow</a>
         <a href="examples.html">Examples</a>
+        <a href="operations.html">Operations</a>
         <a href="references.html">References</a>
         <a href="contributing.html">Contributing</a>
       </nav>
-      <h1>Getting started</h1>
+      <h1>Getting Started</h1>
+      <p class="lead">
+        The fastest path is to verify the package import, run a small offline
+        test group, then move to RAW conversion or retrieval examples only when
+        the local environment is known to be healthy.
+      </p>
     </div>
   </header>
 
   <main class="wrap prose">
-    <h2>Installation for development</h2>
+    <h2>Choose the Right Environment</h2>
+    <p>
+      There are two common ways to use this repository. A user installs the
+      published package from PyPI and imports <code>lidarpy</code>. A developer
+      works from the source tree with <code>PYTHONPATH=src</code> so local edits
+      are used immediately. Keeping those modes separate avoids a common class
+      of problems where Python imports an installed wheel while you think it is
+      importing the checkout.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Goal</th>
+          <th>Recommended setup</th>
+          <th>Success signal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Use the library</td>
+          <td><code>python -m pip install atmolidarpy</code></td>
+          <td><code>import lidarpy</code> succeeds.</td>
+        </tr>
+        <tr>
+          <td>Develop the package</td>
+          <td><code>uv sync --group dev</code> plus <code>PYTHONPATH=src</code></td>
+          <td>Focused pytest groups pass from the checkout.</td>
+        </tr>
+        <tr>
+          <td>Build docs</td>
+          <td>Install <code>.[docs]</code> and run <code>scripts/build_docs.py</code></td>
+          <td><code>site/index.html</code> and <code>site/api/lidarpy.html</code> exist.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Install from PyPI</h2>
+    <pre><code>python -m pip install atmolidarpy
+python -c "import lidarpy; print(lidarpy.__version__)"</code></pre>
+    <p>
+      The package should print a version string and exit with status 0. The
+      distribution name is <code>atmolidarpy</code> because <code>lidarpy</code>
+      was already taken on PyPI; the Python import name remains
+      <code>lidarpy</code>.
+    </p>
+
+    <h2>Install for Local Development</h2>
+    <p>
+      The project targets Python 3.11. The lock file and workflows use the same
+      major runtime so numerical dependencies, NetCDF support and tests behave
+      consistently across Windows and Linux.
+    </p>
     <pre><code>uv sync --group dev
 $env:PYTHONPATH = "src"
-.\.venv311\Scripts\python -c "import lidarpy; print(lidarpy.__name__)"</code></pre>
+$env:MPLBACKEND = "Agg"
+.\.venv\Scripts\python -c "import lidarpy; print(lidarpy.__version__)"</code></pre>
+    <p>
+      Expected result: the command imports from the local <code>src</code>
+      directory. If it fails, check that the virtual environment exists and that
+      <code>PYTHONPATH</code> is set in the same PowerShell session.
+    </p>
 
-    <h2>Run the fast validation tests</h2>
+    <h2>First Validation</h2>
+    <p>
+      Start with tests that do not need RAW fixture conversion. This confirms
+      that imports, synthetic signals, retrieval contracts, SCC offline
+      contracts and docs links are healthy before spending time and disk on
+      integration tests.
+    </p>
     <pre><code>$env:PYTHONPATH = "src"
 $env:MPLBACKEND = "Agg"
-.\.venv311\Scripts\python -m pytest tests\synthetic tests\retrieval -q -p no:cacheprovider</code></pre>
+.\.venv\Scripts\python -m pytest tests\synthetic tests\retrieval tests\scc tests\docs -q</code></pre>
+    <p>
+      A good local result is a clean pass in seconds to a few tens of seconds.
+      Warnings from scientific dependencies can be acceptable; import errors,
+      missing package data, or failed docs links are not.
+    </p>
 
-    <h2>Build distribution artifacts</h2>
+    <h2>Run RAW-Based Tests Safely</h2>
+    <p>
+      RAW conversion tests unzip Licel fixtures and write NetCDF products. They
+      validate the real migrated path, but they are heavier than synthetic
+      tests. On Windows, use local temporary directories and clean known
+      leftovers before the run.
+    </p>
+    <pre><code>Remove-Item .pytest_tmp,.pytest_cache,tmp_unzipped_* -Recurse -Force -ErrorAction SilentlyContinue
+Get-PSDrive -Name C
+$env:PYTHONPATH = "src"
+$env:MPLBACKEND = "Agg"
+.\.venv\Scripts\python -m pytest tests\nc_convert tests\preprocessing tests\plot -q</code></pre>
+    <p>
+      Expected result: tests create temporary NetCDF files under
+      <code>.pytest_tmp</code> and remove measurement unzip directories through
+      fixture cleanup. If disk is low, stop and free space before retrying.
+    </p>
+
+    <h2>Build Distribution Artifacts</h2>
+    <p>
+      Build artifacts are used both for local packaging checks and for releases.
+      They should include package data such as YAML/TOML configs and assets,
+      while excluding coordination files and RAW fixtures.
+    </p>
     <pre><code>$env:UV_PYTHON_INSTALL_DIR = ".uv-python"
 $env:UV_CACHE_DIR = ".uv-cache"
-$env:UV_PROJECT_ENVIRONMENT = ".venv311"
+$env:UV_PROJECT_ENVIRONMENT = ".venv"
 uv build</code></pre>
+    <p>
+      Expected result: <code>dist/</code> contains an
+      <code>atmolidarpy-*.tar.gz</code> and an <code>atmolidarpy-*.whl</code>.
+      The packaging tests inspect those artifacts when <code>uv</code> is
+      available.
+    </p>
 
-    <p class="note">
-      On Windows, use local pytest base temp directories. Large RAW conversion
-      tests can generate sizeable NetCDF files and should be run in chunks.
+    <h2>What Is Not Required Locally</h2>
+    <p>
+      This repository does not require Docker for normal operation. It also does
+      not require SCC credentials for the default test suite. SCC end-to-end
+      submission and download depends on an external server and should be tested
+      deliberately in a controlled environment, not as a default local check.
     </p>
   </main>
 </body>

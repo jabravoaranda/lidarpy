@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lidarpy operations</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="site-header compact">
+    <div class="wrap">
+      <nav class="nav">
+        <a href="index.html">Overview</a>
+        <a href="getting-started.html">Getting started</a>
+        <a href="processing-workflow.html">Processing workflow</a>
+        <a href="examples.html">Examples</a>
+        <a href="operations.html">Operations</a>
+        <a href="references.html">References</a>
+        <a href="contributing.html">Contributing</a>
+      </nav>
+      <h1>Operational Guide</h1>
+      <p class="lead">
+        This page explains how to run, validate, release and diagnose the
+        package. It also states what this repository does not operate directly:
+        there is no Docker service and no bundled production daemon here.
+      </p>
+    </div>
+  </header>
+
+  <main class="wrap prose">
+    <h2 id="environment-boundaries">Environment Boundaries</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Environment</th>
+          <th>What runs here</th>
+          <th>What does not run here</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Local development</td>
+          <td>Python imports, pytest, docs generation, package builds and focused RAW fixture checks.</td>
+          <td>Persistent services, Docker containers or unattended production jobs.</td>
+        </tr>
+        <tr>
+          <td>CI</td>
+          <td>Linux pytest, docs build, Pages publish and PyPI release workflow.</td>
+          <td>Private SCC credentials, private RAW datasets or local NAS paths.</td>
+        </tr>
+        <tr>
+          <td>Docker</td>
+          <td>No Docker runtime is defined by this repository.</td>
+          <td>Do not expect a compose stack, Celery UI or HTTP API from <code>lidarpy</code>.</td>
+        </tr>
+        <tr>
+          <td>Production</td>
+          <td>Downstream applications install <code>atmolidarpy</code> and import <code>lidarpy</code>.</td>
+          <td>Production secrets and heavy operational datasets should not live in this repo.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Local Operational Checklist</h2>
+    <p>
+      Use this sequence when validating a checkout after pulling changes. It
+      starts with cheap checks and only then moves to heavier RAW conversion.
+    </p>
+    <ol>
+      <li>Confirm the working tree and branch: <code>git status --short --branch</code>.</li>
+      <li>Confirm import from the checkout with <code>PYTHONPATH=src</code>.</li>
+      <li>Run fast offline tests: synthetic, retrieval, SCC and docs.</li>
+      <li>Clean local pytest/unzip temporaries before RAW tests.</li>
+      <li>Check free disk space before converting RAW fixtures.</li>
+      <li>Run focused RAW groups in chunks.</li>
+      <li>Build docs or distributions only after tests relevant to the change pass.</li>
+    </ol>
+
+    <pre><code>$env:PYTHONPATH = "src"
+$env:MPLBACKEND = "Agg"
+.\.venv\Scripts\python -m pytest tests\synthetic tests\retrieval tests\scc tests\docs -q</code></pre>
+
+    <h2>CI Workflows</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Workflow</th>
+          <th>Trigger</th>
+          <th>Expected result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Tests</code></td>
+          <td>Push or pull request against <code>main</code> or <code>develop</code>; manual dispatch.</td>
+          <td>Installs the package editable, sets <code>PYTHONPATH=src</code>, runs <code>pytest tests -q</code>.</td>
+        </tr>
+        <tr>
+          <td><code>docs</code></td>
+          <td>Push to <code>main</code>; manual dispatch.</td>
+          <td>Builds static docs, regenerates figures, creates pdoc API HTML and deploys GitHub Pages.</td>
+        </tr>
+        <tr>
+          <td><code>Publish Package</code></td>
+          <td>Tag matching <code>v*</code>; manual dispatch.</td>
+          <td>Builds sdist/wheel, checks with Twine and publishes to PyPI through Trusted Publishing.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Release and Deployment</h2>
+    <p>
+      Deployment for this repository means publishing a Python distribution to
+      PyPI and publishing documentation to GitHub Pages. There is no service to
+      restart after a release. Downstream systems adopt a release when they
+      install or pin the new <code>atmolidarpy</code> version.
+    </p>
+    <ol>
+      <li>Update version metadata consistently.</li>
+      <li>Run the relevant test groups locally.</li>
+      <li>Build distributions locally if the change touches packaging.</li>
+      <li>Merge to the release branch.</li>
+      <li>Create and push a <code>v*</code> tag.</li>
+      <li>Verify the GitHub Actions publish workflow completes.</li>
+      <li>Verify PyPI shows the expected version and files.</li>
+    </ol>
+    <pre><code>python -m build
+python -m twine check dist/*
+git tag v0.1.2
+git push origin v0.1.2</code></pre>
+    <p>
+      Expected result: PyPI lists the new <code>atmolidarpy</code> version and
+      downstream users can install it with <code>python -m pip install
+      atmolidarpy==VERSION</code>.
+    </p>
+
+    <h2>Rollback Strategy</h2>
+    <p>
+      Python package rollback is usually a version pin, not a destructive
+      deletion. If a release is bad, the practical response is to pin downstream
+      environments to the last known good version and publish a fixed patch
+      release. Deleting files from PyPI should be reserved for severe security,
+      legal or credential exposure incidents because it can break reproducible
+      installs.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Situation</th>
+          <th>Preferred rollback</th>
+          <th>Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bug in latest release</td>
+          <td>Pin downstream to previous version; publish a patch fix.</td>
+          <td>Keeps package history intact and avoids broken installs.</td>
+        </tr>
+        <tr>
+          <td>Docs publish has wrong content</td>
+          <td>Revert/fix docs and rerun the Pages workflow.</td>
+          <td>Pages is rebuilt from repository content.</td>
+        </tr>
+        <tr>
+          <td>Secret accidentally committed</td>
+          <td>Rotate the secret immediately, then clean history if required.</td>
+          <td>History cleanup alone does not make an exposed secret safe.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>SCC Operations</h2>
+    <p>
+      SCC support is part of the package, but the default test suite does not
+      contact a real SCC server. Offline SCC tests cover local imports, package
+      resources and the access-client contract with fake HTTP sessions. Real
+      submission/download workflows need SCC credentials and server state, so
+      they should be run manually or in a controlled integration environment.
+    </p>
+    <p>
+      Keep SCC credentials outside Git. Use local ignored configuration files or
+      CI secrets in a repository that is explicitly responsible for that
+      integration. This repository should not contain private credentials,
+      private server URLs or real operational measurements.
+    </p>
+
+    <h2>Logs and Diagnostics</h2>
+    <p>
+      Most package routines run in-process. Diagnostics therefore come from
+      pytest output, Python exceptions, xarray dataset inspection, generated
+      NetCDF files and quicklook figures. Retrieval and preprocessing paths use
+      logging in active code paths; tests should assert data contracts rather
+      than relying on console output.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Need</th>
+          <th>First check</th>
+          <th>Expected signal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Confirm package import</td>
+          <td><code>python -c "import lidarpy; print(lidarpy.__version__)"</code></td>
+          <td>Version prints and command exits successfully.</td>
+        </tr>
+        <tr>
+          <td>Inspect a NetCDF product</td>
+          <td><code>xarray.open_dataset(path)</code></td>
+          <td>Dataset has expected coordinates and signal variables.</td>
+        </tr>
+        <tr>
+          <td>Check plotting contract</td>
+          <td>Run quicklook tests or docs figure generation.</td>
+          <td>PNG exists and is not blank.</td>
+        </tr>
+        <tr>
+          <td>Check SCC offline behavior</td>
+          <td><code>pytest tests\scc -q</code></td>
+          <td>SCC smoke and access-contract tests pass without network.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Troubleshooting</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Symptom</th>
+          <th>Likely cause</th>
+          <th>First check</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>ModuleNotFoundError: lidarpy</code></td>
+          <td>The package is not installed or <code>PYTHONPATH</code> is not set for source checkout use.</td>
+          <td>Run <code>$env:PYTHONPATH="src"</code> in the same PowerShell session.</td>
+        </tr>
+        <tr>
+          <td>Tests import installed code instead of local edits</td>
+          <td>Editable install or <code>PYTHONPATH</code> is missing.</td>
+          <td>Print <code>lidarpy.__file__</code> and confirm it points under <code>src</code>.</td>
+        </tr>
+        <tr>
+          <td>RAW tests fail on Windows temp permissions</td>
+          <td>System temp paths or stale pytest folders are interfering.</td>
+          <td>Clean <code>.pytest_tmp</code>, <code>.pytest_cache</code> and <code>tmp_unzipped_*</code>.</td>
+        </tr>
+        <tr>
+          <td>Disk fills during tests</td>
+          <td>RAW fixtures were converted repeatedly and NetCDF temporaries accumulated.</td>
+          <td>Check <code>Get-PSDrive -Name C</code> before large test groups.</td>
+        </tr>
+        <tr>
+          <td>Quicklook test fails in headless CI</td>
+          <td>Matplotlib backend is interactive or unset.</td>
+          <td>Set <code>MPLBACKEND=Agg</code>.</td>
+        </tr>
+        <tr>
+          <td>Distribution contains coordination files</td>
+          <td>Packaging include/exclude rules changed.</td>
+          <td>Run packaging tests and inspect sdist/wheel names.</td>
+        </tr>
+        <tr>
+          <td>SCC real submission fails</td>
+          <td>External server, credentials or measurement state issue.</td>
+          <td>First run <code>pytest tests\scc -q</code> to separate local client problems from external SCC problems.</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

@@ -14,10 +14,16 @@
         <a href="getting-started.html">Getting started</a>
         <a href="processing-workflow.html">Processing workflow</a>
         <a href="examples.html">Examples</a>
+        <a href="operations.html">Operations</a>
         <a href="references.html">References</a>
         <a href="contributing.html">Contributing</a>
       </nav>
       <h1>Examples</h1>
+      <p class="lead">
+        These examples are intentionally small. They show the shape of inputs,
+        outputs and validation checks before you move to full RAW measurements
+        or external SCC workflows.
+      </p>
     </div>
   </header>
 
@@ -45,8 +51,93 @@ elastic, raman, params = synthetic_signals(
           depolarization cases that can be inspected visually before using
           them in retrieval tests.
         </p>
+        <p>
+          Expected result: returned arrays share the requested range grid, and
+          <code>params</code> contains the molecular and particle fields used as
+          synthetic truth.
+        </p>
       </div>
     </div>
+
+    <h2>Preprocess a Converted ALHAMBRA NetCDF File</h2>
+    <p>
+      The preprocessing entry point expects a converted NetCDF product, not a
+      RAW zip. Conversion is tested separately so preprocessing can focus on
+      corrections and product contracts.
+    </p>
+    <pre><code>from pathlib import Path
+import xarray as xr
+
+from lidarpy.preprocessing import preprocess
+
+dataset = preprocess(
+    Path("path/to/RS_20230830_0315.nc"),
+    channels=["1064fta"],
+    crop_ranges=(0.0, 15000.0),
+    apply_dc=False,
+    apply_dt=False,
+    apply_bg=True,
+    apply_bz=True,
+    apply_ov=False,
+    gluing_products=False,
+    apply_sm=False,
+)
+
+assert dataset.attrs["bg_corrected"] == "True"
+assert dataset.attrs["bz_corrected"] == "True"
+assert "signal_1064fta" in dataset
+assert dataset["signal_1064fta"].dims == ("time", "range")
+dataset.close()</code></pre>
+    <p>
+      Expected result: a dataset with <code>time</code> and <code>range</code>
+      dimensions, channel metadata and correction flags in attributes. If the
+      signal variable is missing, first check that the requested channel exists
+      in the converted file.
+    </p>
+
+    <h2>Overlap Correction from a Profile File</h2>
+    <p>
+      Use an overlap file when a trusted per-channel profile already exists.
+      The profile is selected by channel and interpolated to the dataset range
+      grid when needed.
+    </p>
+    <pre><code>corrected = preprocess(
+    "path/to/RS_20230830_0315.nc",
+    channels=["1064fta"],
+    crop_ranges=(0.0, 15000.0),
+    apply_bg=True,
+    apply_bz=True,
+    apply_ov=True,
+    overlap_path="path/to/overlap_1064fta.nc",
+    apply_dc=False,
+    apply_dt=False,
+    apply_sm=False,
+)
+
+assert corrected.attrs["ov_corrected"] == "True"
+assert corrected["overlap_corrected"].sel(channel="1064fta").item() == 1</code></pre>
+
+    <h2>Derived Overlap from Full-Field and Near-Field Channels</h2>
+    <p>
+      If no overlap file is provided, the ALHAMBRA configuration can derive the
+      overlap profile from configured full-field and near-field channel pairs.
+      This path is covered by tests for <code>1064fta</code> and
+      <code>1064nta</code>.
+    </p>
+    <pre><code>corrected = preprocess(
+    "path/to/RS_20230830_0315.nc",
+    channels=["1064fta", "1064nta"],
+    crop_ranges=(0.0, 15000.0),
+    apply_bg=True,
+    apply_bz=True,
+    apply_ov=True,
+    apply_dc=False,
+    apply_dt=False,
+    apply_sm=False,
+)
+
+assert "overlap_1064fta" in corrected
+assert corrected["signal_1064fta"].attrs["overlap_applied"] == "1064fta"</code></pre>
 
     <div class="figure-grid">
       <figure class="figure">
@@ -121,6 +212,21 @@ particle_beta = iterative_beta_forward(
         </p>
       </div>
     </div>
+
+    <h2>SCC Access Client Without a Real Server</h2>
+    <p>
+      SCC end-to-end operation requires credentials and a real server, but the
+      client contract can be validated offline. The test suite uses fake HTTP
+      sessions to check URL construction, API parsing, streamed downloads and
+      upload response parsing.
+    </p>
+    <pre><code>$env:PYTHONPATH = "src"
+.\.venv\Scripts\python -m pytest tests\scc -q</code></pre>
+    <p>
+      Expected result: SCC tests pass without network. If they fail, fix the
+      local client or package-data issue before investigating a real SCC
+      integration failure.
+    </p>
   </main>
 </body>
 </html>

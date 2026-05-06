@@ -14,40 +14,118 @@
         <a href="getting-started.html">Getting started</a>
         <a href="processing-workflow.html">Processing workflow</a>
         <a href="examples.html">Examples</a>
+        <a href="operations.html">Operations</a>
         <a href="references.html">References</a>
         <a href="contributing.html">Contributing</a>
       </nav>
       <h1>Contributing</h1>
+      <p class="lead">
+        Contributions should preserve the standalone package boundary: keep
+        reusable lidar processing code here, keep external service credentials
+        and deployment-specific runtime configuration out of the repository.
+      </p>
     </div>
   </header>
 
   <main class="wrap prose">
-    <h2>Development workflow</h2>
+    <h2>Development Workflow</h2>
+    <p>
+      Start from the roadmap, choose one bounded task, and validate only the
+      surface you changed before running heavier groups. This keeps Windows and
+      Linux development practical while still protecting the migrated scientific
+      paths.
+    </p>
     <pre><code>uv sync --group dev
 $env:PYTHONPATH = "src"
 $env:MPLBACKEND = "Agg"
-.\.venv311\Scripts\python -m pytest tests\synthetic tests\retrieval -q</code></pre>
+.\.venv\Scripts\python -m pytest tests\synthetic tests\retrieval tests\scc -q</code></pre>
+    <p>
+      Expected result: focused tests pass from the checkout. If a change touches
+      RAW conversion or preprocessing, run the relevant RAW-backed tests in a
+      separate chunk after checking disk space.
+    </p>
 
-    <h2>Repository conventions</h2>
+    <h2>Repository Conventions</h2>
     <ul>
       <li>Migration coordination belongs in <code>ROADMAP.md</code> and <code>AGENTS.md</code>.</li>
       <li>User-facing documentation belongs under <code>docs/</code>.</li>
-      <li>Generated artifacts should stay in ignored folders such as <code>artifacts/</code> or <code>dist/</code>.</li>
-      <li>Run RAW/NetCDF tests in chunks on Windows to avoid temp-folder permission issues.</li>
+      <li>Generated docs output belongs in <code>site/</code> and should not be committed unless the workflow requires it.</li>
+      <li>Generated build artifacts belong in ignored folders such as <code>artifacts/</code> or <code>dist/</code>.</li>
+      <li>Private SCC credentials, NAS paths and real heavy datasets must stay outside Git.</li>
+      <li>Do not reintroduce legacy modules that the roadmap has explicitly removed.</li>
     </ul>
 
-    <h2>Documentation</h2>
+    <h2>Testing Policy</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Change type</th>
+          <th>Minimum useful tests</th>
+          <th>Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Pure retrieval or synthetic logic</td>
+          <td><code>pytest tests\synthetic tests\retrieval -q</code></td>
+          <td>Validates numerical contracts without RAW fixture cost.</td>
+        </tr>
+        <tr>
+          <td>Preprocessing corrections</td>
+          <td>Focused tests under <code>tests\preprocessing</code></td>
+          <td>Checks correction flags, signal variables and xarray contracts.</td>
+        </tr>
+        <tr>
+          <td>SCC local/client behavior</td>
+          <td><code>pytest tests\scc -q</code></td>
+          <td>Confirms package data and mocked HTTP client contracts without credentials.</td>
+        </tr>
+        <tr>
+          <td>Packaging rules</td>
+          <td><code>pytest tests\packaging -q</code></td>
+          <td>Ensures coordination files and RAW fixtures stay out of distributions.</td>
+        </tr>
+        <tr>
+          <td>Documentation links</td>
+          <td><code>pytest tests\docs -q</code></td>
+          <td>Prevents static pages from linking to missing local files.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Documentation Workflow</h2>
     <p>
-      GitHub Pages is published by the <code>docs</code> GitHub Actions
-      workflow. Static pages live in <code>docs/</code>; the workflow copies
-      them into <code>site/</code>, regenerates documentation figures,
-      generates the API reference with <code>pdoc</code>, and uploads
-      <code>site/</code> as the Pages artifact.
+      GitHub Pages is published by the <code>docs</code> workflow. Static pages
+      live in <code>docs/</code>. The build script copies them into
+      <code>site/</code>, regenerates figures, generates API HTML with
+      <code>pdoc</code>, and uploads <code>site/</code> as the Pages artifact.
     </p>
-    <p>For a local figure preview after visual or synthetic-signal changes:</p>
     <pre><code>$env:PYTHONPATH = "src"
 $env:MPLBACKEND = "Agg"
-.\.venv\Scripts\python scripts\generate_docs_figures.py</code></pre>
+.\.venv\Scripts\python scripts\build_docs.py</code></pre>
+    <p>
+      Expected result: <code>site/index.html</code>,
+      <code>site/assets/site.css</code> and <code>site/api/lidarpy.html</code>
+      exist. If a page is added, also update <code>tests/docs/test_docs_links.py</code>
+      so CI checks its links and images.
+    </p>
+
+    <h2>Release Contributions</h2>
+    <p>
+      Release changes should be small and auditable: version metadata,
+      changelog/roadmap notes, packaging checks and a tag. The publish workflow
+      uses PyPI Trusted Publishing, so no PyPI token should be committed or
+      stored in local config for this repository.
+    </p>
+    <pre><code>python -m build
+python -m twine check dist/*
+git tag v0.1.2
+git push origin v0.1.2</code></pre>
+    <p>
+      Expected result: the GitHub Actions release workflow uploads checked
+      artifacts to PyPI. If a release is bad, prefer publishing a fixed patch
+      and pinning downstream systems to the last known good version.
+    </p>
   </main>
 </body>
 </html>

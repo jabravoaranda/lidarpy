@@ -9,6 +9,7 @@ DOC_PAGES = [
     Path("docs/getting-started.html"),
     Path("docs/processing-workflow.html"),
     Path("docs/examples.html"),
+    Path("docs/operations.html"),
     Path("docs/references.html"),
     Path("docs/contributing.html"),
 ]
