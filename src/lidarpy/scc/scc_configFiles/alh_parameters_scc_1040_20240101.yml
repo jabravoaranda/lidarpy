@@ -1,0 +1,90 @@
+channel_parameters:
+  BC11:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 805
+    LR_Input: 1
+    Laser_Shots: 1200
+    channel_ID: 2268
+    channel_string_ID: 532npp
+  BC12:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 805
+    LR_Input: 1
+    Laser_Shots: 1200
+    channel_ID: 2269
+    channel_string_ID: 532nsp
+  BC13:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 805
+    LR_Input: 1
+    Laser_Shots: 1200
+    channel_ID: 2270
+    channel_string_ID: 355npp
+  BC14:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 805
+    LR_Input: 1
+    Laser_Shots: 1200
+    channel_ID: 2271
+    channel_string_ID: 355nsp
+  BT10:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 807
+    LR_Input: 1
+    Laser_Shots: 1200
+    channel_ID: 2123
+    channel_string_ID: 1064nta
+  BT11:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 807
+    LR_Input: 1
+    Laser_Shots: 1200
+    channel_ID: 2124
+    channel_string_ID: 532npa
+  BT12:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 807
+    LR_Input: 1
+    Laser_Shots: 1200
+    channel_ID: 2126
+    channel_string_ID: 532nsa
+  BT13:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 807
+    LR_Input: 1
+    Laser_Shots: 1200
+    channel_ID: 2128
+    channel_string_ID: 355npa
+  BT14:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 807
+    LR_Input: 1
+    Laser_Shots: 1200
+    channel_ID: 2130
+    channel_string_ID: 355nsa
+general_parameters:
+  Altitude_meter_asl: 660.0
+  Call sign: gr
+  Laser_Pointing_Angle: 3
+  Latitude_degrees_north: 37.16
+  Longitude_degrees_east: -3.6
+  Molecular_Calc: 0
+  System: ALHAMBRA

@@ -1,0 +1,108 @@
+channel_parameters:
+  BC2:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 805
+    LR_Input: 1
+    Laser_Shots: 600
+    channel_ID: 2232
+    channel_string_ID: 532ftp
+  BC3:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 805
+    LR_Input: 1
+    Laser_Shots: 600
+    channel_ID: 2272
+    channel_string_ID: 531ftp
+  BC4:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 805
+    LR_Input: 1
+    Laser_Shots: 600
+    channel_ID: 2233
+    channel_string_ID: 355fpp
+  BC5:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 805
+    LR_Input: 1
+    Laser_Shots: 600
+    channel_ID: 2234
+    channel_string_ID: 355fsp
+  BC6:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 805
+    LR_Input: 1
+    Laser_Shots: 600
+    channel_ID: 2217
+    channel_string_ID: 354ftp
+  BT0:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 500.0
+    First_Signal_Rangebin: 807
+    LR_Input: 1
+    Laser_Shots: 600
+    channel_ID: 2203
+    channel_string_ID: 1064fta
+  BT2:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 807
+    LR_Input: 1
+    Laser_Shots: 600
+    channel_ID: 2204
+    channel_string_ID: 532fta
+  BT3:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0 
+    First_Signal_Rangebin: 807
+    LR_Input: 1 
+    Laser_Shots: 600
+    channel_ID: 2215
+    channel_string_ID: 531fta
+  BT4:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 807
+    LR_Input: 1
+    Laser_Shots: 600
+    channel_ID: 2213
+    channel_string_ID: 355fpa
+  BT5:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 807
+    LR_Input: 1
+    Laser_Shots: 600
+    channel_ID: 2214
+    channel_string_ID: 355fsa
+  BT6:
+    Background_High: 800.0
+    Background_Low: 100.0
+    DAQ_Range: 100.0
+    First_Signal_Rangebin: 807
+    LR_Input: 1
+    Laser_Shots: 600
+    channel_ID: 2216
+    channel_string_ID: 354fta
+general_parameters:
+  Altitude_meter_asl: 660.0
+  Call sign: gr
+  Laser_Pointing_Angle: 3
+  Latitude_degrees_north: 37.16
+  Longitude_degrees_east: -3.6
+  Molecular_Calc: 0
+  System: ALHAMBRA
