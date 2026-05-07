@@ -5,6 +5,7 @@ import sys
 import glob
 import json
 import importlib
+import re
 import numpy as np
 import xarray as xr
 import datetime as dt
@@ -12,6 +13,8 @@ from loguru import logger
 from multiprocessing import Pool
 
 from lidarpy.scc.licel2scc import licel2scc
+from lidarpy.scc.licel2scc.licel import LicelFile
+from lidarpy.utils.utils import date_from_filename, getTP
 
 from lidarpy.general_utils.io import read_yaml
 
@@ -19,6 +22,200 @@ from lidarpy.general_utils.io import read_yaml
 Functions for deriving SCC info directly from measurement folder/files
 (Currently Not Used)
 """
+
+
+SCC_CONFIG_DIRECTORY = Path(__file__).parent / "scc_configFiles"
+ACTRIS_CONFIG_FILE = SCC_CONFIG_DIRECTORY / "actris_config.yml"
+
+
+def get_scc_config_id_from_binary(
+    binary_file: str | Path,
+    lidar_prefix: str,
+    *,
+    scc_config_directory: str | Path | None = None,
+    target_datetime: dt.datetime | None = None,
+    actris_config_file: str | Path | None = None,
+) -> int | None:
+    """Identify the SCC configuration ID represented by a Licel file.
+
+    If the ACTRIS configuration describes a rule table for the lidar, the
+    binary channels are first converted to feature flags and matched against
+    that table. Otherwise, the selection falls back to the available
+    ``*_parameters_scc_*.py`` files.
+    """
+    licel_file = LicelFile(str(binary_file), use_id_as_name=True, import_now=False)
+    measurement_datetime = target_datetime or licel_file.start_time.replace(tzinfo=None)
+    channel_ids = {channel_info["ID"] for channel_info in licel_file.channel_info}
+    configs = find_scc_parameter_files(
+        lidar_prefix,
+        scc_config_directory=scc_config_directory,
+        target_datetime=measurement_datetime,
+    )
+    actris_config = load_actris_config(actris_config_file)
+    system_config = get_actris_system_config(actris_config, lidar_prefix)
+    if system_config is not None:
+        channel_string_ids = channel_string_ids_from_transient_ids(channel_ids, configs)
+        return select_scc_config_id_from_actris_rules(
+            channel_string_ids, system_config
+        )
+
+    return select_scc_config_id_from_channel_ids(
+        channel_ids,
+        configs,
+    )
+
+
+def read_licel_channel_ids(binary_file: str | Path) -> set[str]:
+    """Read transient channel IDs from a Licel binary header."""
+    licel_file = LicelFile(str(binary_file), use_id_as_name=True, import_now=False)
+    return {channel_info["ID"] for channel_info in licel_file.channel_info}
+
+
+def load_actris_config(actris_config_file: str | Path | None = None) -> dict:
+    """Load ACTRIS SCC selection config."""
+    config_file = Path(actris_config_file) if actris_config_file else ACTRIS_CONFIG_FILE
+    if not config_file.is_file():
+        return {}
+    config = read_yaml(config_file)
+    return config or {}
+
+
+def get_actris_system_config(actris_config: dict, lidar_prefix: str) -> dict | None:
+    """Return the ACTRIS system config matching a parameter-file prefix."""
+    systems = actris_config.get("systems", {})
+    for system_config in systems.values():
+        if system_config.get("parameter_prefix") == lidar_prefix:
+            return system_config
+    return None
+
+
+def channel_string_ids_from_transient_ids(
+    channel_ids: set[str],
+    scc_config_files: dict[int, Path],
+) -> set[str]:
+    """Map Licel transient IDs such as ``BT0`` to SCC channel string IDs."""
+    channel_string_ids = set()
+    for config_file in scc_config_files.values():
+        config = get_scc_config(str(config_file))
+        if config is None:
+            continue
+        for transient_id in channel_ids:
+            parameters = config["channel_parameters"].get(transient_id)
+            if parameters is not None and "channel_string_ID" in parameters:
+                channel_string_ids.add(parameters["channel_string_ID"])
+    return channel_string_ids
+
+
+def select_scc_config_id_from_actris_rules(
+    channel_string_ids: set[str],
+    system_config: dict,
+) -> int | None:
+    """Select SCC config ID from ACTRIS feature rules."""
+    features = get_channel_features_from_actris_config(
+        channel_string_ids, system_config
+    )
+    for rule in system_config.get("scc_config_rules", []):
+        if all(
+            rule[key] == features[key]
+            for key in ("has_far", "has_near", "has_raman")
+        ):
+            return int(rule["scc_config_id"])
+    return None
+
+
+def get_channel_features_from_actris_config(
+    channel_string_ids: set[str],
+    system_config: dict,
+) -> dict[str, bool]:
+    """Calculate feature flags used by ACTRIS SCC config rules."""
+    pattern = re.compile(system_config["channel_string_id_pattern"])
+    elastic_wavelengths = {
+        int(wavelength) for wavelength in system_config["elastic_wavelengths"]
+    }
+    far_tokens = set(system_config.get("far_telescope_tokens", []))
+    near_tokens = set(system_config.get("near_telescope_tokens", []))
+    features = {"has_far": False, "has_near": False, "has_raman": False}
+
+    for channel_string_id in channel_string_ids:
+        match = pattern.match(channel_string_id)
+        if match is None:
+            continue
+        telescope = match.groupdict().get("telescope")
+        wavelength = int(match.group("wavelength"))
+        features["has_far"] = features["has_far"] or telescope in far_tokens
+        features["has_near"] = features["has_near"] or telescope in near_tokens
+        features["has_raman"] = features["has_raman"] or wavelength not in elastic_wavelengths
+
+    return features
+
+
+def find_scc_parameter_files(
+    lidar_prefix: str,
+    *,
+    scc_config_directory: str | Path | None = None,
+    target_datetime: dt.datetime | None = None,
+) -> dict[int, Path]:
+    """Return the best dated SCC parameter file per config ID."""
+    config_directory = (
+        Path(scc_config_directory) if scc_config_directory else SCC_CONFIG_DIRECTORY
+    )
+    candidates = sorted(
+        config_directory.glob(f"{lidar_prefix}_parameters_scc_*.py")
+    )
+    selected: dict[int, tuple[dt.datetime | None, Path]] = {}
+    for candidate in candidates:
+        parsed = _parse_scc_parameter_filename(candidate.name, lidar_prefix)
+        if parsed is None:
+            continue
+        config_id, config_date = parsed
+        if (
+            target_datetime is not None
+            and config_date is not None
+            and config_date > target_datetime
+        ):
+            continue
+
+        previous = selected.get(config_id)
+        if previous is None or _scc_config_date_key(config_date) > _scc_config_date_key(previous[0]):
+            selected[config_id] = (config_date, candidate)
+    return {config_id: path for config_id, (_, path) in selected.items()}
+
+
+def select_scc_config_id_from_channel_ids(
+    channel_ids: set[str],
+    scc_config_files: dict[int, Path],
+) -> int | None:
+    """Select the most specific SCC config compatible with channel IDs."""
+    matches = []
+    for config_id, config_file in scc_config_files.items():
+        config = get_scc_config(str(config_file))
+        if config is None:
+            continue
+        config_channels = set(config["channel_parameters"])
+        if config_channels and config_channels.issubset(channel_ids):
+            matches.append((len(config_channels), config_id))
+
+    if not matches:
+        return None
+    return max(matches)[1]
+
+
+def _parse_scc_parameter_filename(
+    filename: str, lidar_prefix: str
+) -> tuple[int, dt.datetime | None] | None:
+    pattern = rf"^{re.escape(lidar_prefix)}_parameters_scc_(?P<code>\d+)(?:_(?P<date>\d{{8}}))?\.py$"
+    match = re.match(pattern, filename)
+    if match is None:
+        return None
+    config_date = None
+    if match.group("date") is not None:
+        config_date = dt.datetime.strptime(match.group("date"), "%Y%m%d")
+    return int(match.group("code")), config_date
+
+
+def _scc_config_date_key(config_date: dt.datetime | None) -> dt.datetime:
+    return config_date or dt.datetime.min
+
 
 def get_scc_code_from_measurement_folder(meas_folder, campaign):
     """
@@ -118,79 +315,6 @@ class TimeoutException(Exception):
 def sigalrm_handler(signum, frame):
     # We get signal!
     raise TimeoutException()
-
-
-""" get date from raw lidar files name """
-def date_from_filename(filelist):
-    """
-    It takes the date from the file name of licel files.
-    Parameters
-    ----------
-    filelist: list, str
-        list of licel-formatted files
-
-    Returns
-    -------
-    datelist: list, datetime
-        list of datetimes for each file in input list
-    """
-
-    datelist = []
-    if filelist:
-        for _file in filelist:
-            body = _file.split(".")[0]
-            tail = _file.split(".")[1]
-            year = int(body[-7:-5]) + 2000
-            month = body[-5:-4]
-            try:
-                month = int(month)
-            except Exception as e:
-                if month == "A":
-                    month = 10
-                elif month == "B":
-                    month = 11
-                elif month == "C":
-                    month = 12
-            day = int(body[-4:-2])
-            hour = int(body[-2:])
-            minute = int(tail[0:2])
-            # print('from body %s: the date %s-%s-%s' % (body, year, month, day))
-            cdate = dt.datetime(year, month, day, hour, minute)
-            datelist.append(cdate)
-    else:
-        print("Filelist is empty.")
-        datelist = None
-    return datelist
-
-
-def getTP(filepath):
-    """
-    Get temperature and pressure from header of a licel-formatted binary file.
-    Inputs:
-    - filepath: path of a licel-formatted binary file (str)
-    Output:
-    - temperature: temperature in celsius (float).
-    - pressure: pressure in hPa (float).
-    """
-    # This code should evolve to read the whole header, not only temperature and pressure.
-    if os.path.isfile(filepath):
-        with open(filepath, mode="rb") as f:  #
-            filename = f.readline().decode("utf-8").rstrip()[1:]
-            second_line = f.readline().decode("utf-8")
-            f.close()
-        second_line_list = second_line.split(" ")
-        if len(second_line_list) == 14:
-            temperature = float(second_line_list[12].rstrip())
-            pressure = float(second_line_list[13].rstrip())
-        else:
-            logger.warning("Cannot find temperature, pressure values. set to None")
-            temperature = None
-            pressure = None
-    else:
-        logger.warning("File not found.")
-        temperature = None
-        pressure = None
-    return temperature, pressure
 
 
 def apply_pc_peak_correction(filelist, scc_pc_channels):

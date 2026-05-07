@@ -11,18 +11,18 @@ from datetime import datetime as dt, time, timedelta, date
 
 
 from lidarpy.preprocessing.lidar_preprocessing import preprocess
-from lidarpy.utils.utils import (
-    is_within_datetime_slice,
-    licel_to_datetime,
-    to_licel_date_str,
-)
+from lidarpy.utils.utils import is_within_datetime_slice
 from lidarpy.general_utils.io import unzip_file
 from lidarpy.utils.utils import LIDAR_INFO
 from lidarpy.utils.utils import filter_wildcard
 from lidarpy.nc_convert.utils import search_config_file
 from lidarpy.utils.file_manager import filename2info, info2general_path, info2path
 from lidarpy.utils.types import LidarName, MeasurementType, Telescope
-from lidarpy.general_utils.dates import parse_datetime
+from lidarpy.general_utils.dates import (
+    licel_to_datetime,
+    parse_datetime,
+    to_licel_date_str,
+)
 
 RAW_FIRST_LETTER = LIDAR_INFO["metadata"]["licel_file_wildcard"]
 
@@ -54,6 +54,7 @@ class Measurement:
         self._sub_dirs = None
         self._has_linked_dc = None
         self._dc = None
+        self._scc_config_id = None
         self._filepaths = None
         self.config = None
         self._unzipped_dir = None
@@ -195,6 +196,30 @@ class Measurement:
                         lidar_name=self.lidar_name,
                     )
         return self._dc
+
+    @property
+    def scc_config_id(self) -> int | None:
+        """Identify the SCC configuration ID for this measurement session."""
+        if self._scc_config_id is None:
+            if self.lidar_name != LidarName.alh:
+                return None
+
+            first_filename = next(iter(self.filenames), None)
+            if first_filename is None:
+                return None
+
+            filepaths = self.get_filepaths(pattern_or_list=[first_filename])
+            if not filepaths:
+                return None
+
+            from lidarpy.scc.utils import get_scc_config_id_from_binary
+
+            self._scc_config_id = get_scc_config_id_from_binary(
+                sorted(filepaths)[0],
+                lidar_prefix="alh",
+                target_datetime=self.session_datetime,
+            )
+        return self._scc_config_id
 
     def get_filenames_within_datetime_slice(self, datetime_slice: slice) -> list[str]:
         return [

@@ -5,14 +5,19 @@ import re
 from tempfile import TemporaryDirectory
 import numpy as np
 from pathlib import Path
-from datetime import datetime
 from typing import overload, Any
 
 import xarray as xr
+from loguru import logger
 from scipy.signal import savgol_filter
 from scipy.integrate import cumulative_trapezoid as cumtrapz
 from .types import LidarInfoType, Telescope
 
+from lidarpy.general_utils.dates import (
+    date_from_filename,
+    licel_to_datetime,
+    to_licel_date_str,
+)
 from lidarpy.general_utils.io import read_yaml
 
 """ MODULE For General Lidar Utilities
@@ -129,27 +134,23 @@ def get_lidar_name_from_filename(fn):
     return lidar
 
 
-def to_licel_date_str(date: datetime) -> str:
-    # Convert month number into hex capital letter
-    month_hex = f"{date.month:x}".upper()
-    return f'{date.strftime(r"%y")}{month_hex}{date.strftime(r"%d")}'
+def getTP(filepath: str | Path) -> tuple[float | None, float | None]:
+    """Read temperature in Celsius and pressure in hPa from a Licel header."""
+    path = Path(filepath)
+    if not path.is_file():
+        logger.warning("File not found.")
+        return None, None
 
+    with path.open(mode="rb") as file:
+        file.readline()
+        second_line = file.readline().decode("utf-8")
 
-def licel_to_datetime(licel_name: str) -> datetime:
-    """Convert Licel Date String to datetime
-    Args:
-        licel_name (str): Licel Date String
-    """
-    try:
-        name, extension = licel_name.split(".")
-    except ValueError:
-        raise ValueError(f"File name {licel_name} does not have an extension")
-    # Convert hexadecimal 'm' to decimal
-    month_decimal = int(name[-5], 16)
-    return datetime.strptime(
-        f"{name[-7:-5]}{month_decimal:02d}{name[-4:-2]}T{name[-2:]}{extension[:4]}",
-        r"%y%m%dT%H%M%S",
-    )
+    second_line_list = second_line.split(" ")
+    if len(second_line_list) != 14:
+        logger.warning("Cannot find temperature, pressure values. set to None")
+        return None, None
+
+    return float(second_line_list[12].rstrip()), float(second_line_list[13].rstrip())
 
 
 def filter_wildcard(

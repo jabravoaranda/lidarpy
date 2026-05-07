@@ -1,0 +1,32 @@
+systems:
+  alh:
+    parameter_prefix: alh
+    channel_string_id_pattern: '^(?P<wavelength>\d+)(?P<telescope>[fn])'
+    far_telescope_tokens: ["f"]
+    near_telescope_tokens: ["n"]
+    elastic_wavelengths: [355, 532, 1064]
+    scc_config_rules:
+      - has_far: true
+        has_near: true
+        has_raman: true
+        scc_config_id: 781
+      - has_far: true
+        has_near: true
+        has_raman: false
+        scc_config_id: 783
+      - has_far: false
+        has_near: true
+        has_raman: true
+        scc_config_id: 1038
+      - has_far: false
+        has_near: true
+        has_raman: false
+        scc_config_id: 1040
+      - has_far: true
+        has_near: false
+        has_raman: true
+        scc_config_id: 1039
+      - has_far: true
+        has_near: false
+        has_raman: false
+        scc_config_id: 1041

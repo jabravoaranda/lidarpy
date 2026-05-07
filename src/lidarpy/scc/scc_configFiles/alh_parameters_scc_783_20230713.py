@@ -16,7 +16,7 @@ channel_parameters = {
         "channel_string_ID": "1064fta",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 600,
         "LR_Input": 1,
         "First_Signal_Rangebin": 807,        
@@ -27,7 +27,7 @@ channel_parameters = {
          "channel_string_ID": "532fta",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 600,
         "LR_Input": 1,
         "First_Signal_Rangebin": 807,
@@ -38,7 +38,7 @@ channel_parameters = {
         "channel_string_ID": "532ftp",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 600,
         "LR_Input": 1,
         "First_Signal_Rangebin": 805,
@@ -49,7 +49,7 @@ channel_parameters = {
         "channel_string_ID": "531fta",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 600,
         "LR_Input": 1,
         "First_Signal_Rangebin": 807,
@@ -60,7 +60,7 @@ channel_parameters = {
         "channel_string_ID": "531ftp",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 600,
         "LR_Input": 1,
         "First_Signal_Rangebin": 805,
@@ -72,7 +72,7 @@ channel_parameters = {
         "channel_string_ID": "355fpa",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 600,
         "LR_Input": 1,
         "First_Signal_Rangebin": 807,
@@ -83,7 +83,7 @@ channel_parameters = {
         "channel_string_ID": "355fpp",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 600,
         "LR_Input": 1,
         "First_Signal_Rangebin": 805,
@@ -94,7 +94,7 @@ channel_parameters = {
         "channel_string_ID": "355fsa",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 600,
         "LR_Input": 1,
         "First_Signal_Rangebin": 807,
@@ -105,7 +105,7 @@ channel_parameters = {
         "channel_string_ID": "355fsp",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 600,
         "LR_Input": 1,
         "First_Signal_Rangebin": 805,
@@ -116,7 +116,7 @@ channel_parameters = {
         "channel_string_ID": "354fta",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 600,
         "LR_Input": 1,
         "First_Signal_Rangebin": 807,
@@ -127,7 +127,7 @@ channel_parameters = {
         "channel_string_ID": "354ftp",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 600,
         "LR_Input": 1,
         "First_Signal_Rangebin": 805,
@@ -138,7 +138,7 @@ channel_parameters = {
         "channel_string_ID": "1064nta",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 1200,
         "LR_Input": 1,
         "First_Signal_Rangebin": 807,
@@ -149,7 +149,7 @@ channel_parameters = {
         "channel_string_ID": "532npa",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 1200,
         "LR_Input": 1,
         "First_Signal_Rangebin": 807,
@@ -160,7 +160,7 @@ channel_parameters = {
         "channel_string_ID": "532npp",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 1200,
         "LR_Input": 1,
         "First_Signal_Rangebin": 805,
@@ -171,7 +171,7 @@ channel_parameters = {
         "channel_string_ID": "532nsa",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 1200,
         "LR_Input": 1,
         "First_Signal_Rangebin": 807,
@@ -182,7 +182,7 @@ channel_parameters = {
         "channel_string_ID": "532nsp",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 1200,
         "LR_Input": 1,
         "First_Signal_Rangebin": 805,
@@ -193,7 +193,7 @@ channel_parameters = {
         "channel_string_ID": "355npa",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 1200,
         "LR_Input": 1,
         "First_Signal_Rangebin": 807,
@@ -204,7 +204,7 @@ channel_parameters = {
         "channel_string_ID": "355npp",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 1200,
         "LR_Input": 1,
         "First_Signal_Rangebin": 805,
@@ -215,7 +215,7 @@ channel_parameters = {
         "channel_string_ID": "355nsa",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 1200,
         "LR_Input": 1,
         "First_Signal_Rangebin": 807,
@@ -226,7 +226,7 @@ channel_parameters = {
         "channel_string_ID": "355nsp",
         "Background_Low": 100.,
         "Background_High": 800.0,
-        "Background_Mode": 0,
+         
         "Laser_Shots": 1200,
         "LR_Input": 1,
         "First_Signal_Rangebin": 805,

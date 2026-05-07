@@ -73,6 +73,38 @@ def str_to_datetime(date_str: str) -> dt.datetime:
     return date_dt
 
 
+def to_licel_date_str(date: dt.datetime) -> str:
+    # Convert month number into hex capital letter
+    month_hex = f"{date.month:x}".upper()
+    return f'{date.strftime(r"%y")}{month_hex}{date.strftime(r"%d")}'
+
+
+def licel_to_datetime(licel_name: str) -> dt.datetime:
+    """Convert Licel Date String to datetime
+    Args:
+        licel_name (str): Licel Date String
+    """
+    try:
+        name, extension = licel_name.split(".")
+    except ValueError:
+        raise ValueError(f"File name {licel_name} does not have an extension")
+    # Convert hexadecimal 'm' to decimal
+    month_decimal = int(name[-5], 16)
+    return dt.datetime.strptime(
+        f"{name[-7:-5]}{month_decimal:02d}{name[-4:-2]}T{name[-2:]}{extension[:4]}",
+        r"%y%m%dT%H%M%S",
+    )
+
+
+def date_from_filename(filelist: list[str]) -> list[dt.datetime] | None:
+    """Return datetimes parsed from Licel-formatted file names."""
+    if not filelist:
+        logger.warning("Filelist is empty.")
+        return None
+
+    return [licel_to_datetime(filename) for filename in filelist]
+
+
 def parse_datetime(
     date: dt.datetime | dt.date | str | np.datetime64 | pd.DatetimeIndex | pd.Timestamp,
 ) -> dt.datetime:
