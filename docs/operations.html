@@ -184,6 +184,15 @@ git push origin v0.1.2</code></pre>
       integration. This repository should not contain private credentials,
       private server URLs or real operational measurements.
     </p>
+    <p>
+      SCC configuration selection for ACTRIS-style workflows is data-driven.
+      <code>Measurement.scc_config_id</code> reads a Licel RAW header, maps
+      transient channel IDs through the available
+      <code>*_parameters_scc_*.py</code> files, and applies the rules in
+      <code>actris_config.yml</code>. For ALHAMBRA this currently resolves
+      far/near telescope presence and Raman-channel presence to the configured
+      SCC ID, avoiding hard-coded instrument rules in Python code.
+    </p>
 
     <h2>Logs and Diagnostics</h2>
     <p>

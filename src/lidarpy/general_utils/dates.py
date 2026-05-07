@@ -95,6 +95,7 @@ def licel_to_datetime(licel_name: str) -> dt.datetime:
         r"%y%m%dT%H%M%S",
     )
 
+
 def date_from_filename(filelist: list[str]) -> list[dt.datetime] | None:
     """Return datetimes parsed from Licel-formatted file names."""
     if not filelist:

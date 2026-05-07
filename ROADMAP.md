@@ -174,21 +174,32 @@ Publishing is configured for releases from this repository.
 - Moved reusable Licel helpers for filename datetime parsing and header
   temperature/pressure extraction from `scc.utils` to the lidar-specific
   `utils.utils` module, keeping SCC compatibility imports for legacy callers.
+- Made `general_utils.dates` the canonical implementation for Licel filename
+  date helpers; `utils.utils` now imports and reexports those helpers for
+  existing lidar-specific callers.
+- Added SCC configuration detection from Licel binary headers and SCC parameter
+  files: the detector reads transient Licel channel IDs from the RAW file,
+  compares them with available `*_parameters_scc_*.py` channel definitions, and
+  selects the most specific compatible SCC configuration for the lidar/date.
+  Validated with focused SCC and utility tests on 2026-05-07:
+  `$env:PYTHONPATH='src'; $env:MPLBACKEND='Agg'; .\.venv\Scripts\python -m pytest tests\scc tests\utils -q`
+  passed with `33 passed in 39.77s`.
+- Migrated the core legacy `gfatpy` SCC Licel-to-SCC test for ALHAMBRA:
+  selecting the 2023-08-30 03:15-03:45 RS slot, using the coincident DC
+  measurement as background, generating `20230830gra0315.nc`, and validating
+  SCC globals, 30 raw profiles, `Background_Profile`, and the 532fta
+  background mean. Validated on 2026-05-07 with
+  `$env:PYTHONPATH='src'; $env:MPLBACKEND='Agg'; .\.venv\Scripts\python -m pytest tests\scc\test_scc_netcdf_generation.py -q`
+  passing with `1 passed in 24.88s`.
+- Added `Measurement.scc_config_id` so ALHAMBRA measurement sessions can expose
+  their detected SCC configuration directly from the RAW Licel headers.
+  Revalidated on 2026-05-07 with
+  `$env:PYTHONPATH='src'; $env:MPLBACKEND='Agg'; .\.venv\Scripts\python -m pytest tests\scc tests\utils -q`
+  passing with `36 passed in 65.37s`.
 
 ## In Progress
 
-- He movido funciones de "fechas" de lidar.utils.utils a general_utils.dates, hay que revisar dependencias e importaciones. 
-
-- Generar un método en lidarpy que identifica qué tipo de configuración SCC (ver lista) tiene la medida utilizando un fichero binario:
-- 781: far y near de noche -> si hay canales f y n con raman
-- 783: far y near de día -> si hay canales f y n sin raman
-- 1038: near de noche -> si hay canales sólo n con raman
-- 1040: near de día -> si hay canales sólo n sin raman
-- 1039: far de noche -> si hay canales sólo f con raman
-- 1041: far de día -> si hay canales sólo f sin raman
-- Hacer un test de esto. 
-
-- 
+- None.
 
 ## Next Tasks
 

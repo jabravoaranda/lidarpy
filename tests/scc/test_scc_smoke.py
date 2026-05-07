@@ -31,10 +31,15 @@ def test_scc_package_data_is_available():
         resources.files("lidarpy.scc.scc_configFiles")
         / "alh_parameters_scc_729.py"
     )
+    actris_config = (
+        resources.files("lidarpy.scc.scc_configFiles")
+        / "actris_config.yml"
+    )
     plot_info = resources.files("lidarpy.scc.plot") / "info.yml"
 
     assert campaign.is_file()
     assert config.is_file()
+    assert actris_config.is_file()
     assert plot_info.is_file()
 
 
@@ -49,10 +54,10 @@ def test_date_from_filename_parses_licel_month_codes():
     )
 
     assert dates == [
-        datetime(2024, 1, 1, 0, 12),
-        datetime(2024, 10, 1, 0, 12),
-        datetime(2024, 11, 1, 0, 12),
-        datetime(2024, 12, 1, 0, 12),
+        datetime(2024, 1, 1, 0, 12, 34),
+        datetime(2024, 10, 1, 0, 12, 34),
+        datetime(2024, 11, 1, 0, 12, 34),
+        datetime(2024, 12, 1, 0, 12, 34),
     ]
 
 

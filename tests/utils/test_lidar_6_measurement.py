@@ -55,6 +55,12 @@ def test_get_files_within_period(alhambra_rs_measurement: Measurement, tmp_path:
     alhambra_rs_measurement.remove_tmp_unzipped_dir()
 
 
+def test_measurement_exposes_scc_config_id(alhambra_rs_measurement: Measurement):
+    assert alhambra_rs_measurement.scc_config_id == 781
+
+    alhambra_rs_measurement.remove_tmp_unzipped_dir()
+
+
 def test_remove_unzipped_path(alhambra_rs_measurement: Measurement, tmp_path: Path):
     filepath = alhambra_rs_measurement.unzip(destination=tmp_path)
 
