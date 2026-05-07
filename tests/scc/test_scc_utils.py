@@ -4,10 +4,11 @@ from datetime import datetime
 import json
 
 from lidarpy.scc import utils
+from lidarpy.utils import utils as lidar_utils
 
 
 def test_date_from_filename_parses_numeric_and_licel_month_codes():
-    dates = utils.date_from_filename(
+    dates = lidar_utils.date_from_filename(
         [
             "RM2350303.151800",
             "RM23A0303.151800",
@@ -31,7 +32,7 @@ def test_get_tp_reads_temperature_and_pressure_from_licel_header(tmp_path):
         b"0 1 2 3 4 5 6 7 8 9 10 11 22.5 1008.0\n"
     )
 
-    temperature, pressure = utils.getTP(str(raw_file))
+    temperature, pressure = lidar_utils.getTP(str(raw_file))
 
     assert temperature == 22.5
     assert pressure == 1008.0
@@ -41,8 +42,13 @@ def test_get_tp_returns_none_values_for_missing_or_short_header(tmp_path):
     short_header = tmp_path / "RM230503.151800"
     short_header.write_bytes(b"Station header\n0 1 2\n")
 
-    assert utils.getTP(str(short_header)) == (None, None)
-    assert utils.getTP(str(tmp_path / "missing")) == (None, None)
+    assert lidar_utils.getTP(str(short_header)) == (None, None)
+    assert lidar_utils.getTP(str(tmp_path / "missing")) == (None, None)
+
+
+def test_scc_utils_reexports_licel_helpers_for_legacy_callers():
+    assert utils.date_from_filename is lidar_utils.date_from_filename
+    assert utils.getTP is lidar_utils.getTP
 
 
 def test_get_campaign_config_builds_default_operational_config():

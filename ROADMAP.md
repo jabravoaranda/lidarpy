@@ -171,10 +171,24 @@ Publishing is configured for releases from this repository.
 - Added initial SCC utility unit tests covering Licel filename date parsing,
   header temperature/pressure extraction, campaign config loading/building, SCC
   parameter module import, and local SCC output directory checks.
+- Moved reusable Licel helpers for filename datetime parsing and header
+  temperature/pressure extraction from `scc.utils` to the lidar-specific
+  `utils.utils` module, keeping SCC compatibility imports for legacy callers.
 
 ## In Progress
 
-- None.
+- He movido funciones de "fechas" de lidar.utils.utils a general_utils.dates, hay que revisar dependencias e importaciones. 
+
+- Generar un método en lidarpy que identifica qué tipo de configuración SCC (ver lista) tiene la medida utilizando un fichero binario:
+- 781: far y near de noche -> si hay canales f y n con raman
+- 783: far y near de día -> si hay canales f y n sin raman
+- 1038: near de noche -> si hay canales sólo n con raman
+- 1040: near de día -> si hay canales sólo n sin raman
+- 1039: far de noche -> si hay canales sólo f con raman
+- 1041: far de día -> si hay canales sólo f sin raman
+- Hacer un test de esto. 
+
+- 
 
 ## Next Tasks
 

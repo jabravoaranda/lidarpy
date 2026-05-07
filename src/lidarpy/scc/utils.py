@@ -12,6 +12,7 @@ from loguru import logger
 from multiprocessing import Pool
 
 from lidarpy.scc.licel2scc import licel2scc
+from lidarpy.utils.utils import date_from_filename, getTP
 
 from lidarpy.general_utils.io import read_yaml
 
@@ -118,79 +119,6 @@ class TimeoutException(Exception):
 def sigalrm_handler(signum, frame):
     # We get signal!
     raise TimeoutException()
-
-
-""" get date from raw lidar files name """
-def date_from_filename(filelist):
-    """
-    It takes the date from the file name of licel files.
-    Parameters
-    ----------
-    filelist: list, str
-        list of licel-formatted files
-
-    Returns
-    -------
-    datelist: list, datetime
-        list of datetimes for each file in input list
-    """
-
-    datelist = []
-    if filelist:
-        for _file in filelist:
-            body = _file.split(".")[0]
-            tail = _file.split(".")[1]
-            year = int(body[-7:-5]) + 2000
-            month = body[-5:-4]
-            try:
-                month = int(month)
-            except Exception as e:
-                if month == "A":
-                    month = 10
-                elif month == "B":
-                    month = 11
-                elif month == "C":
-                    month = 12
-            day = int(body[-4:-2])
-            hour = int(body[-2:])
-            minute = int(tail[0:2])
-            # print('from body %s: the date %s-%s-%s' % (body, year, month, day))
-            cdate = dt.datetime(year, month, day, hour, minute)
-            datelist.append(cdate)
-    else:
-        print("Filelist is empty.")
-        datelist = None
-    return datelist
-
-
-def getTP(filepath):
-    """
-    Get temperature and pressure from header of a licel-formatted binary file.
-    Inputs:
-    - filepath: path of a licel-formatted binary file (str)
-    Output:
-    - temperature: temperature in celsius (float).
-    - pressure: pressure in hPa (float).
-    """
-    # This code should evolve to read the whole header, not only temperature and pressure.
-    if os.path.isfile(filepath):
-        with open(filepath, mode="rb") as f:  #
-            filename = f.readline().decode("utf-8").rstrip()[1:]
-            second_line = f.readline().decode("utf-8")
-            f.close()
-        second_line_list = second_line.split(" ")
-        if len(second_line_list) == 14:
-            temperature = float(second_line_list[12].rstrip())
-            pressure = float(second_line_list[13].rstrip())
-        else:
-            logger.warning("Cannot find temperature, pressure values. set to None")
-            temperature = None
-            pressure = None
-    else:
-        logger.warning("File not found.")
-        temperature = None
-        pressure = None
-    return temperature, pressure
 
 
 def apply_pc_peak_correction(filelist, scc_pc_channels):

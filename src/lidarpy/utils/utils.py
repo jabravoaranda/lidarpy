@@ -9,6 +9,7 @@ from datetime import datetime
 from typing import overload, Any
 
 import xarray as xr
+from loguru import logger
 from scipy.signal import savgol_filter
 from scipy.integrate import cumulative_trapezoid as cumtrapz
 from .types import LidarInfoType, Telescope
@@ -150,6 +151,34 @@ def licel_to_datetime(licel_name: str) -> datetime:
         f"{name[-7:-5]}{month_decimal:02d}{name[-4:-2]}T{name[-2:]}{extension[:4]}",
         r"%y%m%dT%H%M%S",
     )
+
+
+def date_from_filename(filelist: list[str]) -> list[datetime] | None:
+    """Return datetimes parsed from Licel-formatted file names."""
+    if not filelist:
+        logger.warning("Filelist is empty.")
+        return None
+
+    return [licel_to_datetime(filename) for filename in filelist]
+
+
+def getTP(filepath: str | Path) -> tuple[float | None, float | None]:
+    """Read temperature in Celsius and pressure in hPa from a Licel header."""
+    path = Path(filepath)
+    if not path.is_file():
+        logger.warning("File not found.")
+        return None, None
+
+    with path.open(mode="rb") as file:
+        file.readline()
+        second_line = file.readline().decode("utf-8")
+
+    second_line_list = second_line.split(" ")
+    if len(second_line_list) != 14:
+        logger.warning("Cannot find temperature, pressure values. set to None")
+        return None, None
+
+    return float(second_line_list[12].rstrip()), float(second_line_list[13].rstrip())
 
 
 def filter_wildcard(
