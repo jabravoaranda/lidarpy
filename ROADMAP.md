@@ -203,7 +203,9 @@ Publishing is configured for releases from this repository.
 
 ## Next Tasks
 
-- None.
+- Show the package/documentation build version on the public documentation
+  site, so users can tell which `atmolidarpy`/`lidarpy` release the rendered
+  docs describe.
 
 ## Post-Migration Maintenance
 

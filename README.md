@@ -72,14 +72,14 @@ directories inside the repository.
 
 ## Release
 
-Current package version: `0.1.2`.
+Current package version: `0.1.3`.
 
 The package is published as `atmolidarpy` on PyPI through GitHub Actions Trusted
 Publishing. Releases are tag-driven:
 
 ```powershell
-git tag v0.1.2
-git push origin v0.1.2
+git tag v0.1.3
+git push origin v0.1.3
 ```
 
 The `Publish Package` workflow builds sdist and wheel artifacts, checks them
