@@ -94,3 +94,4 @@ def test_reference_docs_mention_core_public_modules():
     assert "lidarpy.retrieval.synthetic.generator" in references
     assert "lidarpy.retrieval.klett" in references
     assert "lidarpy.retrieval.raman" in references
+    assert "lidarpy.retrieval.ablh" in references

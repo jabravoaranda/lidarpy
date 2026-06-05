@@ -55,6 +55,9 @@ tmp_unzipped_*/
 artifacts/
 cover/
 
+# Downloaded example data
+tests/data/RAW/chm15k_25a1c14a/
+
 # Translations
 *.mo
 *.pot

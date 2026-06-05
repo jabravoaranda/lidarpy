@@ -126,8 +126,8 @@ $env:MPLBACKEND = "Agg"
     </ol>
     <pre><code>python -m build
 python -m twine check dist/*
-git tag v0.1.2
-git push origin v0.1.2</code></pre>
+git tag v0.2.0
+git push origin v0.2.0</code></pre>
     <p>
       Expected result: PyPI lists the new <code>atmolidarpy</code> version and
       downstream users can install it with <code>python -m pip install
@@ -193,6 +193,19 @@ git push origin v0.1.2</code></pre>
       far/near telescope presence and Raman-channel presence to the configured
       SCC ID, avoiding hard-coded instrument rules in Python code.
     </p>
+
+    <h2>ABLH Operations</h2>
+    <p>
+      Native ABLH detection lives in <code>lidarpy.retrieval.ablh</code> and
+      can be validated without external services. The focused test suite uses a
+      synthetic 2D signal with known layer height and checks both WCT and
+      temporal-variance methods. The Cloudnet CHM15k workbench writes derived
+      ABLH NetCDF products under <code>artifacts/</code>, which must not be
+      committed or published as package data.
+    </p>
+    <pre><code>$env:PYTHONPATH = "src"
+$env:MPLBACKEND = "Agg"
+python -m pytest tests\retrieval\test_ablh_detection.py -q</code></pre>
 
     <h2>Logs and Diagnostics</h2>
     <p>

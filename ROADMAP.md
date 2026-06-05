@@ -196,10 +196,47 @@ Publishing is configured for releases from this repository.
   Revalidated on 2026-05-07 with
   `$env:PYTHONPATH='src'; $env:MPLBACKEND='Agg'; .\.venv\Scripts\python -m pytest tests\scc tests\utils -q`
   passing with `36 passed in 65.37s`.
+- Added a local Cloudnet CHM15k ABLH workbench for the Granada UGR ceilometer
+  product. The workbench downloads the default Cloudnet lidar product with
+  `cloudnet-api-client` when the local cache is missing, writes one ABLH NetCDF
+  product per native `lidarpy.retrieval.ablh` method, and generates the
+  diagnostic figure from the original Cloudnet product plus the derived ABLH
+  products.
+- Added an initial `lidarpy.retrieval.ablh` API that normalizes lidarpy-style
+  `signal_*` datasets and Cloudnet `beta_smooth`/`beta`/`beta_raw` datasets to
+  a common ABLH detection contract. Added focused tests that verify WCT and
+  temporal-variance detection against `synthetic_signals_2D`, plus one adapter
+  test covering lidarpy and Cloudnet input reading.
+- Optimized temporal-variance ABLH detection by replacing per-profile window
+  variance recomputation with centered moving variance based on cumulative
+  sums. Inspected synthetic 2D sensitivity to `time_window_minutes` and
+  `threshold`; for the current test case, 10-15 minute windows with low
+  thresholds follow the simulated ABLH much better than the initial 30 minute
+  window.
+- Updated the Cloudnet CHM15k example to mirror the ABLH test workflow on real
+  ceilometer data: it uses `lidarpy.retrieval.ablh.detect_ablh` for WCT and
+  temporal-variance methods, writes one ABLH NetCDF per method, and generates a
+  combined quicklook from the Cloudnet backscatter plus derived ABLH products.
+- Kept the Cloudnet CHM15k NetCDF fixture out of git because it can be fetched
+  from Cloudnet for example/integration runs. The local cache path under
+  `tests/data/RAW/chm15k_25a1c14a/` is ignored by git and `tests/data/RAW`
+  remains excluded from PyPI source and wheel distributions.
+- Installed MATLAB Runtime 9.11 (R2021b Update 8) in WSL at
+  `/home/jabravo/MATLAB/MATLAB_Runtime/v911` and added user-local X11 runtime
+  libraries needed by the upstream STRATfinder executable. The executable now
+  starts under WSL, but the upstream ELF is packaged with only
+  `STRATfinder.m` in its embedded CTF and fails at runtime on `readjson`.
+  Because the deployed `.m` payload is MATLAB Compiler encrypted, this binary
+  cannot be repaired by copying source `.m` files into the Runtime cache; it
+  is not documented or exposed as a release feature.
 
 ## In Progress
 
-- None.
+- Prepare the `0.2.0` minor release with the new native ABLH detection API,
+  Cloudnet CHM15k workbench, public documentation updates, package version bump
+  and packaging checks. Validated on 2026-06-05 with
+  `$env:PYTHONPATH='src'; $env:MPLBACKEND='Agg'; .\.venv\Scripts\python -m pytest tests -q`
+  passing with `110 passed in 838.09s`.
 
 ## Next Tasks
 

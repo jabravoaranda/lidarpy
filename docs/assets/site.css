@@ -225,6 +225,111 @@ pre {
   color: #f5f7fa;
 }
 
+.command-banner,
+.example-command {
+  display: block;
+  overflow-x: auto;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  background: #17212b;
+  color: #f5f7fa;
+  font-weight: 700;
+}
+
+.command-banner {
+  margin: 1rem 0 1.25rem;
+  font-size: 1rem;
+}
+
+.example-tabs {
+  margin: 1.75rem 0 2.5rem;
+}
+
+.example-tabs input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tab-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab-labels label {
+  display: inline-block;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  background: #fffdf8;
+  color: var(--accent);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tab-panels {
+  padding-top: 1.5rem;
+}
+
+.tab-panel {
+  display: none;
+}
+
+#tab-quicklooks:checked ~ .tab-labels label[for="tab-quicklooks"],
+#tab-retrieval:checked ~ .tab-labels label[for="tab-retrieval"],
+#tab-ablh:checked ~ .tab-labels label[for="tab-ablh"],
+#tab-preprocessing:checked ~ .tab-labels label[for="tab-preprocessing"] {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+#tab-quicklooks:checked ~ .tab-panels #panel-quicklooks,
+#tab-retrieval:checked ~ .tab-panels #panel-retrieval,
+#tab-ablh:checked ~ .tab-panels #panel-ablh,
+#tab-preprocessing:checked ~ .tab-panels #panel-preprocessing {
+  display: block;
+}
+
+.example-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.example-card {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.example-card h3 {
+  margin-top: 0;
+  font-size: 1.05rem;
+}
+
+.example-card p {
+  color: var(--muted);
+}
+
+.example-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+}
+
+.example-command {
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

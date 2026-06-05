@@ -51,6 +51,7 @@
           <li>Apply preprocessing corrections, overlap correction and gluing products.</li>
           <li>Generate synthetic elastic, Raman and depolarization signals for validation.</li>
           <li>Validate retrieval algorithms with explicit physical assumptions.</li>
+          <li>Detect ABLH from lidarpy or Cloudnet ceilometer backscatter products.</li>
           <li>Package SCC and depolarization modules as part of the standalone distribution.</li>
         </ul>
       </section>
@@ -83,6 +84,16 @@
           ratios and retrieval behavior.
         </p>
         <p><a href="examples.html#synthetic-signals">Open synthetic examples</a></p>
+      </section>
+      <section class="card">
+        <h2>ABLH Detection</h2>
+        <p>
+          The retrieval package includes a common ABLH detection interface for
+          lidarpy <code>signal_*</code> datasets and Cloudnet
+          <code>beta_smooth</code>, <code>beta</code> or <code>beta_raw</code>
+          ceilometer products.
+        </p>
+        <p><a href="examples.html#ablh-detection">Open ABLH examples</a></p>
       </section>
       <section class="card">
         <h2>Retrieval boundaries</h2>

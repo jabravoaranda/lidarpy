@@ -28,6 +28,94 @@
   </header>
 
   <main class="wrap prose">
+    <h2>Generate or Refresh the Figures</h2>
+    <code class="command-banner">uv run python scripts/build_docs.py</code>
+    <p>
+      To regenerate one family of figures, use the command shown in the
+      corresponding example. Each tab keeps the command and expected result
+      together so visual changes are easy to review before publishing.
+    </p>
+
+    <section class="example-tabs" aria-label="Example figure sections">
+      <input type="radio" id="tab-quicklooks" name="example-tabs" checked>
+      <input type="radio" id="tab-retrieval" name="example-tabs">
+      <input type="radio" id="tab-ablh" name="example-tabs">
+      <input type="radio" id="tab-preprocessing" name="example-tabs">
+
+      <div class="tab-labels">
+        <label for="tab-quicklooks">Synthetic quicklooks</label>
+        <label for="tab-retrieval">Retrieval validation</label>
+        <label for="tab-ablh">Cloudnet ABLH</label>
+        <label for="tab-preprocessing">Preprocessing checks</label>
+      </div>
+
+      <div class="tab-panels">
+        <section class="tab-panel" id="panel-quicklooks">
+          <h2>Synthetic Quicklooks</h2>
+          <div class="example-card-grid">
+            <article class="example-card">
+              <h3>Elastic quicklook</h3>
+              <p>Time-height view of the generated 532 nm elastic signal.</p>
+              <code class="example-command">uv run python scripts/generate_docs_figures.py</code>
+              <img src="assets/synthetic-elastic-quicklook.png" alt="Synthetic elastic quicklook result">
+            </article>
+            <article class="example-card">
+              <h3>Raman quicklook</h3>
+              <p>Raman channel quicklook generated from the synthetic 2D signal.</p>
+              <code class="example-command">uv run python scripts/generate_docs_figures.py</code>
+              <img src="assets/synthetic-raman-quicklook.png" alt="Synthetic Raman quicklook result">
+            </article>
+            <article class="example-card">
+              <h3>LPDR quicklook</h3>
+              <p>LPDR derived from synthetic polarized signal components.</p>
+              <code class="example-command">uv run python scripts/generate_docs_figures.py</code>
+              <img src="assets/synthetic-lpdr-quicklook.png" alt="Synthetic LPDR quicklook result">
+            </article>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="panel-retrieval">
+          <h2>Retrieval Validation</h2>
+          <div class="example-card-grid">
+            <article class="example-card">
+              <h3>Synthetic truth comparison</h3>
+              <p>Klett, iterative elastic, Raman extinction, Raman backscatter and LPDR checks against known synthetic truth.</p>
+              <code class="example-command">uv run python scripts/generate_docs_figures.py</code>
+              <img src="assets/retrieval-synthetic-validation.png" alt="Retrieval validation result">
+            </article>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="panel-ablh">
+          <h2>Cloudnet ABLH</h2>
+          <div class="example-card-grid">
+            <article class="example-card">
+              <h3>Granada CHM15k workbench</h3>
+              <p>Cloudnet backscatter with WCT and temporal-variance ABLH products overlaid. The input file is downloaded from Cloudnet if the local cache is missing.</p>
+              <code class="example-command">uv run python examples/cloudnet_chm15k_abl_workbench.py --output-dir artifacts/cloudnet_chm15k_abl_workbench</code>
+              <img src="assets/cloudnet-chm15k-ablh-quicklook.png" alt="Cloudnet CHM15k ABLH quicklook result">
+            </article>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="panel-preprocessing">
+          <h2>Preprocessing Checks</h2>
+          <div class="example-card-grid">
+            <article class="example-card">
+              <h3>Focused ALHAMBRA preprocessing</h3>
+              <p>Run the RAW-backed preprocessing contract checks before release when correction behavior changes.</p>
+              <code class="example-command">uv run pytest tests/preprocessing/test_preprocessing_basic_alh.py -q</code>
+            </article>
+            <article class="example-card">
+              <h3>ABLH unit checks</h3>
+              <p>Validate both layer detection methods against a synthetic 2D signal with known ABLH.</p>
+              <code class="example-command">uv run pytest tests/retrieval/test_ablh_detection.py -q</code>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+
     <h2 id="synthetic-signals">Synthetic elastic and Raman signals</h2>
     <div class="content-pair reverse">
       <div>
@@ -157,6 +245,52 @@ assert corrected["signal_1064fta"].attrs["overlap_applied"] == "1064fta"</code><
         </figcaption>
       </figure>
     </div>
+
+    <h2 id="ablh-detection">ABLH Detection on a Normalized Product</h2>
+    <p>
+      ABLH methods operate on <code>time, range</code> arrays. The same
+      function accepts lidarpy datasets with <code>signal_*</code> variables
+      and Cloudnet ceilometer products with <code>beta_smooth</code>,
+      <code>beta</code> or <code>beta_raw</code>.
+    </p>
+    <pre><code>import xarray as xr
+
+from lidarpy.retrieval.ablh import detect_ablh
+
+cloudnet = xr.open_dataset("path/to/cloudnet_chm15k.nc")
+
+ablh = detect_ablh(
+    cloudnet,
+    input_kind="cloudnet",
+    variable="beta_smooth",
+    method="temporal_variance",
+    min_range=500.0,
+    max_range=4000.0,
+    time_window_minutes=10.0,
+    threshold=1e-5,
+)
+
+ablh.to_netcdf("cloudnet_temporal_variance_ablh.nc")</code></pre>
+    <p>
+      Expected result: the output NetCDF contains <code>ablh</code> and
+      <code>ablh_range</code> in meters above the instrument. If the input has a
+      Cloudnet <code>height</code> coordinate, <code>ablh_height</code> is also
+      populated in meters above mean sea level.
+    </p>
+
+    <h2>Cloudnet CHM15k Workbench</h2>
+    <p>
+      The repository includes a local workbench that mirrors the synthetic
+      ABLH tests on a Granada CHM15k Cloudnet product. If the default input is
+      missing, the script downloads it from the Cloudnet API into the local
+      ignored cache under <code>tests/data/RAW/chm15k_25a1c14a/</code>. It writes
+      one NetCDF per method and a diagnostic quicklook generated from the
+      original Cloudnet product plus the derived ABLH products.
+    </p>
+<pre><code>$env:PYTHONPATH = "src"
+$env:MPLBACKEND = "Agg"
+python examples\cloudnet_chm15k_abl_workbench.py `
+  --output-dir artifacts\cloudnet_chm15k_abl_workbench</code></pre>
 
     <h2>Klett retrieval against synthetic signal</h2>
     <pre><code>from lidarpy.retrieval.klett import klett_rcs

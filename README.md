@@ -61,8 +61,8 @@ directories inside the repository.
 - `src/lidarpy/nc_convert`: RAW/Licel discovery and NetCDF conversion.
 - `src/lidarpy/preprocessing`: correction pipeline, overlap and gluing support.
 - `src/lidarpy/plot`: quicklook plotting.
-- `src/lidarpy/retrieval`: Klett, Raman, overlap, calibration and synthetic
-  validation helpers.
+- `src/lidarpy/retrieval`: Klett, Raman, overlap, calibration, ABLH detection
+  and synthetic validation helpers.
 - `src/lidarpy/atmo`: molecular atmosphere and Rayleigh utilities.
 - `src/lidarpy/depolarization`: calibration and retrieval helpers.
 - `src/lidarpy/scc`: SCC conversion, client, resources and plotting helpers.
@@ -72,14 +72,14 @@ directories inside the repository.
 
 ## Release
 
-Current package version: `0.1.3`.
+Current package version: `0.2.0`.
 
 The package is published as `atmolidarpy` on PyPI through GitHub Actions Trusted
 Publishing. Releases are tag-driven:
 
 ```powershell
-git tag v0.1.3
-git push origin v0.1.3
+git tag v0.2.0
+git push origin v0.2.0
 ```
 
 The `Publish Package` workflow builds sdist and wheel artifacts, checks them
@@ -87,10 +87,21 @@ with Twine and publishes to PyPI from the GitHub environment named `pypi`.
 
 Versioning policy while the project remains alpha:
 
-- Bug fixes that keep the public API compatible use `0.1.x`.
-- Public API changes use `0.2.0`, `0.3.0`, etc.
+- Bug fixes that keep the public API compatible use patch releases within the
+  current minor series, for example `0.2.1`.
+- Public API additions or behavior changes use `0.2.0`, `0.3.0`, etc.
 - `1.0.0` is reserved for the first stable API intended for production
   dependants such as `gfat-worker`.
+
+## What is New in 0.2.0
+
+- Added `lidarpy.retrieval.ablh` with ABLH detection on common
+  `time, range` products from lidarpy datasets and Cloudnet ceilometer
+  backscatter products.
+- Added WCT and temporal-variance ABLH methods with synthetic 2D tests against
+  known simulated layer height.
+- Added a Cloudnet CHM15k Granada workbench that writes ABLH NetCDF products
+  and a quicklook overlaying detected layer heights.
 
 Rollback is normally operational rather than destructive: publish a corrected
 new version, or pin downstream environments to the last known good version. Do

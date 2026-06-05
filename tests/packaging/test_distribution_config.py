@@ -16,6 +16,7 @@ def test_coordination_files_are_not_in_sdist():
     assert "/ROADMAP.md" in sdist["exclude"]
     assert "/src/lidarpy/**/*.ipynb" in sdist["exclude"]
     assert "/src/lidarpy/**/*.pyc" in sdist["exclude"]
+    assert "/tests/data/RAW" in sdist["exclude"]
 
 
 def test_wheel_only_packages_lidarpy_source_tree():
