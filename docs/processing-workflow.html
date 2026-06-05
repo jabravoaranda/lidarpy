@@ -36,8 +36,9 @@
           <li>Convert Licel binary files to NetCDF with <code>lidarpy.nc_convert.measurement</code>.</li>
           <li>Run preprocessing with <code>lidarpy.preprocessing.preprocess</code>.</li>
           <li>Inspect products with <code>lidarpy.plot.quicklook</code>.</li>
-          <li>Use synthetic signals to validate retrieval behavior independently from RAW fixtures.</li>
-          <li>Use SCC support modules only when the external SCC environment is explicitly available.</li>
+      <li>Use synthetic signals to validate retrieval behavior independently from RAW fixtures.</li>
+      <li>Run ABLH detection on normalized lidarpy or Cloudnet ceilometer products.</li>
+      <li>Use SCC support modules only when the external SCC environment is explicitly available.</li>
         </ol>
       </div>
       <figure class="figure">
@@ -155,6 +156,44 @@
         </ul>
       </div>
     </div>
+
+    <h2 id="ablh-products">Stage 5: ABLH Products</h2>
+    <p>
+      ABLH detection is exposed through <code>lidarpy.retrieval.ablh</code>.
+      The adapter accepts lidarpy datasets containing <code>signal_*</code>
+      variables and Cloudnet ceilometer datasets containing
+      <code>beta_smooth</code>, <code>beta</code> or <code>beta_raw</code>.
+      Lidarpy signals are range-corrected before detection; Cloudnet
+      backscatter is used directly.
+    </p>
+    <p>
+      The detector returns a small NetCDF-ready dataset with
+      <code>ablh</code>, <code>ablh_range</code> and
+      <code>ablh_height</code>. For Cloudnet inputs, <code>ablh_height</code>
+      is interpolated from the product height coordinate so users can preserve
+      both height above instrument and height above mean sea level.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Use</th>
+          <th>Main tunables</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>wct</code></td>
+          <td>Haar wavelet covariance transform for strong negative gradients.</td>
+          <td><code>wct_width</code>, <code>threshold</code>, search range.</td>
+        </tr>
+        <tr>
+          <td><code>temporal_variance</code></td>
+          <td>Strong temporal variance layer in a moving time window.</td>
+          <td><code>time_window_minutes</code>, <code>threshold</code>, search range.</td>
+        </tr>
+      </tbody>
+    </table>
 
     <h2>Operational States</h2>
     <table>
