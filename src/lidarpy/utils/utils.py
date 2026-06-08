@@ -156,7 +156,7 @@ def getTP(filepath: str | Path) -> tuple[float | None, float | None]:
 def filter_wildcard(
     directory: Path | TemporaryDirectory, pattern_or_list: str | list[str] = r'\.\d+$', recursive_search=True
 ) -> list[Path]:
-    """Filter files by wildcard
+    r"""Filter files by wildcard
 
     Args:
         directory (Path): Directory to search.
@@ -235,7 +235,7 @@ def integrate_from_reference(integrand, x, reference_index):
 
 
 def optical_depth(extinction, height, ref_index=0):
-    """
+    r"""
     Integrate extinction profile along height: r'$\tau(z) = \int_0^z d\dseta \alpha(\dseta)$'
     """
 

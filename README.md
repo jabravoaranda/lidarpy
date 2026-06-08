@@ -72,14 +72,14 @@ directories inside the repository.
 
 ## Release
 
-Current package version: `0.2.0`.
+Current package version: `0.2.1`.
 
 The package is published as `atmolidarpy` on PyPI through GitHub Actions Trusted
 Publishing. Releases are tag-driven:
 
 ```powershell
-git tag v0.2.0
-git push origin v0.2.0
+git tag v0.2.1
+git push origin v0.2.1
 ```
 
 The `Publish Package` workflow builds sdist and wheel artifacts, checks them
@@ -102,6 +102,13 @@ Versioning policy while the project remains alpha:
   known simulated layer height.
 - Added a Cloudnet CHM15k Granada workbench that writes ABLH NetCDF products
   and a quicklook overlaying detected layer heights.
+
+## What is New in 0.2.1
+
+- Added Python 3.12 support for current Google Colab runtimes while keeping
+  Python 3.11 support.
+- Added CI coverage for both Python 3.11 and 3.12, including pre-publication
+  wheel validation before PyPI upload.
 
 Rollback is normally operational rather than destructive: publish a corrected
 new version, or pin downstream environments to the last known good version. Do

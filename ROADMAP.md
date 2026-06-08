@@ -237,6 +237,16 @@ Publishing is configured for releases from this repository.
   and packaging checks. Validated on 2026-06-05 with
   `$env:PYTHONPATH='src'; $env:MPLBACKEND='Agg'; .\.venv\Scripts\python -m pytest tests -q`
   passing with `110 passed in 838.09s`.
+- Prepare the `0.2.1` compatibility patch so current Google Colab runtimes are
+  supported through Python 3.12. Updated package metadata to
+  `>=3.11.11,<3.13`, added Python 3.11/3.12 CI coverage, and added
+  pre-publication installed-wheel validation for both runtime families.
+  Validated on 2026-06-08 with Python 3.12 chunks:
+  `86 passed, 24 deselected`, `10 passed` for `tests\nc_convert tests\plot`,
+  `10 passed` for `tests\preprocessing`, and `14 passed` for the remaining
+  SCC/utils RAW tests. The focused Python 3.11 release block passed with
+  `19 passed in 11.30s`. A local Python 3.12 installed-wheel import check
+  passed against `dist\atmolidarpy-0.2.1-py3-none-any.whl`.
 
 ## Next Tasks
 

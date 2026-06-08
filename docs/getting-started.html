@@ -77,9 +77,9 @@ python -c "import lidarpy; print(lidarpy.__version__)"</code></pre>
 
     <h2>Install for Local Development</h2>
     <p>
-      The project targets Python 3.11. The lock file and workflows use the same
-      major runtime so numerical dependencies, NetCDF support and tests behave
-      consistently across Windows and Linux.
+      The project targets Python 3.11 and 3.12. The lock file and workflows use
+      the same runtime families so numerical dependencies, NetCDF support and
+      tests behave consistently across Windows and Linux.
     </p>
     <pre><code>uv sync --group dev
 $env:PYTHONPATH = "src"

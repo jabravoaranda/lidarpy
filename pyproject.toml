@@ -1,9 +1,9 @@
 [project]
 name = "atmolidarpy"
-version = "0.2.0"
+version = "0.2.1"
 description = "Standalone atmospheric lidar data processing package"
 authors = [{ name = "Juan Diego De la Rosa", email = "jdidelarc@gmail.com" }]
-requires-python = ">=3.11.11,<3.12"
+requires-python = ">=3.11.11,<3.13"
 readme = "README.md"
 license = "BSD-3-Clause"
 classifiers = [
@@ -12,6 +12,7 @@ classifiers = [
     "License :: OSI Approved :: BSD License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Atmospheric Science",
 ]
 dependencies = [
